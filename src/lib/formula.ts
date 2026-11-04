@@ -46,12 +46,8 @@ function tokenize(src: string): Tok[] {
       const after = src.slice(i + word[0].length).trimStart()[0];
       if (after === "(") out.push({ t: "fn", v: w });
       else if (w === "TRUE" || w === "FALSE") out.push({ t: "bool", v: w });
-      else if (/^\$?[A-Z]{1,3}\$?\d+$/.test(src.slice(i, i + word[0].length + 0).toUpperCase())) out.push({ t: "ref", v: w });
-      else {
-        const r = /^\$?[A-Z]{1,3}\$?\d+/i.exec(src.slice(i));
-        if (r) { out.push({ t: "ref", v: r[0].toUpperCase() }); i += r[0].length; continue; }
-        out.push({ t: "ref", v: w });
-      }
+      else if (/^[A-Z]{1,3}\d+$/.test(w)) out.push({ t: "ref", v: w });
+      else throw new Error("NAME:" + w);
       i += word[0].length; continue;
     }
     if (c === "$") { const r = /^\$?[A-Z]{1,3}\$?\d+/i.exec(src.slice(i)); if (r) { out.push({ t: "ref", v: r[0].toUpperCase() }); i += r[0].length; continue; } }
@@ -100,7 +96,7 @@ export function parse(src: string): Node {
   function unary(): Node { let e = primary(); while (peek()?.t === "op" && peek().v === "%") { p++; e = { k: "pct", e }; } return e; }
   function expr(min: number): Node {
     let l = unary();
-    while (peek()?.t === "op" && PREC[peek().v] !== undefined && PREC[peek().v] > min - 0 && PREC[peek().v] >= min) {
+    while (peek()?.t === "op" && PREC[peek().v] !== undefined && PREC[peek().v] >= min) {
       const op = toks[p++].v;
       const pr = PREC[op];
       const r = expr(op === "^" ? pr : pr + 1);
