@@ -24,9 +24,9 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
 
   useEffect(() => setSel(initialSelected), [initialSelected]);
 
-  const m = /^([A-Z]+)(\d+)$/.exec(sel)!;
-  const selCol = m[1].charCodeAt(0) - 65;
-  const selRow = parseInt(m[2]) - 1;
+  const m = /^([A-Z]+)(\d+)$/.exec(sel) ?? ["", "A", "1"];
+  const selCol = m[1]!.charCodeAt(0) - 65;
+  const selRow = parseInt(m[2]!) - 1;
 
   const commit = (val: string, move = 1) => {
     onChange({ ...cells, [sel]: val });
@@ -78,7 +78,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
             onKeyDown={(e) => {
               if (e.key === "Enter") { e.preventDefault(); commit(draft, 0); if (e.metaKey || e.ctrlKey) setTimeout(() => onEnterCheck?.(), 0); }
               else if (e.key === "Escape") { setEditing(false); gridRef.current?.focus(); }
-              else if (e.key === "Tab" && suggestions[0]) { e.preventDefault(); setDraft(draft.slice(0, -fnMatch![1].length) + suggestions[0] + "("); }
+              else if (e.key === "Tab" && suggestions[0]) { e.preventDefault(); setDraft(draft.slice(0, -fnMatch![1]!.length) + suggestions[0] + "("); }
             }}
             spellCheck={false}
             autoComplete="off"
@@ -86,7 +86,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
           {suggestions.length > 0 && (
             <div className="absolute left-0 top-full z-20 mt-1 w-56 overflow-hidden rounded-lg border bg-popover shadow-lift">
               {suggestions.map((f, i) => (
-                <button key={f} type="button" onMouseDown={(e) => { e.preventDefault(); setDraft(draft.slice(0, -fnMatch![1].length) + f + "("); inputRef.current?.focus(); }}
+                <button key={f} type="button" onMouseDown={(e) => { e.preventDefault(); setDraft(draft.slice(0, -fnMatch![1]!.length) + f + "("); inputRef.current?.focus(); }}
                   className={cn("flex w-full items-center justify-between px-3 py-1.5 text-left font-mono text-xs hover:bg-accent", i === 0 && "bg-accent/60")}>
                   {f}<span className="text-[10px] text-muted-foreground">{i === 0 ? "Tab" : ""}</span>
                 </button>
