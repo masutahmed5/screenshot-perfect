@@ -120,7 +120,7 @@ export const LESSONS: Lesson[] = [
 ];
 
 // Fix the awkward wording in basics step 2 prompt
-LESSONS[0].steps[1].prompt = "In F3, show how far Elm Ave is below the target in F1 (target minus units).";
+LESSONS[1].steps[1].prompt = "In F3, show how far Elm Ave is below the target in F1 (target minus units).";
 
 export const ALL_STEPS = LESSONS.flatMap((l) => l.steps.map((s) => ({ ...s, lessonId: l.id })));
 export const getLesson = (id: string) => LESSONS.find((l) => l.id === id);
