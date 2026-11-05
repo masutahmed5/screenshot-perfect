@@ -42,7 +42,7 @@ export function Player({ steps, title, exitTo = "/learn" }: { steps: Step[]; tit
     const r = checkStep(step, cells);
     setResult(r);
     setAttempts((a) => a + 1);
-    setFlash({ cell: step.targetCells[0], kind: r.ok ? "correct" : "wrong", key: Date.now() });
+    setFlash({ cell: step.targetCells[0]!, kind: r.ok ? "correct" : "wrong", key: Date.now() });
     if (r.ok) recordComplete(step.id, attempts === 0, hints);
     else if (attempts === 0) recordMistake(step.id);
   };
@@ -88,7 +88,7 @@ export function Player({ steps, title, exitTo = "/learn" }: { steps: Step[]; tit
 
         <div className="min-h-[360px]">
           <Sheet cells={cells} onChange={(c) => { setCells(c); if (result && !result.ok) setResult(null); }} cols={step.cols} rows={step.rows}
-            initialSelected={step.targetCells[0]} highlight={step.targetCells} flash={flash} onEnterCheck={check} />
+            initialSelected={step.targetCells[0]!} highlight={step.targetCells} flash={flash} onEnterCheck={check} />
         </div>
       </div>
 
