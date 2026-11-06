@@ -4,12 +4,7 @@ import {
   BookOpen,
   Flame,
   Home,
-  Keyboard,
   RotateCcw,
-  Briefcase,
-  Target,
-  Trophy,
-  User,
   Sparkles,
   Menu,
   X,
@@ -20,13 +15,72 @@ import { LESSONS } from "@/lib/lessons";
 import { Logo } from "./Logo";
 import { cn } from "@/lib/utils";
 
-const soon = [
-  { label: "Shortcuts", icon: Keyboard },
-  { label: "Missions", icon: Target },
-  { label: "Interview", icon: Briefcase },
-  { label: "Leaderboard", icon: Trophy },
-  { label: "Profile", icon: User },
-];
+function LessonList({
+  currentLessonId,
+  currentLessonRef,
+  completedMap,
+  onSelectLesson,
+}: {
+  currentLessonId: string | null;
+  currentLessonRef: React.RefObject<HTMLAnchorElement | null>;
+  completedMap: Record<string, any>;
+  onSelectLesson?: () => void;
+}) {
+  return (
+    <div className="flex-1 overflow-y-auto p-3 space-y-1">
+      {LESSONS.map((l, index) => {
+        const isCurrent = currentLessonId === l.id;
+        const completedSteps = l.steps.filter((s) => completedMap[s.id]).length;
+        const isAllDone = completedSteps === l.steps.length;
+        const isInProgress = !isAllDone && completedSteps > 0;
+
+        return (
+          <Link
+            key={l.id}
+            ref={isCurrent ? currentLessonRef : null}
+            to="/practice/$lessonId"
+            params={{ lessonId: l.id }}
+            onClick={onSelectLesson}
+            className={cn(
+              "group flex items-center justify-between rounded-xl px-3.5 py-3 text-sm transition-all text-left",
+              isCurrent
+                ? "bg-emerald-500/10 text-emerald-950 dark:text-emerald-300 font-semibold border-l-4 border-emerald-600 shadow-xs"
+                : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+            )}
+          >
+            <div className="flex items-center gap-2.5 min-w-0 pr-2">
+              <span
+                className={cn(
+                  "text-xs font-semibold tabular-nums shrink-0",
+                  isCurrent ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground/80"
+                )}
+              >
+                {index + 1}.
+              </span>
+              <span className="truncate">{l.title}</span>
+            </div>
+
+            <div className="shrink-0 flex items-center">
+              {isAllDone && (
+                <span
+                  className="grid size-5 place-items-center rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
+                  title="Completed"
+                >
+                  <Check className="size-3.5" strokeWidth={2.5} />
+                </span>
+              )}
+              {isInProgress && (
+                <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  IN PROGRESS
+                </span>
+              )}
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
 
 export function AppShell({ children }: { children: ReactNode }) {
   const p = useProgress();
@@ -34,47 +88,49 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const routerState = useRouterState();
   const currentPath = routerState?.location?.pathname ?? "";
-  const isPracticeView = currentPath.includes("/practice");
   const practiceMatch = currentPath.match(/\/practice\/([^/?#]+)/);
   const currentLessonId = practiceMatch ? practiceMatch[1] : null;
 
-  // Session-only drawer open/closed state (closed by default in practice view)
-  const [isOpen, setIsOpen] = useState(() => {
-    if (typeof window === "undefined") return false;
-    if (isPracticeView) return false;
-    return sessionStorage.getItem("gridwise_drawer_open") === "true";
+  // On desktop: open by default (collapsible via hamburger).
+  // On mobile (<1024px): closed by default (slide-in drawer).
+  const [isPanelOpen, setIsPanelOpen] = useState(() => {
+    if (typeof window === "undefined") return true;
+    if (window.innerWidth < 1024) return false;
+    const saved = sessionStorage.getItem("gridwise_left_panel_desktop");
+    return saved !== null ? saved === "true" : true;
   });
 
   const hamburgerRef = useRef<HTMLButtonElement | null>(null);
   const drawerRef = useRef<HTMLDivElement | null>(null);
   const currentLessonRef = useRef<HTMLAnchorElement | null>(null);
 
-  const toggleDrawer = () => {
-    setIsOpen((prev) => {
+  const togglePanel = () => {
+    setIsPanelOpen((prev) => {
       const next = !prev;
-      sessionStorage.setItem("gridwise_drawer_open", String(next));
+      sessionStorage.setItem("gridwise_left_panel_desktop", String(next));
       return next;
     });
   };
 
-  const closeDrawer = () => {
-    setIsOpen(false);
-    sessionStorage.setItem("gridwise_drawer_open", "false");
+  const closePanel = () => {
+    setIsPanelOpen(false);
+    sessionStorage.setItem("gridwise_left_panel_desktop", "false");
   };
 
-  // Close on Escape & trap Tab focus when open
+  // Close on Escape when mobile drawer is open & handle tab trapping
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isPanelOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
-        closeDrawer();
+        closePanel();
         hamburgerRef.current?.focus();
         return;
       }
 
-      if (e.key === "Tab" && drawerRef.current) {
+      // Tab trap when drawer is acting as modal under 1024px
+      if (window.innerWidth < 1024 && e.key === "Tab" && drawerRef.current) {
         const focusable = Array.from(
           drawerRef.current.querySelectorAll<HTMLElement>(
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -100,57 +156,68 @@ export function AppShell({ children }: { children: ReactNode }) {
     };
 
     window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isPanelOpen]);
 
-    // Initial focus into drawer
-    const focusTimer = setTimeout(() => {
-      const firstFocusable = drawerRef.current?.querySelector<HTMLElement>(
-        'button, [href], input, [tabindex]:not([tabindex="-1"])'
-      );
-      firstFocusable?.focus();
-    }, 50);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      clearTimeout(focusTimer);
-      hamburgerRef.current?.focus();
-    };
-  }, [isOpen]);
-
-  // Auto-scroll current lesson into view when opened
+  // Auto-scroll current lesson into view
   useEffect(() => {
-    if (isOpen && currentLessonRef.current) {
+    if (isPanelOpen && currentLessonRef.current) {
       const scrollTimer = setTimeout(() => {
         currentLessonRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
       }, 100);
       return () => clearTimeout(scrollTimer);
     }
-  }, [isOpen]);
-
-  const nav =
-    "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-foreground";
+  }, [isPanelOpen, currentLessonId]);
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      {/* Top bar with Hamburger + Logo on the left, Streak + XP on the right */}
+      {/* Top Header Bar */}
       <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b bg-background/90 px-4 sm:px-6 backdrop-blur-md">
         <div className="flex items-center gap-3">
           <button
             ref={hamburgerRef}
             type="button"
-            onClick={toggleDrawer}
-            aria-expanded={isOpen}
-            aria-controls="navigation-drawer"
-            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
-            className="flex size-9 items-center justify-center rounded-lg border bg-card text-foreground transition-colors hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            onClick={togglePanel}
+            aria-expanded={isPanelOpen}
+            aria-controls="all-lessons-panel"
+            aria-label={isPanelOpen ? "Collapse lessons panel" : "Expand lessons panel"}
+            className="flex size-9 items-center justify-center rounded-lg border bg-card text-foreground transition-colors hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
           >
-            {isOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+            <Menu className="size-5" />
           </button>
-          <Link to="/" className="flex items-center" onClick={closeDrawer}>
+          <Link to="/" className="flex items-center">
             <Logo />
           </Link>
         </div>
 
         <div className="flex items-center gap-4 text-sm">
+          <Link
+            to="/dashboard"
+            className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <Home className="size-3.5" />
+            Today
+          </Link>
+          <Link
+            to="/learn"
+            className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <BookOpen className="size-3.5" />
+            Learn
+          </Link>
+          <Link
+            to="/review"
+            className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <RotateCcw className="size-3.5" />
+            Review
+            {reviewCount > 0 && (
+              <span className="rounded-full bg-accent px-1.5 text-[10px] font-bold text-accent-foreground">
+                {reviewCount}
+              </span>
+            )}
+          </Link>
+
           <span className="flex items-center gap-1.5" title="Day streak">
             <Flame className="size-4 text-warning" />
             <span className="tabular-nums font-medium">{p.streak}</span>
@@ -161,146 +228,102 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      {/* Dim scrim overlay (does NOT shift page layout) */}
-      <div
-        className={cn(
-          "fixed inset-0 z-40 bg-black/45 backdrop-blur-[2px] transition-opacity duration-[250ms] ease-out motion-reduce:transition-none motion-reduce:duration-0",
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        )}
-        onClick={closeDrawer}
-        aria-hidden="true"
-      />
-
-      {/* Slide-in Drawer (250ms slide animation, disabled under prefers-reduced-motion) */}
-      <aside
-        id="navigation-drawer"
-        ref={drawerRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Navigation drawer"
-        className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-80 max-w-[85vw] flex-col border-r bg-sidebar p-4 shadow-2xl transition-transform duration-[250ms] ease-out motion-reduce:transition-none motion-reduce:duration-0",
-          isOpen ? "translate-x-0" : "-translate-x-full pointer-events-none"
-        )}
-      >
-        <div className="mb-6 flex items-center justify-between px-2 pt-1">
-          <Link to="/" onClick={closeDrawer}>
-            <Logo />
-          </Link>
-          <button
-            type="button"
-            onClick={closeDrawer}
-            aria-label="Close drawer"
-            className="rounded-lg p-1.5 text-muted-foreground hover:bg-sidebar-accent hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      {/* App Body with Left Panel and Main Workspace */}
+      <div className="flex flex-1 min-h-0 min-w-0 w-full relative">
+        {/* 1. DESKTOP LEFT PANEL: All Lessons (About 300px wide, collapsible via hamburger, open by default) */}
+        {isPanelOpen && (
+          <aside
+            id="all-lessons-panel"
+            className="hidden lg:flex w-[300px] shrink-0 flex-col border-r bg-card/60 transition-all duration-200"
           >
-            <X className="size-5" />
-          </button>
-        </div>
-
-        <div className="flex-1 overflow-y-auto pr-1">
-          <nav className="flex flex-col gap-1" aria-label="Main">
-            <Link
-              to="/dashboard"
-              onClick={closeDrawer}
-              className={nav}
-              activeProps={{ className: "bg-sidebar-accent !text-foreground font-medium" }}
-            >
-              <Home className="size-4" />
-              Today
-            </Link>
-            <Link
-              to="/learn"
-              onClick={closeDrawer}
-              className={nav}
-              activeProps={{ className: "bg-sidebar-accent !text-foreground font-medium" }}
-            >
-              <BookOpen className="size-4" />
-              Learn
-            </Link>
-            <Link
-              to="/review"
-              onClick={closeDrawer}
-              className={nav}
-              activeProps={{ className: "bg-sidebar-accent !text-foreground font-medium" }}
-            >
-              <RotateCcw className="size-4" />
-              Review
-              {reviewCount > 0 && (
-                <span className="ml-auto rounded-full bg-accent px-1.5 text-[11px] font-medium text-accent-foreground">
-                  {reviewCount}
-                </span>
-              )}
-            </Link>
-
-            {/* Full lesson list grouped by skill with check marks and current lesson highlighted */}
-            <div className="mt-5 mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/75">
-              Practice Lessons
-            </div>
-            <div className="flex flex-col gap-1">
-              {LESSONS.map((l) => {
-                const isCurrent = currentLessonId === l.id;
-                const completedSteps = l.steps.filter((s) => p.completed[s.id]).length;
-                const isAllDone = completedSteps === l.steps.length;
-
-                return (
-                  <Link
-                    key={l.id}
-                    ref={isCurrent ? currentLessonRef : null}
-                    to="/practice/$lessonId"
-                    params={{ lessonId: l.id }}
-                    onClick={closeDrawer}
-                    className={cn(
-                      "flex items-center justify-between rounded-lg px-3 py-2 text-xs transition-colors",
-                      isCurrent
-                        ? "bg-primary/15 text-primary font-semibold border-l-2 border-primary"
-                        : "text-muted-foreground hover:bg-sidebar-accent hover:text-foreground"
-                    )}
-                  >
-                    <div className="flex flex-col truncate pr-2">
-                      <span className="text-[10px] uppercase tracking-wider opacity-70">{l.track}</span>
-                      <span className="truncate font-medium">{l.title}</span>
-                    </div>
-                    {isAllDone ? (
-                      <span className="grid size-5 place-items-center rounded-full bg-success-soft text-success shrink-0" title="Completed">
-                        <Check className="size-3" />
-                      </span>
-                    ) : completedSteps > 0 ? (
-                      <span className="text-[10px] font-mono text-muted-foreground shrink-0 tabular-nums">
-                        {completedSteps}/{l.steps.length}
-                      </span>
-                    ) : null}
-                  </Link>
-                );
-              })}
-            </div>
-
-            <div className="mt-6 mb-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
-              Coming soon
-            </div>
-            {soon.map(({ label, icon: I }) => (
-              <span
-                key={label}
-                className={nav + " cursor-not-allowed opacity-50 hover:bg-transparent"}
-                aria-disabled
-              >
-                <I className="size-4" />
-                {label}
+            <div className="px-4 py-3.5 border-b flex items-center justify-between">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                All Lessons
               </span>
-            ))}
-          </nav>
-        </div>
+              <span className="text-[11px] text-muted-foreground font-mono">
+                {LESSONS.length} tracks
+              </span>
+            </div>
+            <LessonList
+              currentLessonId={currentLessonId}
+              currentLessonRef={currentLessonRef}
+              completedMap={p.completed}
+            />
+            <div className="p-3 border-t">
+              <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+                <Sparkles className="size-3.5 text-primary" />
+                <span>Guest mode · All lessons unlocked</span>
+              </div>
+            </div>
+          </aside>
+        )}
 
-        <div className="mt-4 rounded-xl border bg-card p-4">
-          <div className="flex items-center gap-2 text-sm font-medium">
-            <Sparkles className="size-4 text-primary" />
-            Guest mode
+        {/* MOBILE SLIDE-IN DRAWER (under 1024px, slide-in overlay with dim scrim, closed by default) */}
+        {/* Dim Scrim Overlay */}
+        <div
+          className={cn(
+            "fixed inset-0 z-40 bg-black/45 backdrop-blur-[2px] transition-opacity duration-[250ms] ease-out lg:hidden",
+            isPanelOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          )}
+          onClick={closePanel}
+          aria-hidden="true"
+        />
+
+        {/* Drawer Panel */}
+        <aside
+          ref={drawerRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="All lessons list"
+          className={cn(
+            "fixed inset-y-0 left-0 z-50 flex w-[300px] max-w-[85vw] flex-col border-r bg-card shadow-2xl transition-transform duration-[250ms] ease-out motion-reduce:transition-none lg:hidden",
+            isPanelOpen ? "translate-x-0" : "-translate-x-full pointer-events-none"
+          )}
+        >
+          <div className="flex items-center justify-between px-4 py-3.5 border-b">
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              All Lessons
+            </span>
+            <button
+              type="button"
+              onClick={closePanel}
+              aria-label="Close menu"
+              className="rounded-lg p-1 text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none"
+            >
+              <X className="size-5" />
+            </button>
           </div>
-          <p className="mt-1 text-xs text-muted-foreground">Progress is saved on this device.</p>
-        </div>
-      </aside>
 
-      {/* Main content takes full width; no shifting */}
-      <main className="flex-1 w-full min-w-0">{children}</main>
+          <LessonList
+            currentLessonId={currentLessonId}
+            currentLessonRef={currentLessonRef}
+            completedMap={p.completed}
+            onSelectLesson={closePanel}
+          />
+
+          <div className="p-4 border-t space-y-2">
+            <div className="flex gap-2 text-xs">
+              <Link
+                to="/dashboard"
+                onClick={closePanel}
+                className="flex-1 rounded-lg border bg-muted/50 p-2 text-center font-medium hover:bg-muted"
+              >
+                Today
+              </Link>
+              <Link
+                to="/learn"
+                onClick={closePanel}
+                className="flex-1 rounded-lg border bg-muted/50 p-2 text-center font-medium hover:bg-muted"
+              >
+                Learn
+              </Link>
+            </div>
+          </div>
+        </aside>
+
+        {/* Main Workspace (fills full width when left panel is collapsed) */}
+        <main className="flex-1 min-w-0 flex flex-col">{children}</main>
+      </div>
     </div>
   );
 }

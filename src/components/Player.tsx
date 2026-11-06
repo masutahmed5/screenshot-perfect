@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Check, Lightbulb, SkipForward, X } from "lucide-react";
+import { ArrowRight, Check, Lightbulb, SkipForward } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet } from "./Sheet";
 import type { Step } from "@/lib/lessons";
@@ -46,15 +46,205 @@ function FormattedText({ text, className }: { text: string; className?: string }
   return <p className={className}>{tokens}</p>;
 }
 
-// Detect example formula to display as a monospace chip under explanation
-function getExampleFormula(s: Step): string | null {
-  if ((s as any).exampleFormula) return (s as any).exampleFormula;
-  const promptMatch = s.prompt?.match(/(?:typing|type|formula)\s+(=[A-Za-z0-9_+$:*/^&,() -]+)/i);
-  if (promptMatch) return promptMatch[1].trim();
-  const scenarioMatch = s.scenario?.match(/(?:typing|type|formula|try)\s+(=[A-Za-z0-9_+$:*/^&,() -]+)/i);
-  if (scenarioMatch) return scenarioMatch[1].trim();
-  const rawMatch = s.scenario?.match(/(?:^|\s)(=[A-Z0-9_]+(?:\([^)]*\)|[+*/^& -][A-Z0-9_$]+)?)(?:\s|$|[.])/i);
-  if (rawMatch && !rawMatch[1].includes(" ")) return rawMatch[1].trim();
+type PracticalExample = {
+  formula: string;
+  description: string;
+};
+
+// Safe built-in practical examples that use different cells/values than the task
+function getPracticalExample(step: Step): PracticalExample | null {
+  // 1. Explicit example from JSON if present
+  if ((step as any).example && typeof (step as any).example === "object") {
+    return (step as any).example as PracticalExample;
+  }
+
+  // 2. Built-in map keyed by step title
+  const exampleMap: Record<string, PracticalExample> = {
+    // Intro to Excel
+    "Your first formula": {
+      formula: "=10+4",
+      description: "calculates the sum of 10 and 4 directly in the cell.",
+    },
+    "Cell references": {
+      formula: "=A1+A2",
+      description: "adds the values stored in cells A1 and A2 together.",
+    },
+    "Functions": {
+      formula: "=SUM(A1, B1)",
+      description: "uses the SUM function to add values separated by commas.",
+    },
+    "Ranges": {
+      formula: "=SUM(A1:A5)",
+      description: "adds every number from cell A1 through cell A5.",
+    },
+
+    // Formulas & Arithmetic (Basics)
+    "Subtraction": {
+      formula: "=A1-B2",
+      description: "subtracts the value in B2 from the value in A1.",
+    },
+    "Order of operations": {
+      formula: "=A1*(B1-5)",
+      description: "uses parentheses to calculate the subtraction before multiplying.",
+    },
+    "Percentages": {
+      formula: "=A2*(1+10%)",
+      description: "multiplies by (1 + rate) to apply a percentage increase in one step.",
+    },
+    "Absolute references": {
+      formula: "=A2*$C$1",
+      description: "locks column C and row 1 with $ signs so the rate stays fixed when copied.",
+    },
+
+    // Math & Stats
+    "SUM a range": {
+      formula: "=SUM(D2:D8)",
+      description: "adds up all values in the column range D2 through D8.",
+    },
+    "AVERAGE": {
+      formula: "=AVERAGE(B2:B8)",
+      description: "calculates the arithmetic mean of numbers in B2:B8.",
+    },
+    "MAX": {
+      formula: "=MAX(A2:A10)",
+      description: "returns the highest number from the range A2:A10.",
+    },
+    "ROUND": {
+      formula: "=ROUND(AVERAGE(A1:A5), 2)",
+      description: "computes the average and rounds the result to 2 decimal places.",
+    },
+    "COUNTA": {
+      formula: "=COUNTA(B1:B10)",
+      description: "counts all cells containing text or numbers, ignoring blanks.",
+    },
+
+    // Decisions with IF (Logical)
+    "Simple IF": {
+      formula: '=IF(A1>=50, "Pass", "Fail")',
+      description: 'evaluates a condition and returns "Pass" if true, otherwise "Fail".',
+    },
+    "IF with math": {
+      formula: '=IF(A2="East", 100, 0)',
+      description: 'checks if text matches "East" and returns 100 or 0.',
+    },
+    "AND": {
+      formula: '=IF(AND(A1>0, B1>0), "Valid", "")',
+      description: "evaluates to true only if both conditions inside AND() are met.",
+    },
+    "SUMIF": {
+      formula: '=SUMIF(A2:A10, "North", D2:D10)',
+      description: 'sums values in D2:D10 where column A matches "North".',
+    },
+    "COUNTIF": {
+      formula: '=COUNTIF(A2:A10, ">50")',
+      description: 'counts the number of cells in A2:A10 with values over 50.',
+    },
+
+    // Lookups
+    "VLOOKUP exact": {
+      formula: '=VLOOKUP(A1, C1:E10, 2, FALSE)',
+      description: 'searches for A1 in column C and retrieves the value from column D.',
+    },
+    "XLOOKUP": {
+      formula: '=XLOOKUP(A1, B1:B10, C1:C10)',
+      description: 'looks up A1 in B1:B10 and returns the matching item from C1:C10.',
+    },
+    "Look left": {
+      formula: '=XLOOKUP(A1, D1:D10, B1:B10)',
+      description: 'retrieves data from column B to the left of the lookup column D.',
+    },
+    "INDEX + MATCH": {
+      formula: '=INDEX(A1:A10, MATCH(B1, C1:C10, 0))',
+      description: 'uses MATCH to locate the row index and INDEX to fetch the value.',
+    },
+    "Handle missing IDs": {
+      formula: '=XLOOKUP(A1, B1:B10, C1:C10, "Missing")',
+      description: 'specifies a fallback value when the lookup key is not found.',
+    },
+
+    // Text
+    "Join with &": {
+      formula: '=C1&" "&D1',
+      description: 'joins two text cells together separated by a space.',
+    },
+    "LEFT": {
+      formula: '=LEFT(A1, 2)',
+      description: 'extracts the first 2 characters from the beginning of cell A1.',
+    },
+    "TRIM": {
+      formula: '=TRIM(C1)',
+      description: 'removes extra leading, trailing, and repeated spaces from text.',
+    },
+    "PROPER": {
+      formula: '=PROPER(C1)',
+      description: 'converts text to title case with initial capital letters.',
+    },
+    "LEN": {
+      formula: '=LEN(C1)',
+      description: 'returns the total count of characters in cell C1.',
+    },
+
+    // Cleaning
+    "Numbers stored as text": {
+      formula: '=VALUE(SUBSTITUTE(C1, "$", ""))',
+      description: 'strips currency symbols and converts the string into a numeric value.',
+    },
+    "SUBSTITUTE": {
+      formula: '=SUBSTITUTE(C1, "/", "-")',
+      description: 'replaces all occurrences of "/" with "-" in cell C1.',
+    },
+    "Guard #DIV/0!": {
+      formula: '=IFERROR(C1/D1, 0)',
+      description: 'returns 0 if the calculation results in an error.',
+    },
+    "Fix the range": {
+      formula: '=SUM(A1:A10)',
+      description: 'ensures the range covers all intended rows without missing the last row.',
+    },
+    "Flag duplicates": {
+      formula: '=IF(COUNTIF($B$1:$B$10, B1) > 1, "Duplicate", "")',
+      description: 'flags items that appear more than once in the locked range.',
+    },
+  };
+
+  if (exampleMap[step.title]) {
+    return exampleMap[step.title];
+  }
+
+  // 3. Fallback to required function
+  const reqFn = step.validation?.requiredFunctions?.[0];
+  if (reqFn) {
+    const fnMap: Record<string, PracticalExample> = {
+      SUM: { formula: "=SUM(A1:A5)", description: "adds all values in the range A1:A5." },
+      AVERAGE: { formula: "=AVERAGE(A1:A5)", description: "calculates the average of the range." },
+      MAX: { formula: "=MAX(A1:A5)", description: "returns the maximum value in A1:A5." },
+      MIN: { formula: "=MIN(A1:A5)", description: "returns the minimum value in A1:A5." },
+      ROUND: { formula: "=ROUND(A1, 1)", description: "rounds the number to 1 decimal place." },
+      COUNTA: { formula: "=COUNTA(A1:A10)", description: "counts non-empty cells in the range." },
+      COUNT: { formula: "=COUNT(A1:A10)", description: "counts numeric cells in the range." },
+      IF: { formula: '=IF(A1>10, "Yes", "No")', description: 'returns "Yes" if A1 > 10, else "No".' },
+      AND: { formula: '=IF(AND(A1>0, B1>0), 1, 0)', description: "checks if both conditions are true." },
+      SUMIF: { formula: '=SUMIF(A1:A10, "X", B1:B10)', description: 'sums B1:B10 where column A is "X".' },
+      COUNTIF: { formula: '=COUNTIF(A1:A10, ">0")', description: "counts cells with values greater than 0." },
+      VLOOKUP: { formula: '=VLOOKUP(A1, D1:F10, 2, FALSE)', description: "finds A1 in column D and returns column E." },
+      XLOOKUP: { formula: '=XLOOKUP(A1, C1:C10, D1:D10)', description: "matches A1 in C and returns value from D." },
+      INDEX: { formula: '=INDEX(A1:A10, 3)', description: "returns the value in the 3rd row of A1:A10." },
+      MATCH: { formula: '=MATCH(A1, B1:B10, 0)', description: "finds the row position of A1 in B1:B10." },
+      LEFT: { formula: '=LEFT(A1, 3)', description: "takes the first 3 characters from A1." },
+      TRIM: { formula: '=TRIM(A1)', description: "removes extra whitespace from text in A1." },
+      PROPER: { formula: '=PROPER(A1)', description: "formats text in A1 with capitalized words." },
+      LEN: { formula: '=LEN(A1)', description: "counts the number of characters in A1." },
+      SUBSTITUTE: { formula: '=SUBSTITUTE(A1, "a", "b")', description: 'replaces "a" with "b" in cell A1.' },
+      IFERROR: { formula: '=IFERROR(A1/B1, 0)', description: "returns 0 if the formula errors." },
+    };
+    if (fnMap[reqFn]) return fnMap[reqFn];
+  }
+
+  // 4. Fallback to multiplication if formula has *
+  if (step.solution?.includes("*") && !step.solution?.includes("SUM")) {
+    return { formula: "=B2*C2", description: "multiplies Units by Price to compute revenue." };
+  }
+
   return null;
 }
 
@@ -118,7 +308,7 @@ export function Player({
   const next = () => (i + 1 >= steps.length ? setDone(true) : setI(i + 1));
   const showSolution = hints >= 3 && attempts > 0;
 
-  // Single text field rule: show single text in explanation zone, keep callout populated
+  // Single text field handling
   const hasScenario = Boolean(step.scenario && step.scenario.trim());
   const hasPrompt = Boolean(step.prompt && step.prompt.trim());
 
@@ -139,139 +329,139 @@ export function Player({
     calloutText = "Complete the formula in the highlighted cell.";
   }
 
-  const exampleFormula = getExampleFormula(step);
+  const practicalExample = getPracticalExample(step);
 
   return (
-    <div className="flex min-h-[calc(100vh-3.5rem)] flex-col bg-background">
-      {/* Main Practice Container */}
-      <div className="flex-1 p-4 lg:p-6 pb-24 lg:pb-28">
-        <div className="mx-auto flex max-w-[1780px] flex-col gap-6 lg:grid lg:grid-cols-[clamp(340px,28vw,440px)_1fr] items-stretch">
-          {/* LEFT COLUMN: Lesson Card (clamp(340px, 28vw, 440px) on desktop) */}
-          <section
-            className="w-full rounded-2xl border bg-card p-6 shadow-soft flex flex-col justify-between"
-            aria-labelledby="task-title"
-          >
-            <div>
-              {/* Skill label with close X */}
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{title}</span>
-                <Link
-                  to={exitTo}
-                  aria-label="Exit lesson"
-                  className="rounded-lg p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                >
-                  <X className="size-4" />
-                </Link>
-              </div>
-
-              {/* Segmented progress bar */}
-              <div className="mt-3 flex gap-1.5" aria-label={`Step ${i + 1} of ${steps.length}`}>
-                {steps.map((s, k) => (
-                  <span
-                    key={s.id}
-                    className={cn(
-                      "h-1.5 flex-1 rounded-full bg-muted transition-colors",
-                      k < i && "bg-primary",
-                      k === i && "bg-primary/50"
-                    )}
-                  />
-                ))}
-              </div>
-
-              {/* Lesson title (30px) */}
-              <h1
-                id="task-title"
-                className="mt-5 text-[var(--font-size-title,30px)] font-serif tracking-tight leading-tight text-foreground"
-              >
-                {step.title}
-              </h1>
-
-              {/* Green task callout ("what to do", 18px with generous padding) */}
-              <div className="mt-5 rounded-xl border border-emerald-500/25 bg-emerald-50/85 dark:bg-emerald-950/25 dark:border-emerald-800/40 p-5 text-[var(--font-size-callout,18px)] leading-relaxed text-emerald-950 dark:text-emerald-100 font-medium shadow-xs">
-                {calloutText}
-              </div>
-
-              {/* Hints */}
-              {hints > 0 && (
-                <div className="mt-5 space-y-2.5">
-                  {step.hints.slice(0, hints).map((h, k) => (
-                    <div key={k} className="animate-rise rounded-xl border bg-background p-3.5 text-sm">
-                      <span className="mr-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                        {["Nudge", "Hint", "Walkthrough"][k]}
-                      </span>
-                      {k === 2 && !showSolution ? (
-                        <span className="text-muted-foreground">Try once more to unlock the full solution.</span>
-                      ) : (
-                        <span className={k === 2 ? "font-mono font-medium" : ""}>{h}</span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Correct / Not-quite feedback */}
-              {result && (
-                <div
-                  role="status"
-                  className={cn(
-                    "mt-5 animate-rise rounded-xl border p-4 text-sm",
-                    result.ok ? "border-success/30 bg-success-soft" : "border-destructive/20 bg-error-soft"
-                  )}
-                >
-                  <p className={cn("font-semibold text-[15px]", result.ok ? "text-success" : "text-destructive")}>
-                    {result.ok ? `Correct · +${xpFor(attempts === 1, hints)} XP` : result.message}
-                  </p>
-                  <p className="mt-1 text-foreground/85 leading-normal">
-                    {result.ok ? result.message : result.diagnosis}
-                  </p>
-                </div>
-              )}
+    <div className="flex flex-1 flex-col min-h-0 bg-background p-4 lg:p-6 pb-24 lg:pb-28">
+      <div className="mx-auto flex w-full max-w-[1780px] flex-col gap-5 flex-1 min-h-0">
+        {/* 2. TOP OF THE TABLE: LESSON EXPLANATION PANEL (One wide card above the spreadsheet) */}
+        <section
+          aria-label="Lesson explanation and task"
+          className="w-full rounded-2xl border bg-card p-6 shadow-soft max-h-[40vh] overflow-y-auto shrink-0 flex flex-col gap-5"
+        >
+          {/* a) Small skill label + segmented progress bar, then the lesson title */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                {title}
+              </span>
+              <span className="text-xs text-muted-foreground font-medium tabular-nums">
+                Step {i + 1} of {steps.length}
+              </span>
             </div>
 
-            {/* Keyboard tip pinned to bottom */}
-            <p className="mt-8 pt-4 border-t text-xs text-muted-foreground">
-              Type in a cell, press <kbd className="rounded border px-1.5 py-0.5 font-mono bg-muted/60">Enter</kbd> to confirm,{" "}
-              <kbd className="rounded border px-1.5 py-0.5 font-mono bg-muted/60">⌘/Ctrl+Enter</kbd> to check.
-            </p>
-          </section>
+            {/* Segmented progress bar */}
+            <div className="flex gap-1.5 mb-3" aria-label={`Step ${i + 1} of ${steps.length}`}>
+              {steps.map((s, k) => (
+                <span
+                  key={s.id}
+                  className={cn(
+                    "h-1.5 flex-1 rounded-full bg-muted transition-colors",
+                    k < i && "bg-primary",
+                    k === i && "bg-primary/50"
+                  )}
+                />
+              ))}
+            </div>
 
-          {/* RIGHT COLUMN: Split Vertically (Explanation Zone on top, Spreadsheet below) */}
-          <div className="flex flex-col min-w-0 gap-6">
-            {/* a) TOP: Explanation Zone (max-height 40vh, scrolls internally, 22px / clamp(20px, 1.8vw, 24px)) */}
-            <section
-              aria-label="Lesson explanation"
-              className="w-full rounded-2xl border bg-card p-6 shadow-soft max-h-[40vh] overflow-y-auto shrink-0 flex flex-col justify-center"
-            >
-              <FormattedText
-                text={explanationText}
-                className="text-[var(--font-size-explanation,22px)] leading-[1.5] text-foreground/90 selection:bg-primary/20"
-              />
-              {exampleFormula && (
-                <div className="mt-4">
-                  <span className="inline-block font-mono text-[var(--font-size-chip,20px)] font-medium text-[var(--color-chip-text)] bg-[var(--color-chip-bg)] border border-rose-200/80 dark:border-rose-900/50 rounded-xl px-4 py-2 shadow-xs select-all">
-                    {exampleFormula}
-                  </span>
-                </div>
-              )}
-            </section>
+            {/* Lesson title: 30px */}
+            <h1 className="text-[var(--font-size-title,30px)] font-serif font-normal tracking-tight text-foreground leading-tight">
+              {step.title}
+            </h1>
+          </div>
 
-            {/* b) BELOW: Spreadsheet Card (takes remaining height, min-height 320px) */}
-            <div className="w-full flex-1 min-h-[320px] rounded-2xl overflow-hidden border shadow-soft bg-card flex flex-col">
-              <Sheet
-                cells={cells}
-                onChange={(c) => {
-                  setCells(c);
-                  if (result && !result.ok) setResult(null);
-                }}
-                cols={step.cols}
-                rows={step.rows}
-                initialSelected={step.targetCells[0]!}
-                highlight={step.targetCells}
-                flash={flash}
-                onEnterCheck={check}
-              />
+          {/* b) Explanation (22px, line-height 1.5, bold key terms & code escaped safely) */}
+          <FormattedText
+            text={explanationText}
+            className="text-[var(--font-size-explanation,22px)] leading-[1.5] text-foreground/90 selection:bg-primary/20"
+          />
+
+          {/* c) Practical example: boxed "Example" showing small formula/action in monospace + explanation */}
+          {practicalExample && (
+            <div className="rounded-xl border border-border/80 bg-muted/40 p-4 text-sm flex flex-col gap-1.5">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                Example
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <code className="rounded-lg bg-card border px-2.5 py-1 font-mono text-base font-semibold text-primary shadow-xs">
+                  {practicalExample.formula}
+                </code>
+                <span className="text-base text-foreground/85">
+                  {practicalExample.description}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {/* d) Task: green bold callout labeled "Your task" containing the exercise text */}
+          <div className="rounded-xl border border-emerald-500/25 bg-emerald-50/85 dark:bg-emerald-950/25 dark:border-emerald-800/40 p-5 shadow-xs">
+            <div className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 mb-1.5">
+              Your task
+            </div>
+            <div className="text-[var(--font-size-callout,18px)] font-medium leading-relaxed text-emerald-950 dark:text-emerald-100">
+              {calloutText}
             </div>
           </div>
+
+          {/* e) Hints and Correct/Not-quite feedback appear right under the task */}
+          {hints > 0 && (
+            <div className="space-y-2.5">
+              {step.hints.slice(0, hints).map((h, k) => (
+                <div key={k} className="animate-rise rounded-xl border bg-background p-3.5 text-sm">
+                  <span className="mr-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    {["Nudge", "Hint", "Walkthrough"][k]}
+                  </span>
+                  {k === 2 && !showSolution ? (
+                    <span className="text-muted-foreground">Try once more to unlock the full solution.</span>
+                  ) : (
+                    <span className={k === 2 ? "font-mono font-medium" : ""}>{h}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {result && (
+            <div
+              role="status"
+              className={cn(
+                "animate-rise rounded-xl border p-4 text-sm",
+                result.ok ? "border-success/30 bg-success-soft" : "border-destructive/20 bg-error-soft"
+              )}
+            >
+              <p className={cn("font-semibold text-[15px]", result.ok ? "text-success" : "text-destructive")}>
+                {result.ok ? `Correct · +${xpFor(attempts === 1, hints)} XP` : result.message}
+              </p>
+              <p className="mt-1 text-foreground/85 leading-normal">
+                {result.ok ? result.message : result.diagnosis}
+              </p>
+            </div>
+          )}
+        </section>
+
+        {/* 3. TABLE: Spreadsheet card below the panel, filling remaining height (min 320px) */}
+        <div className="flex-1 min-h-[320px] flex flex-col min-w-0">
+          <div className="w-full flex-1 rounded-2xl overflow-hidden border shadow-soft bg-card flex flex-col min-h-[320px]">
+            <Sheet
+              cells={cells}
+              onChange={(c) => {
+                setCells(c);
+                if (result && !result.ok) setResult(null);
+              }}
+              cols={step.cols}
+              rows={step.rows}
+              initialSelected={step.targetCells[0]!}
+              highlight={step.targetCells}
+              flash={flash}
+              onEnterCheck={check}
+            />
+          </div>
+
+          {/* Keyboard tip moved under the table */}
+          <p className="mt-2.5 text-xs text-muted-foreground text-center sm:text-left px-2">
+            Type in a cell, press <kbd className="rounded border px-1.5 py-0.5 font-mono bg-muted/60">Enter</kbd> to confirm,{" "}
+            <kbd className="rounded border px-1.5 py-0.5 font-mono bg-muted/60">⌘/Ctrl+Enter</kbd> to check.
+          </p>
         </div>
       </div>
 
