@@ -337,7 +337,7 @@ export function Player({
         {/* 2. TOP OF THE TABLE: LESSON EXPLANATION PANEL (One wide card above the spreadsheet) */}
         <section
           aria-label="Lesson explanation and task"
-          className="w-full rounded-2xl border bg-card p-6 shadow-soft max-h-[40vh] overflow-y-auto shrink-0 flex flex-col gap-5"
+          className="w-full rounded-2xl border bg-card px-6 pt-5 pb-4 shadow-soft max-h-[36vh] overflow-y-auto shrink-0 flex flex-col gap-2"
         >
           {/* a) Small skill label + segmented progress bar, then the lesson title */}
           <div>
@@ -376,31 +376,29 @@ export function Player({
             className="text-[var(--font-size-explanation,22px)] leading-[1.5] text-foreground/90 selection:bg-primary/20"
           />
 
-          {/* c) Practical example: boxed "Example" showing small formula/action in monospace + explanation */}
+          {/* c) Practical example: inline, no box */}
           {practicalExample && (
-            <div className="rounded-xl border border-border/80 bg-muted/40 p-4 text-sm flex flex-col gap-1.5">
-              <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                Example
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <code className="rounded-lg bg-card border px-2.5 py-1 font-mono text-base font-semibold text-primary shadow-xs">
-                  {practicalExample.formula}
-                </code>
-                <span className="text-base text-foreground/85">
-                  {practicalExample.description}
-                </span>
-              </div>
+            <div className="flex flex-wrap items-center gap-2 text-sm">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                e.g.
+              </span>
+              <code className="rounded bg-muted px-2 py-0.5 font-mono text-sm font-semibold text-primary">
+                {practicalExample.formula}
+              </code>
+              <span className="text-sm text-foreground/75">
+                — {practicalExample.description}
+              </span>
             </div>
           )}
 
-          {/* d) Task: green bold callout labeled "Your task" containing the exercise text */}
-          <div className="rounded-xl border border-emerald-500/25 bg-emerald-50/85 dark:bg-emerald-950/25 dark:border-emerald-800/40 p-5 shadow-xs">
-            <div className="text-xs font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 mb-1.5">
-              Your task
-            </div>
-            <div className="text-[var(--font-size-callout,18px)] font-medium leading-relaxed text-emerald-950 dark:text-emerald-100">
+          {/* d) Task: plain bold label + text, no box */}
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 mr-2">
+              Your task:
+            </span>
+            <span className="text-[var(--font-size-callout,18px)] font-medium leading-snug text-foreground">
               {calloutText}
-            </div>
+            </span>
           </div>
 
           {/* e) Hints and Correct/Not-quite feedback appear right under the task */}
@@ -439,9 +437,9 @@ export function Player({
           )}
         </section>
 
-        {/* 3. TABLE: Spreadsheet card below the panel, filling remaining height (min 320px) */}
-        <div className="flex-1 min-h-[320px] flex flex-col min-w-0">
-          <div className="w-full flex-1 rounded-2xl overflow-hidden border shadow-soft bg-card flex flex-col min-h-[320px]">
+        {/* 3. TABLE: Spreadsheet card below the panel */}
+        <div className="flex flex-col min-w-0" style={{ height: "clamp(260px, 42vh, 480px)" }}>
+          <div className="w-full flex-1 rounded-2xl overflow-hidden border shadow-soft bg-card flex flex-col min-h-0">
             <Sheet
               cells={cells}
               onChange={(c) => {

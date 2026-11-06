@@ -174,17 +174,19 @@ export function AppShell({ children }: { children: ReactNode }) {
       {/* Top Header Bar */}
       <header className="sticky top-0 z-30 flex h-14 w-full items-center justify-between border-b bg-background/90 px-4 sm:px-6 backdrop-blur-md">
         <div className="flex items-center gap-3">
-          <button
-            ref={hamburgerRef}
-            type="button"
-            onClick={togglePanel}
-            aria-expanded={isPanelOpen}
-            aria-controls="all-lessons-panel"
-            aria-label={isPanelOpen ? "Collapse lessons panel" : "Expand lessons panel"}
-            className="flex size-9 items-center justify-center rounded-lg border bg-card text-foreground transition-colors hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
-          >
-            <Menu className="size-5" />
-          </button>
+          {currentLessonId && (
+            <button
+              ref={hamburgerRef}
+              type="button"
+              onClick={togglePanel}
+              aria-expanded={isPanelOpen}
+              aria-controls="all-lessons-panel"
+              aria-label={isPanelOpen ? "Collapse lessons panel" : "Expand lessons panel"}
+              className="flex size-9 items-center justify-center rounded-lg border bg-card text-foreground transition-colors hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+            >
+              <Menu className="size-5" />
+            </button>
+          )}
           <Link to="/" className="flex items-center">
             <Logo />
           </Link>
@@ -230,8 +232,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* App Body with Left Panel and Main Workspace */}
       <div className="flex flex-1 min-h-0 min-w-0 w-full relative">
-        {/* 1. DESKTOP LEFT PANEL: All Lessons (About 300px wide, collapsible via hamburger, open by default) */}
-        {isPanelOpen && (
+        {/* 1. DESKTOP LEFT PANEL: Only visible when a lesson is open and panel is toggled open */}
+        {isPanelOpen && currentLessonId && (
           <aside
             id="all-lessons-panel"
             className="hidden lg:flex w-[300px] shrink-0 flex-col border-r bg-card/60 transition-all duration-200"
@@ -258,8 +260,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           </aside>
         )}
 
-        {/* MOBILE SLIDE-IN DRAWER (under 1024px, slide-in overlay with dim scrim, closed by default) */}
+        {/* MOBILE SLIDE-IN DRAWER (under 1024px, only on practice pages) */}
         {/* Dim Scrim Overlay */}
+        {currentLessonId && (
         <div
           className={cn(
             "fixed inset-0 z-40 bg-black/45 backdrop-blur-[2px] transition-opacity duration-[250ms] ease-out lg:hidden",
@@ -268,8 +271,10 @@ export function AppShell({ children }: { children: ReactNode }) {
           onClick={closePanel}
           aria-hidden="true"
         />
+        )}
 
-        {/* Drawer Panel */}
+        {/* Drawer Panel — only on practice pages */}
+        {currentLessonId && (
         <aside
           ref={drawerRef}
           role="dialog"
@@ -320,6 +325,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </div>
           </div>
         </aside>
+        )}
 
         {/* Main Workspace (fills full width when left panel is collapsed) */}
         <main className="flex-1 min-w-0 flex flex-col">{children}</main>
