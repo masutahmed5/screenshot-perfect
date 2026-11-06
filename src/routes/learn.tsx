@@ -1,16 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, Clock } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { LESSONS, type Lesson } from "@/lib/lessons";
 import { useProgress, type Progress } from "@/lib/progress";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/learn")({
   head: () => ({
     meta: [
-      { title: "Skill map · Gridwise" },
-      { name: "description", content: "Six Excel skills, from basic formulas to lookups and data cleaning." },
-      { property: "og:title", content: "Skill map · Gridwise" },
+      { title: "Skill map • Gridwise" },
+      { name: "description", content: "Pick an Excel skill and start practicing in a real spreadsheet." },
+      { property: "og:title", content: "Skill map • Gridwise" },
       { property: "og:description", content: "Pick an Excel skill and start practicing in a real spreadsheet." },
     ],
   }),
@@ -27,34 +25,156 @@ export function mastery(l: Lesson, p: Progress) {
   return { label: "Learning", pct, tone: "primary" as const };
 }
 
+export type SkillCard = {
+  id: string;
+  title: string;
+  subtext: string;
+  lessonId: string;
+};
+
+export const SKILL_CARDS: SkillCard[] = [
+  {
+    id: "sum-functions",
+    title: "SUM FUNCTIONS",
+    subtext: "SUM, SUMIF, SUMIFS",
+    lessonId: "intro-to-excel",
+  },
+  {
+    id: "count-functions",
+    title: "COUNT FUNCTIONS",
+    subtext: "COUNT, COUNTIF, COUNTIFS",
+    lessonId: "logical",
+  },
+  {
+    id: "logical-functions",
+    title: "LOGICAL FUNCTIONS",
+    subtext: "True/False, AND/OR, IF, IS, IFS, SWITCH",
+    lessonId: "logical",
+  },
+  {
+    id: "lookup-functions",
+    title: "LOOKUP FUNCTIONS",
+    subtext: "VLOOKUP, HLOOKUP, XLOOKUP",
+    lessonId: "lookups",
+  },
+  {
+    id: "text-search-functions",
+    title: "TEXT SEARCH FUNCTIONS",
+    subtext: "LEN, LEFT, RIGHT, MID, FIND, WILDCARDS, SEARCH",
+    lessonId: "text",
+  },
+  {
+    id: "intro-to-shortcuts",
+    title: "INTRO TO SHORTCUTS",
+    subtext: "Introductory Keyboard Shortcuts",
+    lessonId: "basics",
+  },
+  {
+    id: "cell-selection-shortcuts",
+    title: "CELL SELECTION SHORTCUTS",
+    subtext: "Cell Selection Keyboard Shortcuts",
+    lessonId: "intro-to-excel",
+  },
+  {
+    id: "text-manipulation-functions",
+    title: "TEXT MANIPULATION FUNCTIONS",
+    subtext: "CONCAT, TEXTJOIN, UPPER, LOWER, PROPER, SUBSTITUTE",
+    lessonId: "text",
+  },
+  {
+    id: "date-functions",
+    title: "DATE FUNCTIONS",
+    subtext: "DATE, TODAY, DATEDIF, DAYS",
+    lessonId: "basics",
+  },
+  {
+    id: "index-match-lookup",
+    title: "INDEX MATCH LOOKUP",
+    subtext: "INDEX, MATCH, INDEX+MATCH",
+    lessonId: "lookups",
+  },
+  {
+    id: "statistical-functions",
+    title: "STATISTICAL FUNCTIONS",
+    subtext: "AVERAGE, MIN, MAX, LARGE, SMALL, FLOOR, CEILING, MEDIAN, MODE",
+    lessonId: "math",
+  },
+  {
+    id: "tables",
+    title: "TABLES",
+    subtext: "Filters, Pivot Tables",
+    lessonId: "basics",
+  },
+  {
+    id: "other-excel-skills",
+    title: "OTHER EXCEL SKILLS",
+    subtext: "Conditional Formatting, Worksheets",
+    lessonId: "cleaning",
+  },
+  {
+    id: "array-formulas",
+    title: "ARRAY FORMULAS",
+    subtext: "UNIQUE, FILTER, SORT",
+    lessonId: "lookups",
+  },
+  {
+    id: "combined-skills",
+    title: "COMBINED SKILLS",
+    subtext: "Real-world Practice & Capstones",
+    lessonId: "cleaning",
+  },
+];
+
 function Learn() {
   const p = useProgress();
+
   return (
     <AppShell>
-      <div className="mx-auto max-w-5xl px-6 py-10">
-        <h1 className="font-serif text-5xl tracking-tight">Skill map</h1>
-        <p className="mt-2 text-muted-foreground">Each skill is five short exercises. Start anywhere.</p>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {LESSONS.map((l, k) => {
-            const m = mastery(l, p);
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        {/* Header matching Screenshot 1 */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between border-b pb-3.5">
+            <h1 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              LESSONS
+            </h1>
+            <span className="text-xs font-medium text-muted-foreground">
+              {SKILL_CARDS.length} Skills • All Unlocked
+            </span>
+          </div>
+        </div>
+
+        {/* 3-column Grid matching Screenshot 1 */}
+        <div className="grid gap-4 sm:gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {SKILL_CARDS.map((card) => {
+            const lesson = LESSONS.find((l) => l.id === card.lessonId);
+            const doneCount = lesson ? lesson.steps.filter((s) => p.completed[s.id]).length : 0;
+            const totalCount = lesson ? lesson.steps.length : 1;
+            const pct = Math.round((doneCount / totalCount) * 100);
+
             return (
-              <Link key={l.id} to="/practice/$lessonId" params={{ lessonId: l.id }}
-                className="group relative flex flex-col rounded-2xl border bg-card p-5 shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lift">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs text-muted-foreground">0{k + 1} · {l.track}</span>
-                  <ArrowUpRight className="size-4 text-muted-foreground transition-colors group-hover:text-primary" />
+              <Link
+                key={card.id}
+                to="/practice/$lessonId"
+                params={{ lessonId: card.lessonId }}
+                className="group flex flex-col justify-between rounded-xl border border-slate-200/90 dark:border-border/80 bg-card p-6 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-primary/40 cursor-pointer"
+              >
+                <div>
+                  <h2 className="text-sm sm:text-[15px] font-bold text-[#1e293b] dark:text-foreground tracking-wide uppercase font-sans group-hover:text-primary transition-colors">
+                    {card.title}
+                  </h2>
+                  <p className="mt-1.5 text-xs sm:text-[13px] text-muted-foreground font-medium tracking-wide leading-relaxed">
+                    {card.subtext}
+                  </p>
                 </div>
-                <h2 className="mt-4 text-lg font-semibold tracking-tight">{l.title}</h2>
-                <p className="mt-1 text-sm text-muted-foreground">{l.summary}</p>
-                <div className="mt-6 flex items-center justify-between text-xs">
-                  <span className={cn("rounded-full px-2 py-0.5 font-medium",
-                    m.tone === "muted" && "bg-muted text-muted-foreground",
-                    m.tone === "primary" && "bg-accent text-accent-foreground",
-                    m.tone === "success" && "bg-success-soft text-success",
-                    m.tone === "warning" && "bg-warning-soft text-foreground")}>{m.label}</span>
-                  <span className="flex items-center gap-1 text-muted-foreground"><Clock className="size-3" />{l.estimatedMinutes} min</span>
+
+                <div className="mt-6">
+                  <div className="h-1.5 w-full bg-slate-100 dark:bg-muted rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-300 ease-out"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
                 </div>
-                <div className="mt-3 h-1 rounded-full bg-muted"><div className="h-1 rounded-full bg-primary transition-all" style={{ width: `${m.pct}%` }} /></div>
               </Link>
             );
           })}
