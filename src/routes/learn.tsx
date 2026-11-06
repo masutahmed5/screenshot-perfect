@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowUpRight, Clock, Sparkles } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { LESSONS, type Lesson } from "@/lib/lessons";
 import { useProgress, type Progress } from "@/lib/progress";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/learn")({
   head: () => ({
@@ -27,101 +29,149 @@ export function mastery(l: Lesson, p: Progress) {
 
 export type SkillCard = {
   id: string;
+  number: string;
+  track: string;
   title: string;
   subtext: string;
   lessonId: string;
+  estimatedMinutes: number;
 };
 
 export const SKILL_CARDS: SkillCard[] = [
   {
     id: "sum-functions",
-    title: "SUM FUNCTIONS",
+    number: "01",
+    track: "Arithmetic",
+    title: "Sum Functions",
     subtext: "SUM, SUMIF, SUMIFS",
     lessonId: "intro-to-excel",
+    estimatedMinutes: 4,
   },
   {
     id: "count-functions",
-    title: "COUNT FUNCTIONS",
+    number: "02",
+    track: "Counting",
+    title: "Count Functions",
     subtext: "COUNT, COUNTIF, COUNTIFS",
     lessonId: "logical",
+    estimatedMinutes: 5,
   },
   {
     id: "logical-functions",
-    title: "LOGICAL FUNCTIONS",
+    number: "03",
+    track: "Logic",
+    title: "Logical Functions",
     subtext: "True/False, AND/OR, IF, IS, IFS, SWITCH",
     lessonId: "logical",
+    estimatedMinutes: 6,
   },
   {
     id: "lookup-functions",
-    title: "LOOKUP FUNCTIONS",
+    number: "04",
+    track: "Lookups",
+    title: "Lookup Functions",
     subtext: "VLOOKUP, HLOOKUP, XLOOKUP",
     lessonId: "lookups",
+    estimatedMinutes: 6,
   },
   {
     id: "text-search-functions",
-    title: "TEXT SEARCH FUNCTIONS",
-    subtext: "LEN, LEFT, RIGHT, MID, FIND, WILDCARDS, SEARCH",
+    number: "05",
+    track: "Text",
+    title: "Text Search Functions",
+    subtext: "LEN, LEFT, RIGHT, MID, FIND, Wildcards, SEARCH",
     lessonId: "text",
+    estimatedMinutes: 5,
   },
   {
     id: "intro-to-shortcuts",
-    title: "INTRO TO SHORTCUTS",
+    number: "06",
+    track: "Speed",
+    title: "Intro to Shortcuts",
     subtext: "Introductory Keyboard Shortcuts",
     lessonId: "basics",
+    estimatedMinutes: 4,
   },
   {
     id: "cell-selection-shortcuts",
-    title: "CELL SELECTION SHORTCUTS",
+    number: "07",
+    track: "Navigation",
+    title: "Cell Selection Shortcuts",
     subtext: "Cell Selection Keyboard Shortcuts",
     lessonId: "intro-to-excel",
+    estimatedMinutes: 4,
   },
   {
     id: "text-manipulation-functions",
-    title: "TEXT MANIPULATION FUNCTIONS",
+    number: "08",
+    track: "Data Prep",
+    title: "Text Manipulation",
     subtext: "CONCAT, TEXTJOIN, UPPER, LOWER, PROPER, SUBSTITUTE",
     lessonId: "text",
+    estimatedMinutes: 5,
   },
   {
     id: "date-functions",
-    title: "DATE FUNCTIONS",
+    number: "09",
+    track: "Time",
+    title: "Date Functions",
     subtext: "DATE, TODAY, DATEDIF, DAYS",
     lessonId: "basics",
+    estimatedMinutes: 5,
   },
   {
     id: "index-match-lookup",
-    title: "INDEX MATCH LOOKUP",
+    number: "10",
+    track: "Advanced Lookups",
+    title: "INDEX + MATCH Lookup",
     subtext: "INDEX, MATCH, INDEX+MATCH",
     lessonId: "lookups",
+    estimatedMinutes: 7,
   },
   {
     id: "statistical-functions",
-    title: "STATISTICAL FUNCTIONS",
-    subtext: "AVERAGE, MIN, MAX, LARGE, SMALL, FLOOR, CEILING, MEDIAN, MODE",
+    number: "11",
+    track: "Stats",
+    title: "Statistical Functions",
+    subtext: "AVERAGE, MIN, MAX, LARGE, SMALL, FLOOR, CEILING, MEDIAN",
     lessonId: "math",
+    estimatedMinutes: 6,
   },
   {
     id: "tables",
-    title: "TABLES",
-    subtext: "Filters, Pivot Tables",
+    number: "12",
+    track: "Organization",
+    title: "Tables & Filtering",
+    subtext: "Filters, Pivot Tables, Structured References",
     lessonId: "basics",
+    estimatedMinutes: 5,
   },
   {
     id: "other-excel-skills",
-    title: "OTHER EXCEL SKILLS",
-    subtext: "Conditional Formatting, Worksheets",
+    number: "13",
+    track: "Formatting",
+    title: "Other Excel Skills",
+    subtext: "Conditional Formatting, Worksheets, Data Validation",
     lessonId: "cleaning",
+    estimatedMinutes: 6,
   },
   {
     id: "array-formulas",
-    title: "ARRAY FORMULAS",
-    subtext: "UNIQUE, FILTER, SORT",
+    number: "14",
+    track: "Modern Excel",
+    title: "Array Formulas",
+    subtext: "UNIQUE, FILTER, SORT, Dynamic Spill Arrays",
     lessonId: "lookups",
+    estimatedMinutes: 6,
   },
   {
     id: "combined-skills",
-    title: "COMBINED SKILLS",
-    subtext: "Real-world Practice & Capstones",
+    number: "15",
+    track: "Capstone",
+    title: "Combined Skills",
+    subtext: "Real-world Exercises, Multi-formula Workflows",
     lessonId: "cleaning",
+    estimatedMinutes: 8,
   },
 ];
 
@@ -130,48 +180,81 @@ function Learn() {
 
   return (
     <AppShell>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        {/* Header matching Screenshot 1 */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between border-b pb-3.5">
-            <h1 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-              LESSONS
-            </h1>
-            <span className="text-xs font-medium text-muted-foreground">
-              {SKILL_CARDS.length} Skills • All Unlocked
-            </span>
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        {/* Page Header in Gridwise Style */}
+        <div className="mb-10">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div>
+              <h1 className="font-serif text-4xl sm:text-5xl tracking-tight text-foreground">
+                Skill map
+              </h1>
+              <p className="mt-2 text-sm sm:text-base text-muted-foreground max-w-2xl">
+                Master 15 essential Excel skill areas. Each module focuses on hands-on formula exercises with instant feedback. Start anywhere.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 rounded-full border bg-card px-3.5 py-1 text-xs font-mono text-muted-foreground shadow-xs shrink-0 self-start sm:self-auto">
+              <Sparkles className="size-3.5 text-primary" />
+              <span>15 Skills • All Unlocked</span>
+            </div>
           </div>
         </div>
 
-        {/* 3-column Grid matching Screenshot 1 */}
-        <div className="grid gap-4 sm:gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {/* 15 Skill Cards Grid in Gridwise Card Style */}
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {SKILL_CARDS.map((card) => {
             const lesson = LESSONS.find((l) => l.id === card.lessonId);
-            const doneCount = lesson ? lesson.steps.filter((s) => p.completed[s.id]).length : 0;
-            const totalCount = lesson ? lesson.steps.length : 1;
-            const pct = Math.round((doneCount / totalCount) * 100);
+            const m = lesson ? mastery(lesson, p) : { label: "New", pct: 0, tone: "muted" as const };
 
             return (
               <Link
                 key={card.id}
                 to="/practice/$lessonId"
                 params={{ lessonId: card.lessonId }}
-                className="group flex flex-col justify-between rounded-xl border border-slate-200/90 dark:border-border/80 bg-card p-6 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:border-primary/40 cursor-pointer"
+                className="group relative flex flex-col justify-between rounded-2xl border bg-card p-6 shadow-soft transition-all duration-200 hover:-translate-y-1 hover:shadow-lift hover:border-primary/40 cursor-pointer"
               >
                 <div>
-                  <h2 className="text-sm sm:text-[15px] font-bold text-[#1e293b] dark:text-foreground tracking-wide uppercase font-sans group-hover:text-primary transition-colors">
+                  {/* Top Meta: Number + Track + Arrow */}
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs text-muted-foreground font-medium">
+                      {card.number} • {card.track}
+                    </span>
+                    <ArrowUpRight className="size-4 text-muted-foreground transition-all duration-200 group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </div>
+
+                  {/* Title & Function Subtext */}
+                  <h2 className="mt-3.5 text-lg font-semibold tracking-tight text-card-foreground group-hover:text-primary transition-colors">
                     {card.title}
                   </h2>
-                  <p className="mt-1.5 text-xs sm:text-[13px] text-muted-foreground font-medium tracking-wide leading-relaxed">
+                  <p className="mt-1.5 text-xs sm:text-[13px] font-mono text-muted-foreground leading-relaxed">
                     {card.subtext}
                   </p>
                 </div>
 
-                <div className="mt-6">
-                  <div className="h-1.5 w-full bg-slate-100 dark:bg-muted rounded-full overflow-hidden">
+                {/* Bottom Meta & Progress Bar */}
+                <div className="mt-6 pt-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <span
+                      className={cn(
+                        "rounded-full px-2.5 py-0.5 font-medium text-[11px]",
+                        m.tone === "muted" && "bg-muted text-muted-foreground",
+                        m.tone === "primary" && "bg-accent text-accent-foreground",
+                        m.tone === "success" && "bg-success-soft text-success",
+                        m.tone === "warning" && "bg-warning-soft text-foreground"
+                      )}
+                    >
+                      {m.label}
+                    </span>
+                    <span className="flex items-center gap-1 text-muted-foreground text-xs font-medium">
+                      <Clock className="size-3" />
+                      {card.estimatedMinutes} min
+                    </span>
+                  </div>
+
+                  {/* Clean rounded progress bar */}
+                  <div className="mt-3 h-1.5 rounded-full bg-muted overflow-hidden">
                     <div
-                      className="h-full bg-emerald-500 rounded-full transition-all duration-300 ease-out"
-                      style={{ width: `${pct}%` }}
+                      className="h-full rounded-full bg-primary transition-all duration-300 ease-out"
+                      style={{ width: `${m.pct}%` }}
                     />
                   </div>
                 </div>
