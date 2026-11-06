@@ -9,11 +9,13 @@ import {
   Menu,
   X,
   Check,
+  Lightbulb,
 } from "lucide-react";
 import { useProgress } from "@/lib/progress";
 import { LESSONS } from "@/lib/lessons";
 import { Logo } from "./Logo";
 import { cn } from "@/lib/utils";
+import { ExplanationProvider, useExplanation } from "@/lib/explanation-context";
 
 function LessonList({
   currentLessonId,
@@ -82,9 +84,10 @@ function LessonList({
   );
 }
 
-export function AppShell({ children }: { children: ReactNode }) {
+function AppShellInner({ children }: { children: ReactNode }) {
   const p = useProgress();
   const reviewCount = Object.keys(p.mistakes).length;
+  const { isOpen: isExplanationOpen, toggle: toggleExplanation } = useExplanation();
 
   const routerState = useRouterState();
   const currentPath = routerState?.location?.pathname ?? "";
@@ -227,6 +230,24 @@ export function AppShell({ children }: { children: ReactNode }) {
           <span className="rounded-full border bg-card px-3 py-1 tabular-nums font-medium text-xs sm:text-sm shadow-xs">
             {p.xp} <span className="text-muted-foreground">XP</span>
           </span>
+
+          {currentLessonId && (
+            <button
+              type="button"
+              onClick={toggleExplanation}
+              aria-expanded={isExplanationOpen}
+              aria-controls="answer-explanation-panel"
+              title={isExplanationOpen ? "Hide Answer & Explanation" : "Show Answer & Explanation"}
+              className={cn(
+                "flex size-9 items-center justify-center rounded-lg border transition-colors cursor-pointer ml-1",
+                isExplanationOpen
+                  ? "bg-primary/15 text-primary border-primary/40 shadow-xs"
+                  : "bg-card text-foreground hover:bg-accent border shadow-xs"
+              )}
+            >
+              <Lightbulb className="size-4" />
+            </button>
+          )}
         </div>
       </header>
 
@@ -331,5 +352,13 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main className="flex-1 min-w-0 flex flex-col">{children}</main>
       </div>
     </div>
+  );
+}
+
+export function AppShell({ children }: { children: ReactNode }) {
+  return (
+    <ExplanationProvider>
+      <AppShellInner>{children}</AppShellInner>
+    </ExplanationProvider>
   );
 }

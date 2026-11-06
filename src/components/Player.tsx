@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Sheet } from "./Sheet";
 import type { Step } from "@/lib/lessons";
 import { checkStep, type CheckResult } from "@/lib/validate";
-import { recordComplete, recordMistake, xpFor } from "@/lib/progress";
+import { recordComplete, recordMistake, xpFor, useProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
+import { AnswerExplanationPanel } from "./AnswerExplanationPanel";
+import { useExplanation } from "@/lib/explanation-context";
 
 // Safely render **bold** key terms and `inline code` without raw HTML injection
 function FormattedText({ text, className }: { text: string; className?: string }) {
@@ -280,6 +282,8 @@ export function Player({
   const [result, setResult] = useState<CheckResult | null>(null);
   const [flash, setFlash] = useState<{ cell: string; kind: "correct" | "wrong"; key: number } | null>(null);
   const [done, setDone] = useState(false);
+  const progress = useProgress();
+  const { isOpen: isExplanationOpen, setIsOpen: setIsExplanationOpen } = useExplanation();
 
   useEffect(() => {
     if (!step) return;
@@ -321,6 +325,15 @@ export function Player({
   };
 
   const next = () => (i + 1 >= steps.length ? setDone(true) : setI(i + 1));
+  const handleSkip = () => {
+    try {
+      const saved = localStorage.getItem("gridwise_unlocked_answers");
+      const map = saved ? JSON.parse(saved) : {};
+      map[step.id] = true;
+      localStorage.setItem("gridwise_unlocked_answers", JSON.stringify(map));
+    } catch {}
+    next();
+  };
   const showSolution = hints >= 3 && attempts > 0;
 
   // Single text field handling
@@ -348,8 +361,10 @@ export function Player({
   const progressPercent = Math.round((i / steps.length) * 100);
 
   return (
-    <div className="flex flex-1 flex-col min-h-0 bg-background p-4 lg:p-6 pb-24 lg:pb-28">
-      <div className="mx-auto flex w-full max-w-[1780px] flex-col gap-4 flex-1 min-h-0">
+    <div className="flex flex-1 min-h-0 min-w-0 w-full relative bg-background">
+      {/* Center Practice Area */}
+      <div className="flex-1 min-w-0 flex flex-col min-h-0 p-4 lg:p-6 pb-24 lg:pb-28 overflow-y-auto">
+        <div className="mx-auto flex w-full max-w-[1780px] flex-col gap-4 flex-1 min-h-0">
         {/* Title & Continuous Progress Bar (matching screenshot) */}
         <div className="flex flex-col gap-2 shrink-0">
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground font-serif">
@@ -462,6 +477,19 @@ export function Player({
           </p>
         </div>
       </div>
+      </div>
+
+      {/* Right-side Answer & Explanation Panel */}
+      <AnswerExplanationPanel
+        step={step}
+        lessonTitle={title}
+        attempts={attempts}
+        result={result}
+        isOpen={isExplanationOpen}
+        onClose={() => setIsExplanationOpen(false)}
+        isCompleted={Boolean(progress.completed[step.id])}
+        onSkip={handleSkip}
+      />
 
       {/* Fixed Bottom Bar (Hint, Skip, Check/Continue) */}
       <footer className="fixed bottom-0 inset-x-0 z-20 flex items-center justify-between border-t bg-card/95 px-6 py-3.5 backdrop-blur-md shadow-lg">
@@ -479,7 +507,7 @@ export function Player({
           <Button
             variant="ghost"
             size="sm"
-            onClick={next}
+            onClick={handleSkip}
             className="text-[var(--font-size-btn,16px)] h-10 px-4"
           >
             <SkipForward className="size-4 mr-1.5" />
