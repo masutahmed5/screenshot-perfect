@@ -46,6 +46,21 @@ function FormattedText({ text, className }: { text: string; className?: string }
   return <p className={className}>{tokens}</p>;
 }
 
+function FormattedContent({ text, className }: { text: string; className?: string }) {
+  if (!text) return null;
+  const paragraphs = text.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+  if (paragraphs.length <= 1) {
+    return <FormattedText text={text} className={className} />;
+  }
+  return (
+    <div className="space-y-4">
+      {paragraphs.map((p, idx) => (
+        <FormattedText key={idx} text={p} className={className} />
+      ))}
+    </div>
+  );
+}
+
 type PracticalExample = {
   formula: string;
   description: string;
@@ -330,75 +345,60 @@ export function Player({
   }
 
   const practicalExample = getPracticalExample(step);
+  const progressPercent = Math.round((i / steps.length) * 100);
 
   return (
     <div className="flex flex-1 flex-col min-h-0 bg-background p-4 lg:p-6 pb-24 lg:pb-28">
-      <div className="mx-auto flex w-full max-w-[1780px] flex-col gap-5 flex-1 min-h-0">
-        {/* 2. TOP OF THE TABLE: LESSON EXPLANATION PANEL (One wide card above the spreadsheet) */}
+      <div className="mx-auto flex w-full max-w-[1780px] flex-col gap-4 flex-1 min-h-0">
+        {/* Title & Continuous Progress Bar (matching screenshot) */}
+        <div className="flex flex-col gap-2 shrink-0">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground font-serif">
+            {title}
+          </h1>
+          <div className="flex items-center gap-3 w-full">
+            <span className="text-sm sm:text-base font-semibold tabular-nums text-foreground/80 shrink-0">
+              {progressPercent}%
+            </span>
+            <div className="flex-1 h-2.5 sm:h-3 rounded-full bg-slate-200/90 dark:bg-muted overflow-hidden shadow-inner">
+              <div
+                className="h-full bg-emerald-500 rounded-full transition-all duration-300 ease-out"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* 2. LESSON EXPLANATION PANEL (One wide clean card above the spreadsheet) */}
         <section
           aria-label="Lesson explanation and task"
-          className="w-full rounded-2xl border bg-card px-6 pt-5 pb-4 shadow-soft max-h-[36vh] overflow-y-auto shrink-0 flex flex-col gap-2"
+          className="w-full rounded-xl border border-slate-300/80 dark:border-border bg-card p-6 shadow-xs max-h-[38vh] overflow-y-auto shrink-0 flex flex-col gap-4"
         >
-          {/* a) Small skill label + segmented progress bar, then the lesson title */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                {title}
-              </span>
-              <span className="text-xs text-muted-foreground font-medium tabular-nums">
-                Step {i + 1} of {steps.length}
-              </span>
-            </div>
-
-            {/* Segmented progress bar */}
-            <div className="flex gap-1.5 mb-3" aria-label={`Step ${i + 1} of ${steps.length}`}>
-              {steps.map((s, k) => (
-                <span
-                  key={s.id}
-                  className={cn(
-                    "h-1.5 flex-1 rounded-full bg-muted transition-colors",
-                    k < i && "bg-primary",
-                    k === i && "bg-primary/50"
-                  )}
-                />
-              ))}
-            </div>
-
-            {/* Lesson title: 30px */}
-            <h1 className="text-[var(--font-size-title,30px)] font-serif font-normal tracking-tight text-foreground leading-tight">
-              {step.title}
-            </h1>
-          </div>
-
-          {/* b) Explanation (22px, line-height 1.5, bold key terms & code escaped safely) */}
-          <FormattedText
+          {/* Explanation paragraphs */}
+          <FormattedContent
             text={explanationText}
-            className="text-[var(--font-size-explanation,22px)] leading-[1.5] text-foreground/90 selection:bg-primary/20"
+            className="text-[var(--font-size-explanation,21px)] leading-relaxed text-foreground/90 selection:bg-primary/20"
           />
 
-          {/* c) Practical example: inline, no box */}
+          {/* Practical example: inline */}
           {practicalExample && (
-            <div className="flex flex-wrap items-center gap-2 text-sm">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                e.g.
+            <div className="flex flex-wrap items-center gap-2 text-base text-muted-foreground pt-1">
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground/80">
+                Example:
               </span>
               <code className="rounded bg-muted px-2 py-0.5 font-mono text-sm font-semibold text-primary">
                 {practicalExample.formula}
               </code>
-              <span className="text-sm text-foreground/75">
+              <span className="text-sm text-foreground/80">
                 — {practicalExample.description}
               </span>
             </div>
           )}
 
-          {/* d) Task: plain bold label + text, no box */}
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 mr-2">
-              Your task:
-            </span>
-            <span className="text-[var(--font-size-callout,18px)] font-medium leading-snug text-foreground">
+          {/* Task line in prominent bold, just like screenshot */}
+          <div className="pt-1">
+            <p className="text-xl sm:text-[22px] font-bold text-foreground leading-snug">
               {calloutText}
-            </span>
+            </p>
           </div>
 
           {/* e) Hints and Correct/Not-quite feedback appear right under the task */}
@@ -438,8 +438,8 @@ export function Player({
         </section>
 
         {/* 3. TABLE: Spreadsheet card below the panel */}
-        <div className="flex flex-col min-w-0" style={{ height: "clamp(260px, 42vh, 480px)" }}>
-          <div className="w-full flex-1 rounded-2xl overflow-hidden border shadow-soft bg-card flex flex-col min-h-0">
+        <div className="flex-1 min-h-[300px] flex flex-col min-w-0">
+          <div className="w-full flex-1 rounded-xl overflow-hidden border border-slate-300/80 dark:border-border shadow-xs bg-card flex flex-col min-h-[300px]">
             <Sheet
               cells={cells}
               onChange={(c) => {

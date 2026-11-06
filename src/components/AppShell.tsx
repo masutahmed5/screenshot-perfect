@@ -27,7 +27,7 @@ function LessonList({
   onSelectLesson?: () => void;
 }) {
   return (
-    <div className="flex-1 overflow-y-auto p-3 space-y-1">
+    <div className="flex-1 overflow-y-auto divide-y divide-border/30">
       {LESSONS.map((l, index) => {
         const isCurrent = currentLessonId === l.id;
         const completedSteps = l.steps.filter((s) => completedMap[s.id]).length;
@@ -42,10 +42,10 @@ function LessonList({
             params={{ lessonId: l.id }}
             onClick={onSelectLesson}
             className={cn(
-              "group flex items-center justify-between rounded-xl px-3.5 py-3 text-sm transition-all text-left",
+              "group flex items-center justify-between px-4 py-3.5 text-sm transition-all text-left border-l-4",
               isCurrent
-                ? "bg-emerald-500/10 text-emerald-950 dark:text-emerald-300 font-semibold border-l-4 border-emerald-600 shadow-xs"
-                : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+                ? "border-emerald-500 bg-emerald-500/10 text-emerald-950 dark:text-emerald-200 font-semibold"
+                : "border-transparent text-muted-foreground hover:bg-muted/40 hover:text-foreground"
             )}
           >
             <div className="flex items-center gap-2.5 min-w-0 pr-2">
@@ -70,7 +70,7 @@ function LessonList({
                 </span>
               )}
               {isInProgress && (
-                <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                <span className="rounded bg-slate-500 dark:bg-slate-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
                   IN PROGRESS
                 </span>
               )}
