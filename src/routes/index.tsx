@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Logo } from "@/components/Logo";
 import { Sheet } from "@/components/Sheet";
+import { LandingStory } from "@/components/LandingStory";
 import { Workbook } from "@/lib/formula";
 
 export const Route = createFileRoute("/")({
