@@ -57,9 +57,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
     onChange({ ...cells, [sel]: val });
     setEditing(false);
     if (dc || dr) setSel(addr(Math.max(0, Math.min(cols - 1, selCol + dc)), Math.max(0, Math.min(rows - 1, selRow + dr))));
-    requestAnimationFrame(() => {
-      gridRef.current?.focus();
-    });
+    gridRef.current?.focus();
   };
 
   const startEdit = (initial?: string) => {
@@ -69,7 +67,6 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
     requestAnimationFrame(() => {
       const el = cellInputRef.current;
       if (el) {
-        activeInputRef.current = el;
         el.focus();
         el.setSelectionRange(v.length, v.length);
       }
@@ -77,38 +74,14 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
   };
 
   const insertRef = (ref: string) => {
-    const input = activeInputRef.current ?? cellInputRef.current ?? barInputRef.current;
-    let pos = input?.selectionStart ?? draft.length;
-    // When blurred or starting out, selectionStart might be 0. Avoid inserting before '='
-    if (pos === 0 && draft.length > 0) {
-      pos = draft.length;
-    }
-    const before = draft.slice(0, pos);
-    const after = draft.slice(pos);
-
-    // In Excel:
-    // If preceding text ends with an operator/paren, append the ref.
-    // If preceding text ends with an existing cell ref/range (user clicked another cell without typing an operator), replace it!
-    const isAfterOperator = /[=+\-*/^&,(:]\s*$/.test(before);
-    const trailingRefMatch = /([$]?[A-Za-z]+[$]?\d+(?::[$]?[A-Za-z]+[$]?\d+)?)\s*$/i.exec(before);
-
-    let next: string;
-    let newPos: number;
-    if (!isAfterOperator && trailingRefMatch) {
-      const prefix = before.slice(0, before.length - trailingRefMatch[0].length);
-      next = prefix + ref + after;
-      newPos = prefix.length + ref.length;
-    } else {
-      next = before + ref + after;
-      newPos = pos + ref.length;
-    }
-
+    const input = activeInputRef.current;
+    const pos = input ? (input.selectionStart ?? draft.length) : draft.length;
+    const next = draft.slice(0, pos) + ref + draft.slice(pos);
     setDraft(next);
     requestAnimationFrame(() => {
-      const target = activeInputRef.current ?? cellInputRef.current ?? barInputRef.current;
-      if (target) {
-        target.focus();
-        target.setSelectionRange(newPos, newPos);
+      if (input) {
+        input.focus();
+        input.setSelectionRange(pos + ref.length, pos + ref.length);
       }
     });
   };
@@ -194,15 +167,13 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-xl border bg-card shadow-soft">
       <div className="flex items-center gap-2 border-b bg-cell-header px-3 py-2">
-        <span className="min-w-14 rounded-md border bg-card px-2.5 py-1 text-center font-mono text-[var(--font-size-formula-bar,16px)] font-semibold text-foreground">
-          {sel}
-        </span>
-        <span className="font-serif text-lg italic text-muted-foreground select-none">fx</span>
+        <span className="w-12 rounded-md border bg-card px-2 py-1 text-center font-mono text-xs text-muted-foreground">{sel}</span>
+        <span className="font-serif text-lg italic text-muted-foreground">fx</span>
         <div className="relative flex-1">
           <input
             ref={barInputRef}
             aria-label={`Formula bar for cell ${sel}`}
-            className="w-full rounded-md border bg-card px-3 py-1.5 font-mono text-[var(--font-size-formula-bar,16px)] outline-none focus:border-primary"
+            className="w-full rounded-md border bg-card px-2 py-1 font-mono text-sm outline-none focus:border-primary"
             value={raw}
             onFocus={(e) => { activeInputRef.current = e.currentTarget; if (!editing) { setDraft(cells[sel] ?? ""); setEditing(true); } }}
             onChange={(e) => { setDraft(e.target.value); setEditing(true); }}
@@ -210,19 +181,11 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
             spellCheck={false}
             autoComplete="off"
           />
-          {suggestions.length > 0 && activeInputRef.current === barInputRef.current && (
-            <div className="absolute left-0 top-full z-30 mt-1 w-56 overflow-hidden rounded-lg border bg-popover shadow-lift">
+          {suggestions.length > 0 && (
+            <div className="absolute left-0 top-full z-20 mt-1 w-56 overflow-hidden rounded-lg border bg-popover shadow-lift">
               {suggestions.map((f, i) => (
-                <button
-                  key={f}
-                  type="button"
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    setDraft(draft.slice(0, -fnMatch![1]!.length) + f + "(");
-                    barInputRef.current?.focus();
-                  }}
-                  className={cn("flex w-full items-center justify-between px-3 py-1.5 text-left font-mono text-xs hover:bg-accent", i === 0 && "bg-accent/60")}
-                >
+                <button key={f} type="button" onMouseDown={(e) => { e.preventDefault(); setDraft(draft.slice(0, -fnMatch![1]!.length) + f + "("); activeInputRef.current?.focus(); }}
+                  className={cn("flex w-full items-center justify-between px-3 py-1.5 text-left font-mono text-xs hover:bg-accent", i === 0 && "bg-accent/60")}>
                   {f}<span className="text-[10px] text-muted-foreground">{i === 0 ? "Tab" : ""}</span>
                 </button>
               ))}
@@ -232,35 +195,19 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
       </div>
 
       <div ref={gridRef} tabIndex={0} onKeyDown={onGridKey} role="grid" aria-label="Spreadsheet" className="flex-1 overflow-auto outline-none">
-        <table className="border-collapse font-mono text-[var(--font-size-grid,16px)]">
+        <table className="border-collapse font-mono text-[13px]">
           <thead>
             <tr>
-              <th className="sticky left-0 top-0 z-20 w-10 border-b border-r bg-cell-header select-none" />
+              <th className="sticky left-0 top-0 z-10 w-10 border-b border-r bg-cell-header" />
               {Array.from({ length: cols }, (_, c) => (
-                <th
-                  key={c}
-                  className={cn(
-                    "sticky top-0 border-b border-r border-grid-line bg-cell-header px-2 py-1.5 text-[var(--font-size-header,14px)] font-medium text-muted-foreground select-none transition-colors",
-                    compact ? "min-w-20" : "min-w-28",
-                    c === selCol && "bg-primary/15 text-primary font-semibold border-b-2 border-b-primary"
-                  )}
-                >
-                  {indexToCol(c)}
-                </th>
+                <th key={c} className={cn("sticky top-0 border-b border-r border-grid-line bg-cell-header px-2 py-1 text-[11px] font-medium text-muted-foreground", compact ? "min-w-20" : "min-w-28", c === selCol && "bg-accent text-accent-foreground")}>{indexToCol(c)}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {Array.from({ length: rows }, (_, r) => (
-              <tr key={r} className="h-[var(--row-height,48px)]">
-                <th
-                  className={cn(
-                    "sticky left-0 border-b border-r border-grid-line bg-cell-header px-2 text-[var(--font-size-header,14px)] font-medium text-muted-foreground select-none transition-colors",
-                    r === selRow && "bg-primary/15 text-primary font-semibold border-r-2 border-r-primary"
-                  )}
-                >
-                  {r + 1}
-                </th>
+              <tr key={r}>
+                <th className={cn("sticky left-0 border-b border-r border-grid-line bg-cell-header px-2 text-[11px] font-medium text-muted-foreground", r === selRow && "bg-accent text-accent-foreground")}>{r + 1}</th>
                 {Array.from({ length: cols }, (_, c) => {
                   const a = addr(c, r);
                   const v = wb.get(a);
@@ -270,98 +217,45 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                   const refIdx = refColorOf.get(a);
                   const inDrag = dragCells.has(a);
                   return (
-                    <td
-                      key={fl ? `${a}-${fl.key}` : a}
-                      role="gridcell"
-                      aria-selected={isSel}
+                    <td key={fl ? `${a}-${fl.key}` : a} role="gridcell" aria-selected={isSel} aria-label={a}
                       onMouseDown={(e) => {
                         if (formulaMode) {
                           e.preventDefault();
                           setRefDrag({ start: { c, r }, cur: { c, r } });
                           return;
                         }
-                        if (editing) {
-                          commit(draft, 0, 0);
-                        }
-                        if (a === sel && !editing) {
-                          e.preventDefault();
-                          startEdit();
-                          return;
-                        }
+                        if (editing) commit(draft, 0, 0);
                         setSel(a);
-                        requestAnimationFrame(() => {
-                          gridRef.current?.focus();
-                        });
                       }}
                       onMouseEnter={() => { if (refDrag) setRefDrag({ ...refDrag, cur: { c, r } }); }}
                       onDoubleClick={() => startEdit()}
-                      style={
-                        refIdx !== undefined
-                          ? {
-                              boxShadow: `inset 0 0 0 2px var(--ref-${refIdx + 1})`,
-                              backgroundColor: `color-mix(in srgb, var(--ref-${refIdx + 1}) 10%, transparent)`,
-                            }
-                          : undefined
-                      }
+                      style={refIdx !== undefined ? { boxShadow: `inset 0 0 0 2px var(--ref-${refIdx + 1})` } : undefined}
                       className={cn(
-                        "relative h-[var(--row-height,48px)] cursor-cell truncate border-b border-r border-grid-line px-3 text-[var(--font-size-grid,16px)] transition-colors duration-150 select-none",
-                        compact ? "max-w-28" : "max-w-44",
+                        "h-8 cursor-cell truncate border-b border-r border-grid-line px-2 transition-colors duration-150",
+                        compact ? "max-w-24" : "max-w-40",
                         r === 0 && "font-sans font-medium text-foreground",
                         typeof v === "number" && "text-right tabular-nums",
-                        isError(v) && "text-destructive font-medium",
-                        isHL && !isSel && "bg-accent/40",
-                        inDrag && "outline outline-2 outline-dashed outline-primary bg-primary/10 z-10",
-                        isSel && !editing && "outline outline-2 -outline-offset-1 outline-primary bg-primary/[0.04] z-10",
-                        isSel && editing && "outline outline-2 -outline-offset-1 outline-primary z-20",
+                        isError(v) && "text-destructive",
+                        isHL && !isSel && "bg-accent/50",
+                        inDrag && "bg-accent/70",
+                        isSel && "relative outline outline-2 -outline-offset-2 outline-primary",
                         fl?.kind === "correct" && "animate-correct",
                         fl?.kind === "wrong" && "animate-shake bg-error-soft",
                       )}
                     >
-                      {/* Excel-style fill handle square */}
-                      {isSel && !editing && (
-                        <span
-                          className="absolute -bottom-1 -right-1 z-30 size-1.5 bg-primary border-[0.5px] border-background pointer-events-none"
-                          aria-hidden
-                        />
-                      )}
-
                       {isSel && editing ? (
-                        <div className="absolute inset-0 z-20">
-                          <input
-                            ref={cellInputRef}
-                            aria-label={`Edit cell ${sel}`}
-                            className="h-full w-full bg-card px-3 font-mono text-[var(--font-size-grid,16px)] text-foreground outline-none shadow-sm"
-                            style={{ minWidth: "100%", width: `max(100%, ${draft.length + 3}ch)` }}
-                            value={draft}
-                            onFocus={(e) => { activeInputRef.current = e.currentTarget; }}
-                            onChange={(e) => setDraft(e.target.value)}
-                            onKeyDown={(e) => onEditorKey(e, true)}
-                            spellCheck={false}
-                            autoComplete="off"
-                          />
-                          {suggestions.length > 0 && activeInputRef.current === cellInputRef.current && (
-                            <div className="absolute left-0 top-full z-40 mt-0.5 w-48 overflow-hidden rounded-md border bg-popover shadow-lg">
-                              {suggestions.map((f, i) => (
-                                <button
-                                  key={f}
-                                  type="button"
-                                  onMouseDown={(e) => {
-                                    e.preventDefault();
-                                    setDraft(draft.slice(0, -fnMatch![1]!.length) + f + "(");
-                                    cellInputRef.current?.focus();
-                                  }}
-                                  className={cn(
-                                    "flex w-full items-center justify-between px-2.5 py-1 text-left font-mono text-xs hover:bg-accent",
-                                    i === 0 && "bg-accent/60 font-medium"
-                                  )}
-                                >
-                                  <span>{f}</span>
-                                  <span className="text-[10px] text-muted-foreground">{i === 0 ? "Tab" : ""}</span>
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
+                        <input
+                          ref={cellInputRef}
+                          aria-label={`Edit cell ${sel}`}
+                          className="absolute inset-0 z-10 h-full bg-card px-2 font-mono text-[13px] outline-none"
+                          style={{ minWidth: "100%", width: `max(100%, ${draft.length + 2}ch)` }}
+                          value={draft}
+                          onFocus={(e) => { activeInputRef.current = e.currentTarget; }}
+                          onChange={(e) => setDraft(e.target.value)}
+                          onKeyDown={(e) => onEditorKey(e, true)}
+                          spellCheck={false}
+                          autoComplete="off"
+                        />
                       ) : (
                         formatValue(v)
                       )}

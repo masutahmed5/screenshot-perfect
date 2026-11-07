@@ -71,32 +71,9 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --font-size-base: var(--font-size-base);
-  --font-size-explanation: var(--font-size-explanation);
-  --font-size-title: var(--font-size-title);
-  --font-size-callout: var(--font-size-callout);
-  --font-size-chip: var(--font-size-chip);
-  --font-size-formula-bar: var(--font-size-formula-bar);
-  --font-size-grid: var(--font-size-grid);
-  --font-size-header: var(--font-size-header);
-  --font-size-btn: var(--font-size-btn);
 }
 
 :root {
-  /* Gridwise typography & scale variables (Change 3) */
-  --font-size-base: 18px;
-  --font-size-explanation: clamp(20px, 1.8vw, 24px);
-  --font-size-title: 30px;
-  --font-size-callout: 18px;
-  --font-size-chip: 20px;
-  --font-size-formula-bar: 16px;
-  --font-size-grid: 16px;
-  --font-size-header: 14px;
-  --font-size-btn: 16px;
-  --row-height: 48px;
-  --color-chip-text: oklch(0.55 0.18 25);
-  --color-chip-bg: oklch(0.965 0.035 25);
-
   --radius: 0.875rem;
   --background: oklch(0.985 0.004 95);
   --foreground: oklch(0.2 0.015 165);
@@ -177,3 +154,9 @@
 @utility animate-shake { animation: calm-shake 220ms ease-out 2; }
 @utility animate-rise { animation: rise 240ms ease-out both; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; } }
+
+/* ===== NEW SECTIONS (src/components/LandingStory.tsx) START — gw- prefixed, affects nothing else ===== */
+.gw-reveal { opacity: 0; transform: translateY(10px); transition: opacity 500ms ease, transform 500ms ease; }
+.gw-reveal.gw-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .gw-reveal { opacity: 1; transform: none; transition: none; } }
+/* ===== NEW SECTIONS END ===== */
