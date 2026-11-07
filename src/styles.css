@@ -154,3 +154,9 @@
 @utility animate-shake { animation: calm-shake 220ms ease-out 2; }
 @utility animate-rise { animation: rise 240ms ease-out both; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; } }
+
+/* ===== NEW SECTIONS (src/components/LandingStory.tsx) START — gw- prefixed, affects nothing else ===== */
+.gw-reveal { opacity: 0; transform: translateY(10px); transition: opacity 500ms ease, transform 500ms ease; }
+.gw-reveal.gw-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .gw-reveal { opacity: 1; transform: none; transition: none; } }
+/* ===== NEW SECTIONS END ===== */
