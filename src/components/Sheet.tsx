@@ -217,7 +217,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                   const refIdx = refColorOf.get(a);
                   const inDrag = dragCells.has(a);
                   return (
-                    <td key={fl ? `${a}-${fl.key}` : a} role="gridcell" aria-selected={isSel}
+                    <td key={fl ? `${a}-${fl.key}` : a} role="gridcell" aria-selected={isSel} aria-label={a}
                       onMouseDown={(e) => {
                         if (formulaMode) {
                           e.preventDefault();
