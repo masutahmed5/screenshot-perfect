@@ -45,6 +45,7 @@ export function Player({ steps, title, exitTo = "/learn" }: { steps: Step[]; tit
     setFlash({ cell: step.targetCells[0]!, kind: r.ok ? "correct" : "wrong", key: Date.now() });
     if (r.ok) recordComplete(step.id, attempts === 0, hints);
     else if (attempts === 0) recordMistake(step.id);
+    if (!r.ok && step.accepted) setHints((h) => Math.max(h, 1));
   };
   const next = () => (i + 1 >= steps.length ? setDone(true) : setI(i + 1));
   const showSolution = hints >= 3 && attempts > 0;
