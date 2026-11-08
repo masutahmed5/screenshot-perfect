@@ -1,5 +1,6 @@
 import { collectFunctions, collectRefs, formatValue, parse, Workbook, isError, type CellMap, type Scalar } from "./formula";
 import type { Step } from "./lessons";
+import { normalizeFormula } from "./jsonLessons";
 
 export type CheckResult =
   | { ok: true; message: string; value: string }
@@ -12,6 +13,16 @@ export function checkStep(step: Step, cells: CellMap): CheckResult {
   const v = step.validation;
   const targets = step.targetCells;
   const wb = new Workbook(cells);
+  if (step.accepted) {
+    const target = targets[0]!;
+    const raw = (cells[target] ?? "").trim();
+    const value = formatValue(wb.get(target));
+    if (!raw) return { ok: false, message: `Cell ${target} is empty. Type your formula there, starting with =.` };
+    const n = normalizeFormula(raw);
+    if (step.accepted.some((a) => normalizeFormula(a) === n)) return { ok: true, message: step.explanation, value };
+    const m = step.exactMistakes?.find((x) => normalizeFormula(x.formula) === n);
+    return { ok: false, message: m?.message ?? step.incorrect ?? "Not quite.", value, diagnosis: `${target} shows ${value || "nothing"}.` };
+  }
   for (const [i, target] of targets.entries()) {
     const raw = (cells[target] ?? "").trim();
     if (!raw) return { ok: false, message: `Cell ${target} is empty. Type your formula there, starting with =.` };
