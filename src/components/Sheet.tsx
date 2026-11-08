@@ -194,7 +194,6 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
         </div>
       </div>
 
-<<<<<<< HEAD
       <div ref={gridRef} tabIndex={0} onKeyDown={onGridKey} role="grid" aria-label="Spreadsheet" className={cn("flex-1 outline-none", compact ? "overflow-hidden" : "overflow-auto")}>
         <table className={cn("border-collapse font-mono text-[var(--font-size-grid,16px)]", compact ? "w-full table-fixed" : "")}>
           <thead>
@@ -211,15 +210,6 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                 >
                   {indexToCol(c)}
                 </th>
-=======
-      <div ref={gridRef} tabIndex={0} onKeyDown={onGridKey} role="grid" aria-label="Spreadsheet" className="flex-1 overflow-auto outline-none">
-        <table className="border-collapse font-mono text-[13px]">
-          <thead>
-            <tr>
-              <th className="sticky left-0 top-0 z-10 w-10 border-b border-r bg-cell-header" />
-              {Array.from({ length: cols }, (_, c) => (
-                <th key={c} className={cn("sticky top-0 border-b border-r border-grid-line bg-cell-header px-2 py-1 text-[11px] font-medium text-muted-foreground", compact ? "min-w-20" : "min-w-28", c === selCol && "bg-accent text-accent-foreground")}>{indexToCol(c)}</th>
->>>>>>> 6ec0a36d5f019ad642411f66d6f8c412b38263ec
               ))}
             </tr>
           </thead>
@@ -250,13 +240,8 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                       onDoubleClick={() => startEdit()}
                       style={refIdx !== undefined ? { boxShadow: `inset 0 0 0 2px var(--ref-${refIdx + 1})` } : undefined}
                       className={cn(
-<<<<<<< HEAD
                         "relative cursor-cell truncate border-b border-r border-grid-line transition-colors duration-150 select-none",
                         compact ? "h-10 px-2 text-[14px]" : "h-[var(--row-height,48px)] px-3 text-[var(--font-size-grid,16px)] max-w-44",
-=======
-                        "h-8 cursor-cell truncate border-b border-r border-grid-line px-2 transition-colors duration-150",
-                        compact ? "max-w-24" : "max-w-40",
->>>>>>> 6ec0a36d5f019ad642411f66d6f8c412b38263ec
                         r === 0 && "font-sans font-medium text-foreground",
                         typeof v === "number" && "text-right tabular-nums",
                         isError(v) && "text-destructive",
