@@ -62,7 +62,8 @@ export function Player({ steps, title, exitTo = "/learn" }: { steps: Step[]; tit
           </div>
           <h1 id="task-title" className="mt-6 text-xl font-semibold tracking-tight">{step.title}</h1>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.scenario}</p>
-          <div className="mt-5 rounded-lg border-l-2 border-primary bg-accent/50 px-4 py-3 text-sm leading-relaxed">{step.prompt}</div>
+          <div className="mt-5 rounded-lg border-l-2 border-primary bg-accent/50 px-4 py-3 text-sm leading-relaxed">{renderInline(step.prompt)}</div>
+          {step.formulaToType && <code className="mt-3 inline-block self-start rounded-md border bg-background px-3 py-1.5 font-mono text-sm">{step.formulaToType}</code>}
 
           {hints > 0 && (
             <div className="mt-5 space-y-2">
@@ -102,5 +103,12 @@ export function Player({ steps, title, exitTo = "/learn" }: { steps: Step[]; tit
         <Button onClick={check} className="min-w-32">{result?.ok ? <>Next <ArrowRight className="size-4" /></> : "Check"}</Button>
       </footer>
     </div>
+  );
+}
+
+/** Minimal Markdown: **bold** and `code` only. */
+function renderInline(text: string) {
+  return text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g).map((p, k) =>
+    p.startsWith("**") ? <strong key={k}>{p.slice(2, -2)}</strong> : p.startsWith("`") ? <code key={k} className="rounded bg-background px-1 font-mono">{p.slice(1, -1)}</code> : p,
   );
 }

@@ -1,4 +1,5 @@
 import type { CellMap, Scalar } from "./formula";
+import { JSON_LESSONS } from "./jsonLessons";
 
 export type Step = {
   id: string;
@@ -15,8 +16,13 @@ export type Step = {
   solution: string;
   explanation: string;
   commonMistakes?: { pattern: string; message: string }[];
+  // JSON lessons: exact formula grading
+  formulaToType?: string;
+  accepted?: string[];
+  exactMistakes?: { formula: string; message: string }[];
+  incorrect?: string;
 };
-export type Lesson = { id: string; track: string; title: string; summary: string; objectives: string[]; estimatedMinutes: number; steps: Step[] };
+export type Lesson = { id: string; track: string; title: string; summary: string; objectives: string[]; estimatedMinutes: number; steps: Step[]; lessonNumber?: number };
 
 // Shared datasets
 const sales: CellMap = {
@@ -121,6 +127,9 @@ export const LESSONS: Lesson[] = [
 
 // Fix the awkward wording in basics step 2 prompt
 LESSONS[1].steps[1].prompt = "In F3, show how far Elm Ave is below the target in F1 (target minus units).";
+
+// Lessons dropped into src/lessons/*.json, listed right after Lesson 1
+LESSONS.splice(1, 0, ...JSON_LESSONS.filter((j) => !LESSONS.some((l) => l.id === j.id)));
 
 export const ALL_STEPS = LESSONS.flatMap((l) => l.steps.map((s) => ({ ...s, lessonId: l.id })));
 export const getLesson = (id: string) => LESSONS.find((l) => l.id === id);
