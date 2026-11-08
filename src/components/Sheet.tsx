@@ -231,17 +231,17 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
         </div>
       </div>
 
-      <div ref={gridRef} tabIndex={0} onKeyDown={onGridKey} role="grid" aria-label="Spreadsheet" className="flex-1 overflow-auto outline-none">
-        <table className="border-collapse font-mono text-[var(--font-size-grid,16px)]">
+      <div ref={gridRef} tabIndex={0} onKeyDown={onGridKey} role="grid" aria-label="Spreadsheet" className={cn("flex-1 outline-none", compact ? "overflow-hidden" : "overflow-auto")}>
+        <table className={cn("border-collapse font-mono text-[var(--font-size-grid,16px)]", compact ? "w-full table-fixed" : "")}>
           <thead>
             <tr>
-              <th className="sticky left-0 top-0 z-20 w-10 border-b border-r bg-cell-header select-none" />
+              <th className={cn("sticky left-0 top-0 z-20 border-b border-r bg-cell-header select-none", compact ? "w-9" : "w-10")} />
               {Array.from({ length: cols }, (_, c) => (
                 <th
                   key={c}
                   className={cn(
-                    "sticky top-0 border-b border-r border-grid-line bg-cell-header px-2 py-1.5 text-[var(--font-size-header,14px)] font-medium text-muted-foreground select-none transition-colors",
-                    compact ? "min-w-20" : "min-w-28",
+                    "sticky top-0 border-b border-r border-grid-line bg-cell-header px-1.5 py-1.5 text-[var(--font-size-header,14px)] font-medium text-muted-foreground select-none transition-colors",
+                    compact ? "min-w-0" : "min-w-28",
                     c === selCol && "bg-primary/15 text-primary font-semibold border-b-2 border-b-primary"
                   )}
                 >
@@ -252,10 +252,11 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
           </thead>
           <tbody>
             {Array.from({ length: rows }, (_, r) => (
-              <tr key={r} className="h-[var(--row-height,48px)]">
+              <tr key={r} className={cn(compact ? "h-10" : "h-[var(--row-height,48px)]")}>
                 <th
                   className={cn(
-                    "sticky left-0 border-b border-r border-grid-line bg-cell-header px-2 text-[var(--font-size-header,14px)] font-medium text-muted-foreground select-none transition-colors",
+                    "sticky left-0 border-b border-r border-grid-line bg-cell-header text-[var(--font-size-header,14px)] font-medium text-muted-foreground select-none transition-colors",
+                    compact ? "px-1 text-xs" : "px-2",
                     r === selRow && "bg-primary/15 text-primary font-semibold border-r-2 border-r-primary"
                   )}
                 >
@@ -304,8 +305,8 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                           : undefined
                       }
                       className={cn(
-                        "relative h-[var(--row-height,48px)] cursor-cell truncate border-b border-r border-grid-line px-3 text-[var(--font-size-grid,16px)] transition-colors duration-150 select-none",
-                        compact ? "max-w-28" : "max-w-44",
+                        "relative cursor-cell truncate border-b border-r border-grid-line transition-colors duration-150 select-none",
+                        compact ? "h-10 px-2 text-[14px]" : "h-[var(--row-height,48px)] px-3 text-[var(--font-size-grid,16px)] max-w-44",
                         r === 0 && "font-sans font-medium text-foreground",
                         typeof v === "number" && "text-right tabular-nums",
                         isError(v) && "text-destructive font-medium",

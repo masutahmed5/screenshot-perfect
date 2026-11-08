@@ -19,7 +19,13 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-const demo = { A1: "Store", B1: "Units", A2: "Harbor St", B2: "120", A3: "Elm Ave", B3: "85", A4: "Pier 9", B4: "142", A5: "Total" };
+const demo = {
+  A1: "Store", B1: "Units", C1: "Price", D1: "Region",
+  A2: "Harbor St", B2: "120", C2: "$4.50", D2: "North",
+  A3: "Elm Ave", B3: "85", C3: "$4.50", D3: "South",
+  A4: "Pier 9", B4: "142", C4: "$5.00", D4: "North",
+  A5: "Total", B5: "",
+};
 
 function Landing() {
   const [cells, setCells] = useState<Record<string, string>>(demo);
@@ -39,7 +45,7 @@ function Landing() {
 
       <section className="relative">
         <div className="absolute inset-x-0 top-0 h-[520px] grid-motif" aria-hidden />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 pb-24 pt-16 lg:grid-cols-[1.05fr_1fr]">
+        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 pb-24 pt-16 lg:grid-cols-[0.95fr_1.15fr]">
           <div className="animate-rise">
             <span className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1 text-xs text-muted-foreground"><span className="size-1.5 rounded-full bg-primary" />No sign-up needed</span>
             <h1 className="mt-6 font-serif text-6xl leading-[1.02] tracking-tight md:text-7xl">Become confident in Excel <em className="text-primary">in days.</em></h1>
@@ -51,14 +57,14 @@ function Landing() {
             <p className="mt-8 text-sm text-muted-foreground">30 exercises · 6 skills · 3–7 minute sessions</p>
           </div>
 
-          <div className="animate-rise [animation-delay:80ms]">
-            <div className="rounded-2xl border bg-card p-4 shadow-lift">
+          <div className="animate-rise [animation-delay:80ms] w-full">
+            <div className="rounded-2xl border bg-card p-5 shadow-lift">
               <div className="mb-3 flex items-center justify-between px-1">
                 <p className="text-sm"><span className="font-medium">Try it:</span> <span className="text-muted-foreground">total the units in</span> <span className="font-mono">B5</span></p>
                 {solved && <span className="flex items-center gap-1 rounded-full bg-success-soft px-2 py-0.5 text-xs font-medium text-success animate-rise"><Check className="size-3" />Correct</span>}
               </div>
-              <div className="h-[260px]">
-                <Sheet cells={cells} onChange={setCells} cols={4} rows={7} initialSelected="B5" highlight={["B5"]} compact
+              <div className="h-[322px] sm:h-[326px] w-full">
+                <Sheet cells={cells} onChange={setCells} cols={6} rows={6} initialSelected="B5" highlight={["B5"]} compact
                   flash={solved ? { cell: "B5", kind: "correct", key: 1 } : null} />
               </div>
               <p className="mt-3 px-1 text-xs text-muted-foreground">

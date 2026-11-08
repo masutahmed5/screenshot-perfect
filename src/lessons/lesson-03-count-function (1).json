@@ -1,0 +1,220 @@
+{
+  "lessonNumber": 3,
+  "slug": "count-function",
+  "title": "COUNT Function",
+  "exerciseType": "formula",
+  "overview": {
+    "whatItsFor": "Count how many cells in a range hold numbers, such as how many invoices have an amount entered.",
+    "howItWorks": "COUNT takes one or more ranges and counts only the cells that contain numbers, skipping text and empty cells.",
+    "syntax": "=COUNT(A2:A6)",
+    "simpleExample": "=COUNT(A2:A6) counts the numbers in A2 to A6.",
+    "fieldUse": "Checking how many orders, timesheets or invoices have figures entered in sales, HR and accounting."
+  },
+  "sheetDefaults": {
+    "columns": ["A", "B", "C", "D", "E", "F", "G"],
+    "rows": 8,
+    "showNameBox": true,
+    "showFormulaBar": true,
+    "mouseSelection": "enabled",
+    "enterMovesSelection": "down"
+  },
+  "steps": [
+    {
+      "id": "3-1",
+      "type": "type_formula",
+      "instruction": "**COUNT** tells you how many cells in a range hold numbers. It counts the cells, not their total. **Count the order amounts in A2:A6 by typing the formula below into C2 and pressing Enter.**",
+      "formulaToType": "=COUNT(A2:A6)",
+      "sheet": {
+        "cells": {
+          "A1": "Order amount",
+          "C1": "How many?",
+          "A2": 120,
+          "A3": 85,
+          "A4": 240,
+          "A5": 60,
+          "A6": 175
+        },
+        "selected": "C2"
+      },
+      "check": {
+        "type": "formula",
+        "cell": "C2",
+        "accepted": ["=COUNT(A2:A6)", "=COUNT(A1:A6)", "=COUNT(A2,A3,A4,A5,A6)"],
+        "expectedResult": 5
+      },
+      "commonMistakes": [
+        {
+          "formula": "=SUM(A2:A6)",
+          "message": "SUM adds the values. COUNT counts how many cells hold numbers."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct!",
+        "incorrect": "Use COUNT with the range A2:A6."
+      },
+      "hint": "Type =COUNT(A2:A6) and press Enter.",
+      "skippable": true
+    },
+    {
+      "id": "3-2",
+      "type": "type_formula",
+      "instruction": "COUNT skips text and empty cells, so only real numbers are counted. **Count the days with hours logged in A2:A7: type the formula below into C2 and press Enter.**",
+      "formulaToType": "=COUNT(A2:A7)",
+      "sheet": {
+        "cells": {
+          "A1": "Hours worked",
+          "C1": "Days logged",
+          "A2": 8,
+          "A3": "Absent",
+          "A4": 7,
+          "A6": 6,
+          "A7": 9
+        },
+        "selected": "C2"
+      },
+      "check": {
+        "type": "formula",
+        "cell": "C2",
+        "accepted": ["=COUNT(A2:A7)", "=COUNT(A1:A7)"],
+        "expectedResult": 4
+      },
+      "commonMistakes": [
+        {
+          "formula": "=COUNT(A2:A6)",
+          "message": "That range stops at A6. Include A7 too."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct!",
+        "incorrect": "Use COUNT with the range A2:A7."
+      },
+      "hint": "The range runs from A2 down to A7.",
+      "skippable": true
+    },
+    {
+      "id": "3-3",
+      "type": "type_formula",
+      "instruction": "Give COUNT several ranges separated by commas to count across separate blocks. **Count the stock figures in A2:A4 and C2:C4: type the formula below into E2 and press Enter.**",
+      "formulaToType": "=COUNT(A2:A4, C2:C4)",
+      "sheet": {
+        "cells": {
+          "A1": "Stock W1",
+          "B1": "Unit price",
+          "C1": "Stock W2",
+          "E1": "Stock figures",
+          "A2": 40,
+          "A3": 55,
+          "A4": "Closed",
+          "B2": 5,
+          "B3": 6,
+          "B4": 7,
+          "C2": 12,
+          "C3": 18,
+          "C4": 25
+        },
+        "selected": "E2"
+      },
+      "check": {
+        "type": "formula",
+        "cell": "E2",
+        "accepted": [
+          "=COUNT(A2:A4,C2:C4)",
+          "=COUNT(C2:C4,A2:A4)",
+          "=COUNT(A1:A4,C1:C4)",
+          "=COUNT(C1:C4,A1:A4)"
+        ],
+        "expectedResult": 5
+      },
+      "commonMistakes": [
+        {
+          "formula": "=COUNT(A2:C4)",
+          "message": "That range also counts the Unit price column. List the two stock ranges separately."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct!",
+        "incorrect": "Put both ranges inside COUNT, separated by a comma."
+      },
+      "hint": "=COUNT( then A2:A4, a comma, C2:C4, then ).",
+      "skippable": true
+    },
+    {
+      "id": "3-4",
+      "type": "type_formula",
+      "instruction": "Ranges can run across a row too. Months not yet reported are empty or say TBC. **In B4, count the months with sales figures in B2:G2, then press Enter.**",
+      "sheet": {
+        "cells": {
+          "B1": "Jan",
+          "C1": "Feb",
+          "D1": "Mar",
+          "E1": "Apr",
+          "F1": "May",
+          "G1": "Jun",
+          "A2": "Sales",
+          "B2": 1200,
+          "C2": 950,
+          "E2": 1400,
+          "F2": "TBC",
+          "G2": 1100,
+          "A4": "Months reported"
+        },
+        "selected": "B4"
+      },
+      "check": {
+        "type": "formula",
+        "cell": "B4",
+        "accepted": ["=COUNT(B2:G2)", "=COUNT(A2:G2)", "=COUNT(B1:G2)"],
+        "expectedResult": 4
+      },
+      "commonMistakes": [
+        {
+          "formula": "=COUNT(B2:F2)",
+          "message": "That range stops at F2. The months run to G2."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct!",
+        "incorrect": "Use COUNT with the range B2:G2."
+      },
+      "hint": "The range goes from B2 across to G2.",
+      "skippable": true
+    },
+    {
+      "id": "3-5",
+      "type": "type_formula",
+      "instruction": "Some invoices show an amount and some still say Pending. **In C2, count how many invoices in A2:A7 have an amount entered, then press Enter.**",
+      "sheet": {
+        "cells": {
+          "A1": "Invoice amount",
+          "C1": "Entered",
+          "A2": 1200,
+          "A3": 0,
+          "A4": 450,
+          "A5": "Pending",
+          "A6": "Pending",
+          "A7": 300
+        },
+        "selected": "C2"
+      },
+      "check": {
+        "type": "formula",
+        "cell": "C2",
+        "accepted": ["=COUNT(A2:A7)", "=COUNT(A1:A7)"],
+        "expectedResult": 4
+      },
+      "commonMistakes": [
+        {
+          "formula": "=COUNTA(A2:A7)",
+          "message": "COUNTA counts every filled cell, including Pending. COUNT counts only numbers."
+        }
+      ],
+      "isTrap": true,
+      "feedback": {
+        "correct": "Correct!",
+        "incorrect": "Use COUNT with the range A2:A7."
+      },
+      "hint": "COUNT ignores the Pending cells.",
+      "skippable": true
+    }
+  ]
+}
