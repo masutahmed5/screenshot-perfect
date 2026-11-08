@@ -1,0 +1,177 @@
+{
+  "lessonNumber": 6,
+  "slug": "true-and-false",
+  "title": "True & False",
+  "exerciseType": "formula",
+  "overview": {
+    "whatItsFor": "Test whether a statement about your data is true or false, such as whether an invoice is over budget.",
+    "howItWorks": "A comparison such as A2>B2 returns TRUE or FALSE, using operators like >, <, >=, <=, = and <>.",
+    "syntax": "=A2>B2",
+    "simpleExample": "=A2>=B2 returns TRUE when sales reach the target.",
+    "fieldUse": "Checking invoices against budgets, sales against targets, and statuses in finance, HR and operations."
+  },
+  "sheetDefaults": {
+    "columns": ["A", "B", "C", "D", "E", "F", "G"],
+    "rows": 8,
+    "showNameBox": true,
+    "showFormulaBar": true,
+    "mouseSelection": "enabled",
+    "enterMovesSelection": "down"
+  },
+  "steps": [
+    {
+      "id": "6-1",
+      "type": "type_formula",
+      "instruction": "A **comparison** asks Excel a yes-or-no question and answers **TRUE** or **FALSE**. The `>` sign asks whether the left value is bigger. **Check if the invoice in A2 is over the budget in B2: type the formula below into C2 and press Enter.**",
+      "formulaToType": "=A2>B2",
+      "sheet": {
+        "cells": { "A1": "Invoice", "B1": "Budget", "C1": "Over?", "A2": 450, "B2": 400 },
+        "selected": "C2"
+      },
+      "check": {
+        "type": "formula",
+        "cell": "C2",
+        "accepted": ["=A2>B2", "=B2<A2"],
+        "expectedResult": true
+      },
+      "commonMistakes": [
+        {
+          "formula": "=A2<B2",
+          "message": "That asks if the invoice is smaller. Use > for bigger."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct!",
+        "incorrect": "Compare A2 with B2 using the > sign."
+      },
+      "hint": "Type =A2>B2 and press Enter.",
+      "skippable": true
+    },
+    {
+      "id": "6-2",
+      "type": "type_formula",
+      "instruction": "Add an equals sign for “or equal to”: `>=` means at least. Sales exactly on target still count as a success. **Check if sales in A2 reached the target in B2: type the formula below into C2 and press Enter.**",
+      "formulaToType": "=A2>=B2",
+      "sheet": {
+        "cells": { "A1": "Sales", "B1": "Target", "C1": "Met?", "A2": 8000, "B2": 8000 },
+        "selected": "C2"
+      },
+      "check": {
+        "type": "formula",
+        "cell": "C2",
+        "accepted": ["=A2>=B2", "=B2<=A2"],
+        "expectedResult": true
+      },
+      "commonMistakes": [
+        {
+          "formula": "=A2>B2",
+          "message": "The > sign leaves out equal values. Use >= for at least."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct!",
+        "incorrect": "Use >= so that equal values count too."
+      },
+      "hint": "Type =A2>=B2 and press Enter.",
+      "skippable": true
+    },
+    {
+      "id": "6-3",
+      "type": "type_formula",
+      "instruction": "Use `=` to test whether two things match. Text must sit inside quotation marks, or Excel thinks it is a name. **Check if the leave request in A2 says Approved: type the formula below into B2 and press Enter.**",
+      "formulaToType": "=A2=\"Approved\"",
+      "sheet": {
+        "cells": { "A1": "Leave status", "B1": "Check", "A2": "Approved" },
+        "selected": "B2"
+      },
+      "check": {
+        "type": "formula",
+        "cell": "B2",
+        "accepted": [
+          "=A2=\"Approved\"",
+          "=\"Approved\"=A2",
+          "=A2=\"approved\"",
+          "=\"approved\"=A2"
+        ],
+        "expectedResult": true
+      },
+      "commonMistakes": [
+        {
+          "formula": "=A2=Approved",
+          "message": "Put Approved inside quotation marks."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct!",
+        "incorrect": "Check the quotation marks around Approved."
+      },
+      "hint": "The first = starts the formula and the second compares.",
+      "skippable": true
+    },
+    {
+      "id": "6-4",
+      "type": "type_formula",
+      "instruction": "`<>` means “not equal to”, so it is TRUE when two things differ. **Check that the order in A2 is not Cancelled: type the formula below into B2 and press Enter.**",
+      "formulaToType": "=A2<>\"Cancelled\"",
+      "sheet": {
+        "cells": { "A1": "Order status", "B1": "Active?", "A2": "Shipped" },
+        "selected": "B2"
+      },
+      "check": {
+        "type": "formula",
+        "cell": "B2",
+        "accepted": [
+          "=A2<>\"Cancelled\"",
+          "=\"Cancelled\"<>A2",
+          "=A2<>\"cancelled\"",
+          "=NOT(A2=\"Cancelled\")"
+        ],
+        "expectedResult": true
+      },
+      "commonMistakes": [
+        {
+          "formula": "=A2=\"Cancelled\"",
+          "message": "That tests for Cancelled. Use <> to test for not Cancelled."
+        }
+      ],
+      "feedback": {
+        "correct": "Correct!",
+        "incorrect": "Use <> and put Cancelled in quotation marks."
+      },
+      "hint": "Type =A2<>, then Cancelled in quotation marks.",
+      "skippable": true
+    },
+    {
+      "id": "6-5",
+      "type": "type_formula",
+      "instruction": "Order matters in a comparison, so read the question carefully. **In C2, write a formula that checks if the budget in B2 is more than the spending in A2, then press Enter.**",
+      "sheet": {
+        "cells": { "A1": "Spending", "B1": "Budget", "C1": "Room left?", "A2": 520, "B2": 480 },
+        "selected": "C2"
+      },
+      "check": {
+        "type": "formula",
+        "cell": "C2",
+        "accepted": ["=B2>A2", "=A2<B2"],
+        "expectedResult": false
+      },
+      "commonMistakes": [
+        {
+          "formula": "=A2>B2",
+          "message": "That asks the opposite question. Is B2 bigger than A2?"
+        },
+        {
+          "formula": "=B2<A2",
+          "message": "That checks if the budget is smaller. You need more than."
+        }
+      ],
+      "isTrap": true,
+      "feedback": {
+        "correct": "Correct!",
+        "incorrect": "Put B2 first, since B2 is the value you are checking."
+      },
+      "hint": "Start with =B2, then the comparison sign, then A2.",
+      "skippable": true
+    }
+  ]
+}

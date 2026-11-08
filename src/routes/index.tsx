@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Logo } from "@/components/Logo";
 import { Sheet } from "@/components/Sheet";
+import { LandingStory } from "@/components/LandingStory";
 import { Workbook } from "@/lib/formula";
 
 export const Route = createFileRoute("/")({
@@ -82,6 +83,8 @@ function Landing() {
           ))}
         </div>
       </section>
+
+      <LandingStory />
 
       <section id="how" className="mx-auto max-w-6xl px-6 py-24">
         <h2 className="max-w-xl font-serif text-5xl tracking-tight">Feedback that reads like a patient senior analyst.</h2>
