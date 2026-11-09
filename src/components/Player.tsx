@@ -61,15 +61,15 @@ export function Player({ steps, title, exitTo = "/learn" }: { steps: Step[]; tit
           <div className="mt-3 flex gap-1.5" aria-label={`Step ${i + 1} of ${steps.length}`}>
             {steps.map((s, k) => <span key={s.id} className={cn("h-1 flex-1 rounded-full bg-muted transition-colors", k < i && "bg-primary", k === i && "bg-primary/40")} />)}
           </div>
-          <h1 id="task-title" className="mt-6 text-xl font-semibold tracking-tight">{step.title}</h1>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.scenario}</p>
-          <div className="mt-5 rounded-lg border-l-2 border-primary bg-accent/50 px-4 py-3 text-sm leading-relaxed">{renderInline(step.prompt)}</div>
-          {step.formulaToType && <code className="mt-3 inline-block self-start rounded-md border bg-background px-3 py-1.5 font-mono text-sm">{step.formulaToType}</code>}
+          <h1 id="task-title" className="mt-6 text-2xl font-semibold tracking-tight">{step.title}</h1>
+          <p className="mt-2.5 text-base leading-relaxed text-muted-foreground">{renderInline(step.scenario)}</p>
+          <div className="mt-5 rounded-lg border-l-2 border-primary bg-accent/50 px-4 py-3.5 text-base leading-relaxed">{renderInline(step.prompt)}</div>
+          {step.formulaToType && <code className="mt-3 inline-block self-start rounded-md border bg-background px-3 py-2 font-mono text-base">{step.formulaToType}</code>}
 
           {hints > 0 && (
             <div className="mt-5 space-y-2">
               {step.hints.slice(0, hints).map((h, k) => (
-                <div key={k} className="animate-rise rounded-lg border bg-background px-3 py-2 text-sm">
+                <div key={k} className="animate-rise rounded-lg border bg-background px-3.5 py-2.5 text-base leading-relaxed">
                   <span className="mr-2 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{["Nudge", "Hint", "Walkthrough"][k]}</span>
                   {k === 2 && !showSolution ? <span className="text-muted-foreground">Try once more to unlock the full solution.</span> : <span className={k === 2 ? "font-mono" : ""}>{h}</span>}
                 </div>
@@ -78,14 +78,14 @@ export function Player({ steps, title, exitTo = "/learn" }: { steps: Step[]; tit
           )}
 
           {result && (
-            <div role="status" className={cn("mt-5 animate-rise rounded-lg border px-4 py-3 text-sm", result.ok ? "border-success/30 bg-success-soft" : "border-destructive/20 bg-error-soft")}>
+            <div role="status" className={cn("mt-5 animate-rise rounded-lg border px-4 py-3.5 text-base leading-relaxed", result.ok ? "border-success/30 bg-success-soft" : "border-destructive/20 bg-error-soft")}>
               <p className={cn("font-medium", result.ok ? "text-success" : "text-destructive")}>
                 {result.ok ? `Correct · +${xpFor(attempts === 1, hints)} XP` : result.message}
               </p>
               <p className="mt-1 text-foreground/80">{result.ok ? result.message : result.diagnosis}</p>
             </div>
           )}
-          <p className="mt-auto pt-6 text-xs text-muted-foreground">Type in a cell, press <kbd className="rounded border px-1 font-mono">Enter</kbd> to confirm, <kbd className="rounded border px-1 font-mono">⌘/Ctrl+Enter</kbd> to check.</p>
+          <p className="mt-auto pt-6 text-sm text-muted-foreground">Type in a cell, press <kbd className="rounded border px-1 font-mono text-xs">Enter</kbd> to confirm, <kbd className="rounded border px-1 font-mono text-xs">⌘/Ctrl+Enter</kbd> to check.</p>
         </section>
 
         <div className="min-h-[360px]">
