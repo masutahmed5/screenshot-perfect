@@ -37,18 +37,26 @@ function Landing() {
   // Looping demo: type =B2*C2 into E2 (Units * Price = Revenue), until the visitor interacts
   useEffect(() => {
     if (touched) return;
-    const formula = "=B2*C2";
-    const frames: { text: string; refs?: string[]; ms: number }[] = [{ text: "", ms: 900 }];
-    for (let i = 1; i <= formula.length; i++) {
-      const t = formula.slice(0, i);
-      frames.push({ text: t, refs: [t.length >= 3 ? "B2" : "", t.length >= 6 ? "C2" : ""], ms: 260 });
+    // Each demo: cell, formula, references (with the char length at which each appears), result
+    const demos: { cell: string; formula: string; refs: [string, number][]; result: string }[] = [
+      { cell: "E2", formula: "=B2*C2", refs: [["B2", 3], ["C2", 6]], result: "$540.00" },
+      { cell: "B5", formula: "=SUM(B2:B4)", refs: [["B2:B4", 10]], result: "347" },
+      { cell: "C5", formula: "=COUNT(B2:B4)", refs: [["B2:B4", 12]], result: "3" },
+    ];
+    const frames: { cell: string; text: string; refs?: string[]; ms: number }[] = [];
+    for (const d of demos) {
+      frames.push({ cell: d.cell, text: "", ms: 700 });
+      for (let i = 1; i <= d.formula.length; i++) {
+        const t = d.formula.slice(0, i);
+        frames.push({ cell: d.cell, text: t, refs: d.refs.map(([r, n]) => (t.length >= n ? r : "")), ms: 200 });
+      }
+      frames.push({ cell: d.cell, text: d.formula, refs: d.refs.map(([r]) => r), ms: 900 });
+      frames.push({ cell: d.cell, text: d.result, ms: 2200 });
     }
-    frames.push({ text: formula, refs: ["B2", "C2"], ms: 900 });
-    frames.push({ text: "$540.00", ms: 2600 });
     let i = 0, timer: ReturnType<typeof setTimeout>;
     const tick = () => {
       const f = frames[i % frames.length]!;
-      setGhost({ cell: "E2", text: f.text, refs: f.refs });
+      setGhost({ cell: f.cell, text: f.text, refs: f.refs });
       i++;
       timer = setTimeout(tick, f.ms);
     };
@@ -89,7 +97,7 @@ function Landing() {
                 <p className="text-sm"><span className="font-medium">Try it:</span> <span className="text-muted-foreground">total the units in</span> <span className="font-mono">B5</span></p>
                 {solved && <span className="flex items-center gap-1 rounded-full bg-success-soft px-2 py-0.5 text-xs font-medium text-success animate-rise"><Check className="size-3" />Correct</span>}
               </div>
-              <div className="h-[322px] sm:h-[326px] w-full">
+              <div className="h-[322px] sm:h-[326px] w-full [&_*]:!font-sans">
                 <Sheet cells={cells} onChange={setCells} cols={6} rows={6} initialSelected="B5" highlight={["B5"]} compact ghost={touched ? null : ghost}
                   flash={solved ? { cell: "B5", kind: "correct", key: 1 } : null} />
               </div>

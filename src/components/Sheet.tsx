@@ -224,7 +224,12 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                   const isSel = a === sel;
                   const isHL = highlight.includes(a);
                   const fl = flash && flash.cell === a ? flash : null;
-                  const ghostRef = ghost?.refs?.indexOf(a) ?? -1;
+                  const ghostRef = ghost?.refs?.findIndex((g) => {
+                    if (!g) return false;
+                    if (!g.includes(":")) return g === a;
+                    const [p, q] = g.split(":").map(parseCell);
+                    return c >= Math.min(p!.c, q!.c) && c <= Math.max(p!.c, q!.c) && r >= Math.min(p!.r, q!.r) && r <= Math.max(p!.r, q!.r);
+                  }) ?? -1;
                   const refIdx = refColorOf.get(a) ?? (ghostRef >= 0 ? ghostRef : undefined);
                   const ghostHere = !editing && ghost?.cell === a;
                   const inDrag = dragCells.has(a);
