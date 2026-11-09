@@ -166,14 +166,14 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
 
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-xl border bg-card shadow-soft">
-      <div className="flex items-center gap-2 border-b bg-cell-header px-3 py-2">
-        <span className="w-12 rounded-md border bg-card px-2 py-1 text-center font-mono text-xs text-muted-foreground">{sel}</span>
-        <span className="font-serif text-lg italic text-muted-foreground">fx</span>
+      <div className="flex items-center gap-2 border-b bg-cell-header px-3 py-1.5">
+        <span className="w-10 rounded-md border bg-card px-1.5 py-0.5 text-center font-mono text-[11px] text-muted-foreground">{sel}</span>
+        <span className="font-serif text-base italic text-muted-foreground">fx</span>
         <div className="relative flex-1">
           <input
             ref={barInputRef}
             aria-label={`Formula bar for cell ${sel}`}
-            className="w-full rounded-md border bg-card px-2 py-1 font-mono text-sm outline-none focus:border-primary"
+            className="w-full rounded-md border bg-card px-2 py-0.5 font-mono text-[13px] outline-none focus:border-primary"
             value={raw}
             onFocus={(e) => { activeInputRef.current = e.currentTarget; if (!editing) { setDraft(cells[sel] ?? ""); setEditing(true); } }}
             onChange={(e) => { setDraft(e.target.value); setEditing(true); }}
@@ -195,16 +195,16 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
       </div>
 
       <div ref={gridRef} tabIndex={0} onKeyDown={onGridKey} role="grid" aria-label="Spreadsheet" className={cn("flex-1 outline-none", compact ? "overflow-hidden" : "overflow-auto")}>
-        <table className={cn("border-collapse font-mono text-[var(--font-size-grid,16px)]", compact ? "w-full table-fixed" : "")}>
+        <table className={cn("border-collapse font-sans text-[var(--font-size-grid,13px)]", compact ? "w-full table-fixed" : "")}>
           <thead>
             <tr>
-              <th className={cn("sticky left-0 top-0 z-20 border-b border-r bg-cell-header select-none", compact ? "w-9" : "w-10")} />
+              <th className={cn("sticky left-0 top-0 z-20 border-b border-r bg-cell-header select-none", compact ? "w-9" : "w-9")} />
               {Array.from({ length: cols }, (_, c) => (
                 <th
                   key={c}
                   className={cn(
-                    "sticky top-0 border-b border-r border-grid-line bg-cell-header px-1.5 py-1.5 text-[var(--font-size-header,14px)] font-medium text-muted-foreground select-none transition-colors",
-                    compact ? "min-w-0" : "min-w-28",
+                    "sticky top-0 border-b border-r border-grid-line bg-cell-header px-1 py-1 text-center text-[var(--font-size-header,11px)] font-medium text-muted-foreground select-none transition-colors",
+                    compact ? "min-w-0" : "min-w-24",
                     c === selCol && "bg-primary/15 text-primary font-semibold border-b-2 border-b-primary"
                   )}
                 >
@@ -216,7 +216,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
           <tbody>
             {Array.from({ length: rows }, (_, r) => (
               <tr key={r}>
-                <th className={cn("sticky left-0 border-b border-r border-grid-line bg-cell-header px-2 text-[11px] font-medium text-muted-foreground", r === selRow && "bg-accent text-accent-foreground")}>{r + 1}</th>
+                <th className={cn("sticky left-0 border-b border-r border-grid-line bg-cell-header px-2 text-[11px] font-medium text-muted-foreground", r === selRow && "bg-primary/15 text-primary font-semibold border-r-2 border-r-primary")}>{r + 1}</th>
                 {Array.from({ length: cols }, (_, c) => {
                   const a = addr(c, r);
                   const v = wb.get(a);
@@ -241,7 +241,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                       style={refIdx !== undefined ? { boxShadow: `inset 0 0 0 2px var(--ref-${refIdx + 1})` } : undefined}
                       className={cn(
                         "relative cursor-cell truncate border-b border-r border-grid-line transition-colors duration-150 select-none",
-                        compact ? "h-10 px-2 text-[14px]" : "h-[var(--row-height,48px)] px-3 text-[var(--font-size-grid,16px)] max-w-44",
+                        compact ? "h-10 px-2 text-[14px]" : "h-[var(--row-height,32px)] px-2 text-[var(--font-size-grid,13px)] max-w-40",
                         r === 0 && "font-sans font-medium text-foreground",
                         typeof v === "number" && "text-right tabular-nums",
                         isError(v) && "text-destructive",
@@ -267,6 +267,9 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                         />
                       ) : (
                         formatValue(v)
+                      )}
+                      {isSel && !editing && (
+                        <span aria-hidden className="pointer-events-none absolute -bottom-[3px] -right-[3px] z-10 size-1.5 bg-primary ring-1 ring-card" />
                       )}
                     </td>
                   );
