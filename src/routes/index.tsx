@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, Check, Keyboard, ListChecks, MessageSquareText, ScanSearch, Target, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
 });
 
 const demo = {
-  A1: "Store", B1: "Units", C1: "Price", D1: "Region",
+  A1: "Store", B1: "Units", C1: "Price", D1: "Region", E1: "Revenue",
   A2: "Harbor St", B2: "120", C2: "$4.50", D2: "North",
   A3: "Elm Ave", B3: "85", C3: "$4.50", D3: "South",
   A4: "Pier 9", B4: "142", C4: "$5.00", D4: "North",
@@ -29,7 +29,32 @@ const demo = {
 };
 
 function Landing() {
-  const [cells, setCells] = useState<Record<string, string>>(demo);
+  const [cells, setCellsRaw] = useState<Record<string, string>>(demo);
+  const [touched, setTouched] = useState(false);
+  const [ghost, setGhost] = useState<{ cell: string; text: string; refs?: string[] } | null>(null);
+  const setCells = (c: Record<string, string>) => { setTouched(true); setGhost(null); setCellsRaw(c); };
+
+  // Looping demo: type =B2*C2 into E2 (Units * Price = Revenue), until the visitor interacts
+  useEffect(() => {
+    if (touched) return;
+    const formula = "=B2*C2";
+    const frames: { text: string; refs?: string[]; ms: number }[] = [{ text: "", ms: 900 }];
+    for (let i = 1; i <= formula.length; i++) {
+      const t = formula.slice(0, i);
+      frames.push({ text: t, refs: [t.length >= 3 ? "B2" : "", t.length >= 6 ? "C2" : ""], ms: 260 });
+    }
+    frames.push({ text: formula, refs: ["B2", "C2"], ms: 900 });
+    frames.push({ text: "$540.00", ms: 2600 });
+    let i = 0, timer: ReturnType<typeof setTimeout>;
+    const tick = () => {
+      const f = frames[i % frames.length]!;
+      setGhost({ cell: "E2", text: f.text, refs: f.refs });
+      i++;
+      timer = setTimeout(tick, f.ms);
+    };
+    tick();
+    return () => clearTimeout(timer);
+  }, [touched]);
   const b5 = cells.B5 ?? "";
   const solved = b5.startsWith("=") && new Workbook(cells).get("B5") === 347;
 
@@ -65,7 +90,7 @@ function Landing() {
                 {solved && <span className="flex items-center gap-1 rounded-full bg-success-soft px-2 py-0.5 text-xs font-medium text-success animate-rise"><Check className="size-3" />Correct</span>}
               </div>
               <div className="h-[322px] sm:h-[326px] w-full">
-                <Sheet cells={cells} onChange={setCells} cols={6} rows={6} initialSelected="B5" highlight={["B5"]} compact
+                <Sheet cells={cells} onChange={setCells} cols={6} rows={6} initialSelected="B5" highlight={["B5"]} compact ghost={touched ? null : ghost}
                   flash={solved ? { cell: "B5", kind: "correct", key: 1 } : null} />
               </div>
               <p className="mt-3 px-1 text-xs text-muted-foreground">
