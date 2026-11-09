@@ -11,8 +11,8 @@ const run = (lid: string, n: number, f: string) => {
 };
 
 describe("JSON lessons", () => {
-  it("loads lessons 6 and 7 in order", () => {
-    expect(JSON_LESSONS.map((l) => l.id)).toEqual(["true-and-false", "if-function"]);
+  it("loads JSON lessons sorted by lesson number", () => {
+    expect(JSON_LESSONS.map((l) => l.id)).toEqual(["count-function", "true-and-false", "if-function"]);
   });
   it("lesson 6 correct answers and results", () => {
     const cases: [number, string, string][] = [[0, "=A2>B2", "TRUE"], [1, "=A2>=B2", "TRUE"], [2, '=A2="Approved"', "TRUE"], [3, '=A2<>"Cancelled"', "TRUE"], [4, "=B2>A2", "FALSE"]];
