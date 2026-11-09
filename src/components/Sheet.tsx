@@ -12,6 +12,7 @@ type Props = {
   flash?: { cell: string; kind: "correct" | "wrong"; key: number } | null;
   onEnterCheck?: () => void;
   compact?: boolean;
+  ghost?: { cell: string; text: string; refs?: string[] } | null;
 };
 
 type Pos = { c: number; r: number };
@@ -34,7 +35,7 @@ function rangeRef(a: Pos, b: Pos): string {
 // Matches A1-style refs and ranges, but not function names like LOG10( or SUM(
 const REF_RE = /\$?[A-Za-z]{1,2}\$?\d{1,4}(?::\$?[A-Za-z]{1,2}\$?\d{1,4})?(?!\s*\()/g;
 
-export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", highlight = [], flash, onEnterCheck, compact }: Props) {
+export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", highlight = [], flash, onEnterCheck, compact, ghost }: Props) {
   const [sel, setSel] = useState(initialSelected);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
@@ -223,7 +224,9 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                   const isSel = a === sel;
                   const isHL = highlight.includes(a);
                   const fl = flash && flash.cell === a ? flash : null;
-                  const refIdx = refColorOf.get(a);
+                  const ghostRef = ghost?.refs?.indexOf(a) ?? -1;
+                  const refIdx = refColorOf.get(a) ?? (ghostRef >= 0 ? ghostRef : undefined);
+                  const ghostHere = !editing && ghost?.cell === a;
                   const inDrag = dragCells.has(a);
                   return (
                     <td key={fl ? `${a}-${fl.key}` : a} role="gridcell" aria-selected={isSel} aria-label={a}
@@ -265,6 +268,8 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                           spellCheck={false}
                           autoComplete="off"
                         />
+                      ) : ghostHere ? (
+                        <span className={cn(ghost!.text.startsWith("=") ? "font-mono text-[13px]" : "tabular-nums font-medium text-primary")}>{ghost!.text}{ghost!.text.startsWith("=") && <span className="ml-px inline-block h-3.5 w-px translate-y-0.5 animate-pulse bg-foreground" />}</span>
                       ) : (
                         formatValue(v)
                       )}
