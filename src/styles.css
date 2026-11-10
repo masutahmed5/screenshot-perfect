@@ -160,3 +160,19 @@
 .gw-reveal.gw-in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .gw-reveal { opacity: 1; transform: none; transition: none; } }
 /* ===== NEW SECTIONS END ===== */
+
+/* Recognition comparison only; no shared spreadsheet styles. */
+.gw-recognition .gw-watching { transition: background-color 1s ease; }
+.gw-recognition-started .gw-watching { background-color: var(--muted); }
+.gw-recognition .gw-forgotten { opacity: 0.5; }
+.gw-recognition-started .gw-forgotten { animation: gw-forget 1.5s ease forwards; }
+.gw-recognition-started .gw-practicing { animation: gw-practice-awake 700ms ease both; }
+.gw-recognition .gw-empty-cursor { animation: gw-cursor 1.1s step-end infinite; }
+@keyframes gw-forget { to { opacity: 0; transform: translateY(-4px); } }
+@keyframes gw-practice-awake { from { transform: translateY(5px); } to { transform: none; } }
+@keyframes gw-cursor { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .gw-recognition .gw-forgotten { opacity: 0; }
+  .gw-recognition .gw-empty-cursor { animation: none; }
+  .gw-recognition .gw-watching { background-color: var(--muted); }
+}
