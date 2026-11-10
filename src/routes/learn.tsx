@@ -12,6 +12,8 @@ export const Route = createFileRoute("/learn")({
       { name: "description", content: "Six Excel skills, from basic formulas to lookups and data cleaning." },
       { property: "og:title", content: "Skill map · Gridwise" },
       { property: "og:description", content: "Pick an Excel skill and start practicing in a real spreadsheet." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Learn,

@@ -13,6 +13,8 @@ export const Route = createFileRoute("/dashboard")({
       { name: "description", content: "Your daily Excel practice: continue, review and track your skills." },
       { property: "og:title", content: "Today · Gridwise" },
       { property: "og:description", content: "Pick up where you left off in Excel practice." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Dashboard,

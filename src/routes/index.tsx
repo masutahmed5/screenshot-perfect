@@ -15,6 +15,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Become confident in Excel in days. Practice formulas, lookups and data cleaning in a real spreadsheet with instant feedback." },
       { property: "og:title", content: "Gridwise · Learn Excel by doing" },
       { property: "og:description", content: "Practice in a real spreadsheet, not through videos. Instant, specific feedback on every formula." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Landing,

@@ -11,6 +11,8 @@ export const Route = createFileRoute("/practice/$lessonId")({
       { name: "description", content: `Practice ${loaderData?.title ?? "Excel"} in a real spreadsheet with instant feedback.` },
       { property: "og:title", content: `${loaderData?.title ?? "Practice"} · Gridwise` },
       { property: "og:description", content: "Hands-on Excel practice with instant, specific feedback." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Practice,

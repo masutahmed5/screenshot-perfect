@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check, Clock, Flame, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { RecognitionSection } from "@/components/RecognitionSection";
 
 // ===== NEW SECTIONS CONFIG (edit me later) =====
 export const GW_CONFIG: {
@@ -39,21 +40,7 @@ export function LandingStory() {
   return (
     <div ref={rootRef}>
       {/* 1 · RECOGNITION */}
-      <section className="mx-auto max-w-6xl px-6 py-24 text-center" data-gw-reveal>
-        <p className={eyebrow}>Sound familiar?</p>
-        <h2 className={`${h2} mx-auto mt-4 max-w-2xl`}>You watched the tutorial. Then you <em className="text-primary">froze at the formula bar.</em></h2>
-        <p className="mx-auto mt-6 max-w-xl leading-relaxed text-muted-foreground">Most people don't struggle with Excel because they can't learn it. They struggle because watching someone else click is not the same as doing it yourself. You nod along, pause, rewind, and a day later it's gone.</p>
-        <div className="mx-auto mt-12 grid max-w-3xl gap-4 sm:grid-cols-2">
-          <div className="rounded-2xl border bg-card p-8 shadow-soft">
-            <h3 className="text-lg font-semibold">Watching</h3>
-            <p className="mt-2 text-sm text-muted-foreground">Pause. Rewind. Forget.</p>
-          </div>
-          <div className="rounded-2xl border-2 border-primary bg-card p-8 shadow-soft">
-            <h3 className="text-lg font-semibold">Practicing</h3>
-            <p className="mt-2 text-sm text-muted-foreground">Type. Get checked. Remember.</p>
-          </div>
-        </div>
-      </section>
+      <RecognitionSection />
 
       {/* 2 · HANDS-ON */}
       <section className="border-y bg-card">
