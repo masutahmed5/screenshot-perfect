@@ -12,6 +12,8 @@ export const Route = createFileRoute("/review")({
       { name: "description", content: "A 5-minute review built from the formulas you missed." },
       { property: "og:title", content: "Review · Gridwise" },
       { property: "og:description", content: "Spaced review of your past Excel mistakes." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Review,
