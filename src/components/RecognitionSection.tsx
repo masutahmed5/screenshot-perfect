@@ -47,7 +47,7 @@ export function RecognitionSection() {
       <div className="mx-auto max-w-2xl text-center">
         <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">SOUND FAMILIAR?</p>
         <h2 id="gw-recognition-title" className="mt-4 font-serif text-4xl md:text-5xl">You watched the tutorial. Then you <em className="text-primary">froze at the formula bar.</em></h2>
-        <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">You've seen how Excel formulas work, but actually using them is a different story. Watching someone solve a spreadsheet problem doesn't mean you can solve it yourself. That's why Gridwise lets you practice Excel online with interactive exercises, type formulas into a real spreadsheet, and see instantly whether they work. No more just watching and hoping it sticks. Learn by doing, one exercise at a time.</p>
+        <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">You've seen how Excel formulas work, but actually using them is a different story. Watching someone solve a spreadsheet problem doesn't mean you can solve it yourself. That's why Gridwise lets you practice Excel online with interactive exercises, type formulas into a real spreadsheet, and see instantly whether they work.</p>
       </div>
 
       <div className="relative mt-12 grid items-stretch gap-5 lg:grid-cols-2 lg:gap-16">
@@ -93,9 +93,9 @@ export function RecognitionSection() {
         </article>
       </div>
 
-      <div className="mx-auto mt-10 max-w-xl text-center">
-        <p className="text-base leading-relaxed">Watching is borrowing someone else's confidence. Typing it yourself is how you keep it.</p>
-        <Button asChild size="lg" className="mt-6"><Link to="/practice/$lessonId" params={{ lessonId: "intro-to-excel" }}>Type your first formula<ArrowRight aria-hidden="true" /></Link></Button>
+      <div className="mx-auto mt-10 flex max-w-4xl flex-col items-center gap-5 text-center sm:flex-row sm:justify-between sm:text-left">
+        <p className="max-w-xl text-base leading-relaxed">No more just watching and hoping it sticks. Learn by doing, one exercise at a time.</p>
+        <Button asChild size="lg" className="shrink-0"><Link to="/practice/$lessonId" params={{ lessonId: "intro-to-excel" }}>Type your first formula<ArrowRight aria-hidden="true" /></Link></Button>
       </div>
     </section>
   );
