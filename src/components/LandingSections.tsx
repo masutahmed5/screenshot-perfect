@@ -21,8 +21,8 @@ const principles = [
 export function LearningPathSection() {
   return (
     <section className="gw-premium gw-learning border-y" aria-labelledby="gw-level-heading">
-      <div className="mx-auto max-w-6xl px-6 py-16 md:py-24 lg:py-28" data-gw-reveal>
-        <div className="mx-auto max-w-2xl text-center">
+      <div className="mx-auto max-w-6xl px-6 py-16 md:py-24 lg:py-28">
+        <div className="mx-auto max-w-2xl text-center" data-gw-reveal>
           <p className="gw-premium-eyebrow">For every level</p>
           <h2 id="gw-level-heading" className="gw-premium-heading mt-4">Never typed a formula? <em className="text-primary">Perfect.</em></h2>
           <p className="mt-5 font-medium">Already comfortable? Keep going.</p>
