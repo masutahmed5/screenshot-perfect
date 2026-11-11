@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react";
-import { Link } from "@tanstack/react-router";
-import { ArrowRight, Check, Quote } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
 import { RecognitionSection } from "@/components/RecognitionSection";
+import { LearningPathSection, WhyGridwiseSection, ClosingSection } from "@/components/LandingSections";
 
 // ===== NEW SECTIONS CONFIG (edit me later) =====
 export const GW_CONFIG: {
@@ -43,7 +42,7 @@ export function LandingStory() {
       <RecognitionSection />
 
       {/* 2 · HANDS-ON */}
-      <section className="border-y bg-card">
+      <section id="gw-hands-on" className="border-y bg-card">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-24 lg:grid-cols-2">
           <div data-gw-reveal>
             <p className={eyebrow}>Hands-on practice</p>
@@ -85,39 +84,10 @@ export function LandingStory() {
       </section>
 
       {/* 3 · BELONGING */}
-      <section className="bg-accent">
-        <div className="mx-auto max-w-4xl px-6 py-24 text-center" data-gw-reveal>
-          <p className={eyebrow}>For every level</p>
-          <h2 className={`${h2} mt-4`}>Never typed a formula? <em className="text-primary">Perfect.</em></h2>
-          <p className="mt-4 font-medium">Already comfortable? Keep going.</p>
-          <p className="mx-auto mt-4 max-w-xl leading-relaxed text-muted-foreground">Start with simple arithmetic and build step by step toward the skills that make colleagues ask "how did you do that?" Each track builds on the last, so you're never thrown into the deep end and never stuck repeating what you already know.</p>
-          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {GW_CONFIG.tracks.map((t, k) => (
-              <span key={t} className="flex items-center gap-3 rounded-full border bg-card px-4 py-2.5 text-left text-sm shadow-soft">
-                <span className="font-mono text-xs text-primary">{String(k + 1).padStart(2, "0")}</span>{t}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
+      <LearningPathSection />
 
       {/* 5 · TRUST */}
-      <section className="border-y bg-card">
-        <div className="mx-auto max-w-2xl px-6 py-24 text-center" data-gw-reveal>
-          <p className={eyebrow}>Why Gridwise</p>
-          <h2 className={`${h2} mt-4`}>We built the practice <em className="text-primary">we wished existed.</em></h2>
-          <p className="mt-6 leading-relaxed text-muted-foreground">Gridwise started with one simple belief: you don't learn Excel by watching, you learn it by using it. So we turned lessons into short exercises in a real spreadsheet, with instant checking, no videos and no fluff.</p>
-          {GW_CONFIG.founderNote && (
-            <figure className="mx-auto mt-10 max-w-md rounded-2xl border bg-background p-6 shadow-soft">
-              <Quote className="mx-auto size-5 text-primary" />
-              <blockquote className="mt-3 font-serif text-xl italic leading-relaxed">{GW_CONFIG.founderNote}</blockquote>
-              <figcaption className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                <span className="grid size-8 place-items-center rounded-full bg-accent font-serif text-sm text-accent-foreground">G</span>Founder, Gridwise
-              </figcaption>
-            </figure>
-          )}
-        </div>
-      </section>
+      <WhyGridwiseSection founderNote={GW_CONFIG.founderNote} />
 
       {/* 6 · SOCIAL PROOF (renders nothing while there are no testimonials) */}
       {GW_CONFIG.testimonials.length > 0 && (
@@ -137,18 +107,7 @@ export function LandingStory() {
       )}
 
       {/* 7 · AMBITION + ACTION */}
-      <section className="border-t">
-        <div className="mx-auto max-w-3xl px-6 py-24 text-center" data-gw-reveal>
-          <h2 className={h2}>Spreadsheet skills are your <em className="text-primary">quiet advantage.</em></h2>
-          <p className="mx-auto mt-6 max-w-xl leading-relaxed text-muted-foreground">Finance, operations, marketing, sales, admin: almost every team runs on spreadsheets. The person who can build a formula, clean messy data and catch an error in seconds saves hours and gets noticed. Start becoming that person today.</p>
-          <div className="mt-8">
-            <Button asChild size="lg">
-              <Link to="/practice/$lessonId" params={{ lessonId: "basics" }}>Try the first lesson <ArrowRight /></Link>
-            </Button>
-          </div>
-          <p className="mt-6 text-sm text-muted-foreground">No sign-up needed. Your first exercise takes just a few minutes.</p>
-        </div>
-      </section>
+      <ClosingSection />
     </div>
   );
 }
