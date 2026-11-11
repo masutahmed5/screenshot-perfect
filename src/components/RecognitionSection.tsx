@@ -47,13 +47,14 @@ export function RecognitionSection() {
       <div className="mx-auto max-w-2xl text-center">
         <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">SOUND FAMILIAR?</p>
         <h2 id="gw-recognition-title" className="mt-4 font-serif text-4xl md:text-5xl">You watched the tutorial. Then you <em className="text-primary">froze at the formula bar.</em></h2>
-        <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">Ten minutes in, you were sure you had it. Then the video ended, your own spreadsheet opened, and your hands didn’t know where to start.</p>
+        <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">You've seen how Excel formulas work, but actually using them is a different story. Watching someone solve a spreadsheet problem doesn't mean you can solve it yourself. That's why Gridwise lets you practice Excel online with interactive exercises, type formulas into a real spreadsheet, and see instantly whether they work. No more just watching and hoping it sticks. Learn by doing, one exercise at a time.</p>
       </div>
 
       <div className="relative mt-12 grid items-stretch gap-5 lg:grid-cols-2 lg:gap-16">
         <article className="gw-watching min-w-0 rounded-lg border bg-muted/50 p-5 sm:p-7" aria-label="Watching">
-          <h3 className="text-xl font-semibold">Watching</h3>
-          <p className="mt-2 min-h-12 text-sm leading-relaxed text-muted-foreground">Feels like learning. Gone by Thursday.</p>
+          <h3 className="text-xl font-semibold">WATCHING</h3>
+          <p className="mt-2 text-lg font-semibold">Feels like learning. Gone by Thursday.</p>
+          <p className="mt-2 min-h-12 text-sm leading-relaxed text-muted-foreground">You follow every step in the tutorial, but when it's your turn to use the formula, you don't know where to start.</p>
           <div className="relative mt-6 flex aspect-video flex-col justify-between overflow-hidden rounded border bg-card p-4" aria-label="Paused tutorial video at 3 minutes 42 seconds">
             <div className="flex items-center gap-2 text-xs text-muted-foreground"><span className="size-1.5 rounded-full bg-muted-foreground" />Paused</div>
             <div className="flex items-center justify-center gap-3 text-muted-foreground"><Play className="size-7" aria-hidden="true" /><span className="font-mono text-lg sm:text-xl">=VLOOKUP(</span></div>
@@ -72,8 +73,12 @@ export function RecognitionSection() {
         </div>
 
         <article className="gw-practicing min-w-0 rounded-lg border-2 border-primary bg-card p-5 shadow-lift sm:p-7" aria-label="Practicing">
-          <h3 className="text-xl font-semibold">Practicing</h3>
-          <p className="mt-2 min-h-12 text-sm leading-relaxed text-muted-foreground">Type the formula. Find out right then if it's right. Still know it on Monday.</p>
+          <div className="flex items-center justify-between gap-3">
+            <h3 className="text-xl font-semibold">PRACTICING</h3>
+            <span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">recommended</span>
+          </div>
+          <p className="mt-2 text-lg font-semibold">Type it yourself. Know it for good.</p>
+          <p className="mt-2 min-h-12 text-sm leading-relaxed text-muted-foreground">Practice real Excel formulas, get instant feedback, and understand what works as you solve each spreadsheet exercise.</p>
           <div className="mt-6 overflow-hidden rounded border">
             <table className="w-full table-fixed border-collapse text-left text-[11px] sm:text-xs" aria-label="Sales spreadsheet">
               <thead><tr className="bg-cell-header text-center text-[10px] text-muted-foreground"><th className="w-6 border-b border-r py-1" aria-label="Row number" />{["A", "B", "C", "D"].map((col) => <th key={col} className="border-b border-r py-1 font-normal last:border-r-0" scope="col">{col}</th>)}</tr></thead>
