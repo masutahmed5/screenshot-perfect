@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep the recognition comparison in an isolated presentation component with scoped animation styles; it must not alter the interactive lesson spreadsheet.
+- Keep landing learning-path, trust, and closing visuals in presentation-only sections with scoped styles and existing lesson destinations so they cannot affect lesson behavior.
