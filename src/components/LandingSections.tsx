@@ -1,6 +1,27 @@
+import { useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+function useSectionReveal() {
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const section = ref.current;
+    if (!section || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const target = section.querySelector("[data-gw-premium-reveal]");
+    if (!target) return;
+    target.classList.add("gw-reveal");
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        target.classList.add("gw-in");
+        observer.disconnect();
+      }
+    }, { threshold: 0.1 });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+  return ref;
+}
 
 const tracks = [
   { id: "intro-to-excel", title: "Intro to Excel", outcome: "Cells, rows, and moving around fast.", formula: "A1", level: "Beginner" },
@@ -19,10 +40,11 @@ const principles = [
 ];
 
 export function LearningPathSection() {
+  const ref = useSectionReveal();
   return (
-    <section className="gw-premium gw-learning border-y" aria-labelledby="gw-level-heading">
+    <section ref={ref} className="gw-premium gw-learning border-y" aria-labelledby="gw-level-heading">
       <div className="mx-auto max-w-6xl px-6 py-16 md:py-24 lg:py-28">
-        <div className="mx-auto max-w-2xl text-center" data-gw-reveal>
+        <div className="mx-auto max-w-2xl text-center" data-gw-premium-reveal>
           <p className="gw-premium-eyebrow">For every level</p>
           <h2 id="gw-level-heading" className="gw-premium-heading mt-4">Never typed a formula? <em className="text-primary">Perfect.</em></h2>
           <p className="mt-5 font-medium">Already comfortable? Keep going.</p>
@@ -61,10 +83,11 @@ function FormulaProof() {
 }
 
 export function WhyGridwiseSection({ founderNote }: { founderNote: string }) {
+  const ref = useSectionReveal();
   return (
-    <section className="gw-premium relative overflow-hidden bg-card" aria-labelledby="gw-why-heading">
+    <section ref={ref} className="gw-premium relative overflow-hidden bg-card" aria-labelledby="gw-why-heading">
       <div className="gw-premium-grid absolute inset-0" aria-hidden="true" />
-      <div className="relative mx-auto max-w-6xl px-6 py-16 md:py-24 lg:py-28" data-gw-reveal>
+      <div className="relative mx-auto max-w-6xl px-6 py-16 md:py-24 lg:py-28" data-gw-premium-reveal>
         <div className="mx-auto max-w-2xl text-center">
           <p className="gw-premium-eyebrow">Why Gridwise</p>
           <h2 id="gw-why-heading" className="gw-premium-heading mt-4">We built the practice <em className="text-primary">we wished existed.</em></h2>
@@ -87,10 +110,11 @@ export function WhyGridwiseSection({ founderNote }: { founderNote: string }) {
 }
 
 export function ClosingSection() {
+  const ref = useSectionReveal();
   return (
-    <section className="gw-premium relative overflow-hidden border-t bg-background" aria-labelledby="gw-closing-heading">
+    <section ref={ref} className="gw-premium relative overflow-hidden border-t bg-background" aria-labelledby="gw-closing-heading">
       <div className="gw-premium-grid absolute inset-0" aria-hidden="true" />
-      <div className="relative mx-auto max-w-3xl px-6 py-20 text-center md:py-28" data-gw-reveal>
+      <div className="relative mx-auto max-w-3xl px-6 py-20 text-center md:py-28" data-gw-premium-reveal>
         <div className="gw-selected-heading relative px-4 py-6 sm:px-8">
           <span className="gw-selection-handle gw-handle-tl" aria-hidden="true" /><span className="gw-selection-handle gw-handle-tr" aria-hidden="true" />
           <span className="gw-selection-handle gw-handle-bl" aria-hidden="true" /><span className="gw-selection-handle gw-handle-br" aria-hidden="true" />
