@@ -1,5 +1,7 @@
 # Tasks
 
+- [ ] Redesign only the learning path, Why Gridwise, and closing CTA; verify existing lesson links and four screen sizes.
+
 - [x] Redesign only the recognition section and verify its once-on-scroll animation, CTA, and mobile layout.
 
 - [x] Verify Excel-style in-cell editing + click-to-insert cell references in the preview (Sheet.tsx rewrite)
