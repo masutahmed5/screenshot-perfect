@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Check, Clock, Flame, Quote } from "lucide-react";
+import { ArrowRight, Check, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RecognitionSection } from "@/components/RecognitionSection";
 
@@ -101,22 +101,6 @@ export function LandingStory() {
         </div>
       </section>
 
-      {/* 4 · RELIEF + JOY */}
-      <section className="mx-auto max-w-6xl px-6 py-24">
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-2xl border bg-card p-8 shadow-soft" data-gw-reveal>
-            <Clock className="size-5 text-primary" />
-            <h3 className="mt-4 font-serif text-3xl tracking-tight">Got five minutes? <em className="text-primary">That's a lesson.</em></h3>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">No long course to clear your calendar for. Sessions take 3-7 minutes, so you can practice on a coffee break, between meetings or before bed. Your progress is saved on your device, so you always pick up where you left off.</p>
-          </div>
-          <div className="rounded-2xl border bg-card p-8 shadow-soft" data-gw-reveal>
-            <Flame className="size-5 text-warning" />
-            <h3 className="mt-4 font-serif text-3xl tracking-tight">Make it a <em className="text-primary">habit,</em> not a chore.</h3>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">Earn XP for every exercise, keep your daily streak alive and watch your skills stack up. Small wins add up quickly when each one takes only a few minutes.</p>
-          </div>
-        </div>
-      </section>
-
       {/* 5 · TRUST */}
       <section className="border-y bg-card">
         <div className="mx-auto max-w-2xl px-6 py-24 text-center" data-gw-reveal>
@@ -153,16 +137,16 @@ export function LandingStory() {
       )}
 
       {/* 7 · AMBITION + ACTION */}
-      <section className="bg-primary text-primary-foreground">
+      <section className="border-t">
         <div className="mx-auto max-w-3xl px-6 py-24 text-center" data-gw-reveal>
-          <h2 className={h2}>Spreadsheet skills are your <em>quiet advantage.</em></h2>
-          <p className="mx-auto mt-6 max-w-xl leading-relaxed text-primary-foreground/80">Finance, operations, marketing, sales, admin: almost every team runs on spreadsheets. The person who can build a formula, clean messy data and catch an error in seconds saves hours and gets noticed. Start becoming that person today.</p>
+          <h2 className={h2}>Spreadsheet skills are your <em className="text-primary">quiet advantage.</em></h2>
+          <p className="mx-auto mt-6 max-w-xl leading-relaxed text-muted-foreground">Finance, operations, marketing, sales, admin: almost every team runs on spreadsheets. The person who can build a formula, clean messy data and catch an error in seconds saves hours and gets noticed. Start becoming that person today.</p>
           <div className="mt-8">
-            <Button asChild size="lg" className="bg-card text-primary hover:bg-card/90">
+            <Button asChild size="lg">
               <Link to="/practice/$lessonId" params={{ lessonId: "basics" }}>Try the first lesson <ArrowRight /></Link>
             </Button>
           </div>
-          <p className="mt-6 text-sm text-primary-foreground/70">No sign-up needed. Your first exercise takes just a few minutes.</p>
+          <p className="mt-6 text-sm text-muted-foreground">No sign-up needed. Your first exercise takes just a few minutes.</p>
         </div>
       </section>
     </div>

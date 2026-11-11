@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, Check, Keyboard, ListChecks, MessageSquareText, ScanSearch, Target, Wrench } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Logo } from "@/components/Logo";
@@ -73,8 +73,6 @@ function Landing() {
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
         <Logo />
         <nav className="flex items-center gap-6 text-sm text-muted-foreground">
-          <a href="#how" className="hidden hover:text-foreground sm:inline">How it works</a>
-          <a href="#pricing" className="hidden hover:text-foreground sm:inline">Pricing</a>
           <Button asChild size="sm"><Link to="/dashboard">Start practicing</Link></Button>
         </nav>
       </header>
@@ -120,56 +118,6 @@ function Landing() {
       </section>
 
       <LandingStory />
-
-      <section id="how" className="mx-auto max-w-6xl px-6 py-24">
-        <h2 className="max-w-xl font-serif text-5xl tracking-tight">Feedback that reads like a patient senior analyst.</h2>
-        <div className="mt-14 grid gap-px overflow-hidden rounded-2xl border bg-border md:grid-cols-3">
-          {[
-            { n: "01", t: "Read the brief", d: "A real scenario: a coffee chain, an HR export, a messy CRM file." },
-            { n: "02", t: "Write the formula", d: "In a real grid with a formula bar, autocomplete and keyboard navigation." },
-            { n: "03", t: "Get specific feedback", d: "Wrong range? Missing $? Text instead of numbers? We'll tell you which one." },
-          ].map((s) => (
-            <div key={s.n} className="bg-card p-8"><span className="font-mono text-xs text-primary">{s.n}</span><h3 className="mt-4 text-lg font-semibold">{s.t}</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.d}</p></div>
-          ))}
-        </div>
-
-        <div className="mt-20 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            { i: ListChecks, t: "Real formula checking", d: "Checks both the value and the formula. Rejects typed answers and accepts any correct alternative." },
-            { i: ScanSearch, t: "Error diagnosis", d: "Spots off-by-one ranges, wrong match types and #N/A causes, and explains each one." },
-            { i: MessageSquareText, t: "Three-step hints", d: "A nudge, then a hint, then a walkthrough. The full answer only appears after you've tried." },
-            { i: Target, t: "Daily review", d: "Exercises you missed come back until you get them right on the first try." },
-            { i: Wrench, t: "Debug Lab", d: "Fix broken workbooks with bad ranges, circular references and numbers stored as text.", soon: true },
-            { i: Keyboard, t: "Shortcut trainer", d: "Timed drills for the shortcuts you actually use, on Mac or Windows.", soon: true },
-          ].map(({ i: I, t, d, soon }) => (
-            <div key={t}>
-              <I className="size-5 text-primary" />
-              <h3 className="mt-4 flex items-center gap-2 font-semibold">{t}{soon && <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">Soon</span>}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{d}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section id="pricing" className="border-t bg-card">
-        <div className="mx-auto max-w-6xl px-6 py-24">
-          <h2 className="font-serif text-5xl tracking-tight">Simple pricing</h2>
-          <div className="mt-12 grid gap-4 md:grid-cols-3">
-            {[
-              { n: "Free", p: "$0", d: "Start today", f: ["Core lessons", "Daily review", "Basic shortcuts", "Limited AI hints"] },
-              { n: "Pro", p: "$12", d: "per month", f: ["Unlimited AI tutor", "Missions & Debug Lab", "Interview Mode", "Certificates & badges"], hl: true },
-              { n: "Teams", p: "Custom", d: "for companies & classrooms", f: ["Seats & invites", "Cohort analytics", "Custom content", "CSV export"] },
-            ].map((t) => (
-              <div key={t.n} className={t.hl ? "rounded-2xl border-2 border-primary bg-background p-7 shadow-lift" : "rounded-2xl border bg-background p-7"}>
-                <div className="text-sm font-medium">{t.n}</div>
-                <div className="mt-4 font-serif text-4xl">{t.p}</div>
-                <div className="text-sm text-muted-foreground">{t.d}</div>
-                <ul className="mt-6 space-y-2.5 text-sm">{t.f.map((x) => <li key={x} className="flex gap-2"><Check className="mt-0.5 size-4 text-primary" />{x}</li>)}</ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="mx-auto max-w-3xl px-6 py-24">
         <h2 className="font-serif text-4xl tracking-tight">Questions</h2>
