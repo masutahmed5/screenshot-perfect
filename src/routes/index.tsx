@@ -133,9 +133,20 @@ function Landing() {
         </Accordion>
       </section>
 
-      <footer className="border-t">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8 text-sm text-muted-foreground"><Logo /><span>Learn by doing.</span></div>
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 border-t px-6 py-4 text-xs text-muted-foreground"><span>© {new Date().getFullYear()} Gridwise</span><nav className="ml-auto flex gap-5"><Link to="/terms" className="hover:text-foreground">Terms</Link><Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link><Link to="/sitemap" className="hover:text-foreground">Sitemap</Link></nav></div>
+      <footer className="gw-footer">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8 text-sm">
+          <span className="flex items-center gap-2 text-[15px] font-semibold tracking-tight">
+            <span className="grid size-6 grid-cols-2 gap-[2px] rounded-md bg-primary-foreground p-[5px]" aria-hidden>
+              <span className="rounded-[1px] bg-primary" />
+              <span className="rounded-[1px] bg-primary/50" />
+              <span className="rounded-[1px] bg-primary/50" />
+              <span className="rounded-[1px] bg-primary" />
+            </span>
+            Gridwise
+          </span>
+          <span>Learn by doing.</span>
+        </div>
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 border-t border-primary-foreground/25 px-6 py-4 text-xs"><span>© {new Date().getFullYear()} Gridwise</span><nav className="ml-auto flex gap-5"><Link to="/terms" className="hover:underline">Terms</Link><Link to="/privacy" className="hover:underline">Privacy Policy</Link><Link to="/sitemap" className="hover:underline">Sitemap</Link></nav></div>
       </footer>
     </div>
   );

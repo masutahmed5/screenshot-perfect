@@ -94,7 +94,7 @@ export function WhyGridwiseSection({ founderNote }: { founderNote: string }) {
         <div className="mx-auto max-w-2xl text-center">
           <p className="gw-premium-eyebrow">Why Gridwise</p>
           <h2 id="gw-why-heading" className="gw-premium-heading mt-4">We built the practice <em className="text-primary">we wished existed.</em></h2>
-          <p className="mt-6 leading-relaxed text-muted-foreground">Gridwise started with one simple belief: you don't learn Excel by watching, you learn it by using it. So we turned lessons into short exercises in a real spreadsheet, with instant checking, no videos and no fluff.</p>
+          <p className="mt-6 leading-relaxed text-muted-foreground">Gridwise started with one simple belief: you don't learn Excel by watching someone else use it — you learn by doing it yourself. That's why we created a practical way to learn Excel online through short, interactive Excel exercises in a real spreadsheet. Practice formulas, explore useful functions, and solve spreadsheet challenges with instant feedback on every answer. No long videos, no endless tutorials, just hands-on Excel practice that helps you build skills through experience.</p>
           <FormulaProof />
           {founderNote && <blockquote className="mt-8 font-serif text-xl italic">{founderNote}</blockquote>}
         </div>
@@ -123,7 +123,7 @@ export function ClosingSection() {
           <span className="gw-selection-handle gw-handle-bl" aria-hidden="true" /><span className="gw-selection-handle gw-handle-br" aria-hidden="true" />
           <h2 id="gw-closing-heading" className="gw-premium-heading">Spreadsheet skills are your <em className="text-primary">quiet advantage.</em></h2>
         </div>
-        <p className="mx-auto mt-8 max-w-xl leading-relaxed text-muted-foreground">Finance, operations, marketing, sales, admin: almost every team runs on spreadsheets. The person who can build a formula, clean messy data and catch an error in seconds saves hours and gets noticed. Start becoming that person today.</p>
+        <p className="mx-auto mt-8 max-w-2xl leading-relaxed text-muted-foreground">From finance and operations to marketing, sales, and administration, almost every industry relies on Excel. Knowing how to use Excel formulas, functions, and data analysis tools can help you work faster, organize information, and solve everyday business problems. Build practical Excel skills through hands-on practice, learn to handle spreadsheets with confidence, and become the person teams can count on to get things done.</p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <Button asChild size="lg" className="gw-closing-button group h-12 rounded-xl shadow-soft">
             <Link to="/practice/$lessonId" params={{ lessonId: "basics" }}>Try the first lesson <ArrowRight aria-hidden className="transition-transform group-hover:translate-x-1" /></Link>
