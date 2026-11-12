@@ -93,7 +93,7 @@ export function RecognitionSection() {
         </article>
       </div>
 
-      <div className="mx-auto mt-10 flex max-w-4xl flex-col items-center gap-5 text-center sm:flex-row sm:justify-between sm:text-left">
+      <div className="mx-auto mt-10 flex max-w-4xl flex-col items-center gap-5 text-center">
         <p className="max-w-xl text-base leading-relaxed">No more just watching and hoping it sticks. Learn by doing, one exercise at a time.</p>
         <Button asChild size="lg" className="shrink-0"><Link to="/practice/$lessonId" params={{ lessonId: "intro-to-excel" }}>Type your first formula<ArrowRight aria-hidden="true" /></Link></Button>
       </div>

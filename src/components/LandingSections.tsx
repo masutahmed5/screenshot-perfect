@@ -69,6 +69,11 @@ export function LearningPathSection() {
             </Button>
           ))}
         </div>
+        <div className="mt-10 flex justify-center">
+          <Button asChild size="lg">
+            <Link to="/practice/$lessonId" params={{ lessonId: "intro-to-excel" }}>Start your first lesson <ArrowRight aria-hidden className="ml-1" /></Link>
+          </Button>
+        </div>
       </div>
     </section>
   );
