@@ -118,11 +118,7 @@ export function ClosingSection() {
     <section ref={ref} className="gw-premium relative overflow-hidden border-t bg-background" aria-labelledby="gw-closing-heading">
       <div className="gw-premium-grid absolute inset-0" aria-hidden="true" />
       <div className="relative mx-auto max-w-5xl px-6 py-20 text-center md:py-28" data-gw-premium-reveal>
-        <div className="gw-selected-heading relative mx-auto w-fit max-w-full px-4 py-6 sm:px-8">
-          <span className="gw-selection-handle gw-handle-tl" aria-hidden="true" /><span className="gw-selection-handle gw-handle-tr" aria-hidden="true" />
-          <span className="gw-selection-handle gw-handle-bl" aria-hidden="true" /><span className="gw-selection-handle gw-handle-br" aria-hidden="true" />
-          <h2 id="gw-closing-heading" className="gw-premium-heading">Spreadsheet skills are your <em className="text-primary">quiet advantage.</em></h2>
-        </div>
+        <h2 id="gw-closing-heading" className="gw-premium-heading">Spreadsheet skills are your <em className="text-primary">quiet advantage.</em></h2>
         <p className="mx-auto mt-8 max-w-2xl leading-relaxed text-muted-foreground">From finance and operations to marketing, sales, and administration, almost every industry relies on Excel. Knowing how to use Excel formulas, functions, and data analysis tools can help you work faster, organize information, and solve everyday business problems. Build practical Excel skills through hands-on practice, learn to handle spreadsheets with confidence, and become the person teams can count on to get things done.</p>
         <div className="gw-closing-cols mx-auto mt-14 grid max-w-4xl gap-8 text-left md:grid-cols-2 md:gap-12">
           <div className="gw-closing-col">
@@ -135,10 +131,9 @@ export function ClosingSection() {
           </div>
         </div>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-          <Button asChild size="lg" className="gw-closing-button group h-12 rounded-xl shadow-soft">
+          <Button asChild size="lg" className="gw-closing-button group h-14 rounded-xl px-8 text-base font-semibold shadow-soft">
             <Link to="/practice/$lessonId" params={{ lessonId: "basics" }}>Try the first lesson <ArrowRight aria-hidden className="transition-transform group-hover:translate-x-1" /></Link>
           </Button>
-          <Button asChild variant="link" className="h-12"><a href="#gw-hands-on">See how it works</a></Button>
         </div>
         <p className="mt-6 text-sm text-muted-foreground">No sign-up needed to start. Practice in your browser.</p>
       </div>

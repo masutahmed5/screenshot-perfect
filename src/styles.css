@@ -211,13 +211,13 @@
 .gw-proof-cell { border: 1.5px solid var(--primary); position: relative; }
 .gw-proof-cell::after { content: ""; position: absolute; right: -3px; bottom: -3px; width: 5px; height: 5px; background: var(--primary); }
 .gw-principle:first-child { border: 0; }
-.gw-selected-heading { border: 1.5px solid var(--gw-selection-border); }
-.gw-selection-handle { position: absolute; width: 6px; height: 6px; background: var(--primary); }
-.gw-handle-tl { top: -3px; left: -3px; }
-.gw-handle-tr { top: -3px; right: -3px; }
-.gw-handle-bl { bottom: -3px; left: -3px; }
-.gw-handle-br { bottom: -3px; right: -3px; }
 .gw-closing-button { transition: transform 200ms ease-out, background-color 200ms ease-out; }
+.gw-premium .gw-reveal.gw-in .gw-closing-button { animation: gw-closing-cta 700ms cubic-bezier(0.2, 0.8, 0.2, 1) 180ms both; }
+@keyframes gw-closing-cta {
+  0% { transform: translateY(6px) scale(0.98); }
+  65% { transform: translateY(-2px) scale(1.01); }
+  100% { transform: translateY(0) scale(1); }
+}
 .gw-closing-col { border-top: 1px solid var(--border); padding-top: 1.25rem; }
 .gw-closing-col h3 { color: var(--foreground); }
 .gw-footer { background: var(--primary); color: var(--primary-foreground); }
@@ -244,6 +244,7 @@
 @media (prefers-reduced-motion: reduce) {
   .gw-premium .gw-reveal { opacity: 1; transform: none; transition: none; }
   .gw-track:hover, .gw-track:focus-visible, .gw-closing-button:hover { transform: none; }
+  .gw-premium .gw-reveal.gw-in .gw-closing-button { animation: none; }
 }
 
 /* Recognition comparison only; no shared spreadsheet styles. */
