@@ -163,6 +163,7 @@
 
 /* Presentation-only learning path, trust, and closing sections. */
 .gw-premium {
+  color: var(--foreground);
   --gw-band-tint: color-mix(in srgb, var(--primary) 5%, var(--background));
   --gw-grid-line: color-mix(in srgb, var(--foreground) 5%, transparent);
   --gw-selection-border: color-mix(in srgb, var(--primary) 40%, var(--border));
@@ -178,6 +179,7 @@
 }
 .gw-premium .gw-reveal { transition-duration: 220ms; }
 .gw-track {
+  color: var(--card-foreground);
   position: relative;
   z-index: 1;
   display: flex;
@@ -205,6 +207,7 @@
 }
 .gw-formula-chip { max-width: 100%; overflow-wrap: anywhere; color: var(--primary); }
 .gw-formula-chip::first-line { background: var(--gw-band-tint); }
+@media (max-width: 767px) { .gw-track { min-height: 208px; } }
 .gw-proof-cell { border: 1.5px solid var(--primary); position: relative; }
 .gw-proof-cell::after { content: ""; position: absolute; right: -3px; bottom: -3px; width: 5px; height: 5px; background: var(--primary); }
 .gw-principle:first-child { border: 0; }

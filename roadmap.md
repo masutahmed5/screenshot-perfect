@@ -1,6 +1,6 @@
 # Tasks
 
-- [ ] Redesign only the learning path, Why Gridwise, and closing CTA; verify existing lesson links and four screen sizes.
+- [x] Redesign only the learning path, Why Gridwise, and closing CTA; verify existing lesson links and four screen sizes. Placement-test link omitted because no placement test exists and routing is out of scope.
 
 - [x] Redesign only the recognition section and verify its once-on-scroll animation, CTA, and mobile layout.
 
