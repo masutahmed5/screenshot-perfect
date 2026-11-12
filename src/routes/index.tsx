@@ -112,7 +112,7 @@ function Landing() {
       <section className="border-y bg-card">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 py-10 text-center md:grid-cols-4">
           {[["3–7 min", "per session"], ["Instant", "formula checking"], ["Any", "correct formula accepted"], ["0", "videos to sit through"]].map(([a, b]) => (
-            <div key={b}><div className="font-serif text-3xl">{a}</div><div className="mt-1 text-sm text-muted-foreground">{b}</div></div>
+            <div key={b}><div className="font-serif text-3xl font-bold text-primary">{a}</div><div className="mt-1 text-sm font-semibold text-primary">{b}</div></div>
           ))}
         </div>
       </section>

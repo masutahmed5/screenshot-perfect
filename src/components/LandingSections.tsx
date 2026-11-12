@@ -135,7 +135,7 @@ export function ClosingSection() {
             <Link to="/practice/$lessonId" params={{ lessonId: "basics" }}>Try the first lesson <ArrowRight aria-hidden className="transition-transform group-hover:translate-x-1" /></Link>
           </Button>
         </div>
-        <p className="mt-6 text-sm text-muted-foreground">No sign-up needed to start. Practice in your browser.</p>
+        <p className="mt-6 text-sm font-semibold text-primary">No sign-up needed to start. Practice in your browser.</p>
       </div>
     </section>
   );
