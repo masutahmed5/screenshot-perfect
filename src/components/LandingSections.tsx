@@ -117,14 +117,24 @@ export function ClosingSection() {
   return (
     <section ref={ref} className="gw-premium relative overflow-hidden border-t bg-background" aria-labelledby="gw-closing-heading">
       <div className="gw-premium-grid absolute inset-0" aria-hidden="true" />
-      <div className="relative mx-auto max-w-3xl px-6 py-20 text-center md:py-28" data-gw-premium-reveal>
-        <div className="gw-selected-heading relative px-4 py-6 sm:px-8">
+      <div className="relative mx-auto max-w-5xl px-6 py-20 text-center md:py-28" data-gw-premium-reveal>
+        <div className="gw-selected-heading relative mx-auto w-fit max-w-full px-4 py-6 sm:px-8">
           <span className="gw-selection-handle gw-handle-tl" aria-hidden="true" /><span className="gw-selection-handle gw-handle-tr" aria-hidden="true" />
           <span className="gw-selection-handle gw-handle-bl" aria-hidden="true" /><span className="gw-selection-handle gw-handle-br" aria-hidden="true" />
           <h2 id="gw-closing-heading" className="gw-premium-heading">Spreadsheet skills are your <em className="text-primary">quiet advantage.</em></h2>
         </div>
         <p className="mx-auto mt-8 max-w-2xl leading-relaxed text-muted-foreground">From finance and operations to marketing, sales, and administration, almost every industry relies on Excel. Knowing how to use Excel formulas, functions, and data analysis tools can help you work faster, organize information, and solve everyday business problems. Build practical Excel skills through hands-on practice, learn to handle spreadsheets with confidence, and become the person teams can count on to get things done.</p>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <div className="gw-closing-cols mx-auto mt-14 grid max-w-4xl gap-8 text-left md:grid-cols-2 md:gap-12">
+          <div className="gw-closing-col">
+            <h3 className="font-serif text-xl leading-snug">Online Excel Practice</h3>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">Learn Excel by actually using it, not just watching tutorials. Excel Exercises lets you practice functions, formulas, and keyboard shortcuts right in your browser, with no downloads or complicated setup. Work through interactive exercises, try real-world spreadsheet projects, and build your Excel skills one step at a time. Everything you need to practice is right here, online.</p>
+          </div>
+          <div className="gw-closing-col">
+            <h3 className="font-serif text-xl leading-snug">Excel Practice for Busy People</h3>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">You don't need hours of tutorials or lengthy articles to get better at Excel. Just a few minutes of hands-on practice can help you build skills that actually stick. Gridwise makes it easy to learn Excel online through short, interactive exercises that fit into your day. Practice formulas, explore Excel functions, and work through real spreadsheet challenges at your own pace. Each lesson introduces something new, gives you a chance to try it yourself, and provides instant feedback along the way. No long videos, no endless reading, and no unnecessary distractions. Just practical Excel practice that helps you make the most of every minute.</p>
+          </div>
+        </div>
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Button asChild size="lg" className="gw-closing-button group h-12 rounded-xl shadow-soft">
             <Link to="/practice/$lessonId" params={{ lessonId: "basics" }}>Try the first lesson <ArrowRight aria-hidden className="transition-transform group-hover:translate-x-1" /></Link>
           </Button>
