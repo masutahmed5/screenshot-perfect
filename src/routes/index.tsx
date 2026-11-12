@@ -135,6 +135,7 @@ function Landing() {
 
       <footer className="border-t">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8 text-sm text-muted-foreground"><Logo /><span>Learn by doing.</span></div>
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 border-t px-6 py-4 text-xs text-muted-foreground"><span>© {new Date().getFullYear()} Gridwise</span><nav className="ml-auto flex gap-5"><Link to="/terms" className="hover:text-foreground">Terms</Link><Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link><Link to="/sitemap" className="hover:text-foreground">Sitemap</Link></nav></div>
       </footer>
     </div>
   );

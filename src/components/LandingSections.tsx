@@ -31,6 +31,9 @@ const tracks = [
   { id: "lookups", title: "VLOOKUP, XLOOKUP & INDEX/MATCH", outcome: "Find anything in any table.", formula: "=XLOOKUP(A2,F:F,G:G)", level: "Intermediate" },
   { id: "text", title: "Clean & reshape text", outcome: "Fix messy names, codes and dates.", formula: "=TRIM(A2)", level: "Intermediate" },
   { id: "cleaning", title: "Debug & clean", outcome: "Track down errors and fix broken sheets.", formula: "#N/A", level: "Advanced" },
+  { id: "math", title: "Conditional summaries", outcome: "Summarize data by specific criteria with SUMIFS and COUNTIFS.", formula: '=SUMIFS(C:C,A:A,"East")', level: "Intermediate" },
+  { id: "cleaning", title: "Error trapping", outcome: "Stop broken formulas from ruining dashboards and totals.", formula: '=IFERROR(formula,"Fallback")', level: "Advanced" },
+  { id: "lookups", title: "Dynamic filtering", outcome: "A modern core formula in Microsoft 365 and Excel 2021+.", formula: '=FILTER(A2:D50,C2:C50="Active")', level: "Advanced" },
 ];
 
 const principles = [
@@ -50,18 +53,18 @@ export function LearningPathSection() {
           <p className="mt-5 font-medium">Already comfortable? Keep going.</p>
           <p className="mt-4 leading-relaxed text-muted-foreground">Start with simple arithmetic and build step by step toward the skills that make colleagues ask "how did you do that?" Each track builds on the last, so you're never thrown into the deep end and never stuck repeating what you already know.</p>
         </div>
-        <div className="gw-track-grid relative mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-12">
+        <div className="gw-track-grid relative mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
           {tracks.map((track, index) => (
-            <Button key={track.id} asChild variant="outline" className={`gw-track group ${index < 4 ? "lg:col-span-3" : "lg:col-span-4"}`}>
+            <Button key={track.title} asChild variant="outline" className={`gw-track group`}>
               <Link to="/practice/$lessonId" params={{ lessonId: track.id }}>
                 <div className="flex items-center gap-2">
                   <span className="bg-card font-mono text-xs text-primary">{String(index + 1).padStart(2, "0")}</span>
                   <span className="rounded-full border px-2 py-1 text-[11px] font-normal text-muted-foreground">{track.level}</span>
                   <ArrowUpRight aria-hidden className="ml-auto text-primary opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100" />
                 </div>
-                <h3 className="mt-5 text-lg font-medium leading-snug">{track.title}</h3>
-                <p className="mt-3 text-sm font-normal leading-relaxed text-muted-foreground">{track.outcome}</p>
-                <code className="gw-formula-chip mt-auto self-start pt-6 font-mono text-[11px] font-normal">{track.formula}</code>
+                <h3 className="mt-3 text-base font-medium leading-snug">{track.title}</h3>
+                <p className="mt-2 text-xs font-normal leading-relaxed text-muted-foreground">{track.outcome}</p>
+                <code className="gw-formula-chip mt-auto self-start pt-4 font-mono text-[11px] font-normal">{track.formula}</code>
               </Link>
             </Button>
           ))}
