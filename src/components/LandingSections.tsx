@@ -49,9 +49,8 @@ export function LearningPathSection() {
       <div className="mx-auto max-w-6xl px-6 py-16 md:py-24 lg:py-28">
         <div className="mx-auto max-w-2xl text-center" data-gw-premium-reveal>
           <p className="gw-premium-eyebrow">For every level</p>
-          <h2 id="gw-level-heading" className="gw-premium-heading mt-4">Never typed a formula? <em className="text-primary">Perfect.</em></h2>
-          <p className="mt-5 font-medium">Already comfortable? Keep going.</p>
-          <p className="mt-4 leading-relaxed text-muted-foreground">Start with simple arithmetic and build step by step toward the skills that make colleagues ask "how did you do that?" Each track builds on the last, so you're never thrown into the deep end and never stuck repeating what you already know.</p>
+          <h2 id="gw-level-heading" className="gw-premium-heading mt-4">Learn the Excel you need, <em className="text-primary">then build on it.</em></h2>
+          <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-muted-foreground">Practice Excel online, starting with spreadsheet basics and essential Excel formulas and functions. Work your way up to advanced Excel skills like XLOOKUP, SUMIFS and data analysis. Our structured Excel lessons are organised by skill level, so beginners can build a solid foundation while experienced users can focus on the formulas and techniques they want to master.</p>
         </div>
         <div className="gw-track-grid relative mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
           {tracks.map((track, index) => (
