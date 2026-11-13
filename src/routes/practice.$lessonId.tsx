@@ -21,5 +21,5 @@ export const Route = createFileRoute("/practice/$lessonId")({
 function Practice() {
   const { lessonId } = Route.useParams();
   const lesson = getLesson(lessonId)!;
-  return <AppShell><Player key={lessonId} steps={lesson.steps} title={lesson.title} /></AppShell>;
+  return <AppShell><Player key={lessonId} steps={lesson.steps} title={lesson.title} lessonId={lessonId} /></AppShell>;
 }

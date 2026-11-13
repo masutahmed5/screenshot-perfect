@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Check, Lightbulb, SkipForward, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Lightbulb, List, PanelRight, SkipForward, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Sheet as UiSheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Sheet } from "./Sheet";
-import type { Step } from "@/lib/lessons";
+import { LessonListPanel, lessonLevel } from "./LessonListPanel";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { LESSONS, type Step } from "@/lib/lessons";
 import { checkStep, type CheckResult } from "@/lib/validate";
 import { recordComplete, recordMistake, xpFor } from "@/lib/progress";
 import { cn } from "@/lib/utils";
 
-export function Player({ steps, title, exitTo = "/learn" }: { steps: Step[]; title: string; exitTo?: "/learn" | "/dashboard" | "/review" }) {
+/** Single setting for the practice spreadsheet zoom (1 = original size). Landing-page sheets don't set it and stay untouched. */
+const PRACTICE_SHEET_SCALE = 0.88;
+
+export function Player({ steps, title, exitTo = "/learn", lessonId }: { steps: Step[]; title: string; exitTo?: "/learn" | "/dashboard" | "/review"; lessonId?: string }) {
   const [i, setI] = useState(0);
   const step = steps[i];
   const [cells, setCells] = useState(step?.workbook ?? {});
@@ -17,6 +23,12 @@ export function Player({ steps, title, exitTo = "/learn" }: { steps: Step[]; tit
   const [result, setResult] = useState<CheckResult | null>(null);
   const [flash, setFlash] = useState<{ cell: string; kind: "correct" | "wrong"; key: number } | null>(null);
   const [done, setDone] = useState(false);
+  const [panelOpen, setPanelOpen] = useState(true);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const isMobile = useIsMobile();
+  const lessonIndex = lessonId ? LESSONS.findIndex((l) => l.id === lessonId) : -1;
+  const prevLesson = lessonIndex > 0 ? LESSONS[lessonIndex - 1] : null;
+  const nextLesson = lessonIndex >= 0 && lessonIndex < LESSONS.length - 1 ? LESSONS[lessonIndex + 1] : null;
 
   useEffect(() => {
     if (!step) return;
@@ -52,7 +64,7 @@ export function Player({ steps, title, exitTo = "/learn" }: { steps: Step[]; tit
 
   return (
     <div className="flex h-[calc(100vh-3.5rem)] flex-col">
-      <div className="grid min-h-0 flex-1 gap-4 p-4 lg:grid-cols-[380px_1fr]">
+      <div className={cn("grid min-h-0 flex-1 gap-4 p-4 lg:grid-cols-[380px_1fr]", lessonId && panelOpen && "lg:grid-cols-[380px_1fr_288px]")}>
         <section className="flex min-h-0 flex-col overflow-auto rounded-xl border bg-card p-6 shadow-soft" aria-labelledby="task-title">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{title}</span>
@@ -61,6 +73,11 @@ export function Player({ steps, title, exitTo = "/learn" }: { steps: Step[]; tit
           <div className="mt-3 flex gap-1.5" aria-label={`Step ${i + 1} of ${steps.length}`}>
             {steps.map((s, k) => <span key={s.id} className={cn("h-1 flex-1 rounded-full bg-muted transition-colors", k < i && "bg-primary", k === i && "bg-primary/40")} />)}
           </div>
+          {lessonIndex >= 0 && (
+            <p className="mt-3 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              Lesson {String(lessonIndex + 1).padStart(2, "0")} · {lessonLevel(lessonIndex)}
+            </p>
+          )}
           <h1 id="task-title" className="mt-6 text-2xl font-semibold tracking-tight">{step.title}</h1>
           <p className="mt-2.5 text-base leading-relaxed text-muted-foreground">{renderInline(step.scenario)}</p>
           <div className="mt-5 rounded-lg border-l-2 border-primary bg-accent/50 px-4 py-3.5 text-base leading-relaxed">{renderInline(step.prompt)}</div>
@@ -90,19 +107,65 @@ export function Player({ steps, title, exitTo = "/learn" }: { steps: Step[]; tit
 
         <div className="min-h-[360px]">
           <Sheet cells={cells} onChange={(c) => { setCells(c); if (result && !result.ok) setResult(null); }} cols={step.cols} rows={step.rows}
-            initialSelected={step.targetCells[0]!} highlight={step.targetCells} flash={flash} onEnterCheck={check} />
+            initialSelected={step.targetCells[0]!} highlight={step.targetCells} flash={flash} onEnterCheck={check} scale={PRACTICE_SHEET_SCALE} />
         </div>
+        {lessonId && panelOpen && (
+          <aside className="hidden min-h-0 lg:block" aria-label="Lesson list">
+            <LessonListPanel currentId={lessonId} />
+          </aside>
+        )}
       </div>
 
       <footer className="flex items-center justify-between border-t bg-card px-5 py-3">
         <div className="flex gap-2">
+          {lessonId && (
+            <>
+              <Button variant="ghost" size="sm" disabled={!prevLesson} asChild={!!prevLesson}>
+                {prevLesson ? (
+                  <Link to="/practice/$lessonId" params={{ lessonId: prevLesson.id }}><ArrowLeft className="size-4" />Prev</Link>
+                ) : (
+                  <span><ArrowLeft className="size-4" />Prev</span>
+                )}
+              </Button>
+              <Button variant="ghost" size="sm" disabled={!nextLesson} asChild={!!nextLesson}>
+                {nextLesson ? (
+                  <Link to="/practice/$lessonId" params={{ lessonId: nextLesson.id }}>Next<ArrowRight className="size-4" /></Link>
+                ) : (
+                  <span>Next<ArrowRight className="size-4" /></span>
+                )}
+              </Button>
+            </>
+          )}
           <Button variant="ghost" size="sm" onClick={() => setHints((h) => Math.min(3, h + 1))} disabled={hints >= 3 || result?.ok}>
             <Lightbulb className="size-4" />Hint {hints > 0 && <span className="text-muted-foreground">{hints}/3</span>}
           </Button>
           <Button variant="ghost" size="sm" onClick={next}><SkipForward className="size-4" />Skip</Button>
         </div>
-        <Button onClick={check} className="min-w-32">{result?.ok ? <>Next <ArrowRight className="size-4" /></> : "Check"}</Button>
+        <div className="flex items-center gap-2">
+          {lessonId && (
+            <Button variant="ghost" size="sm" className="lg:hidden" onClick={() => setDrawerOpen(true)}>
+              <List className="size-4" />Lessons
+            </Button>
+          )}
+          {lessonId && (
+            <Button variant="ghost" size="sm" className="hidden lg:inline-flex" onClick={() => setPanelOpen((v) => !v)}>
+              <PanelRight className="size-4" />{panelOpen ? "Hide list" : "Lessons"}
+            </Button>
+          )}
+          <Button onClick={check} className="min-w-32">{result?.ok ? <>Next <ArrowRight className="size-4" /></> : "Check"}</Button>
+        </div>
       </footer>
+
+      {lessonId && (
+        <UiSheet open={drawerOpen} onOpenChange={setDrawerOpen}>
+          <SheetContent side={isMobile ? "bottom" : "right"} className={isMobile ? "h-[85dvh] p-0" : "w-full p-0 sm:max-w-sm"}>
+            <SheetHeader className="sr-only">
+              <SheetTitle>Lessons</SheetTitle>
+            </SheetHeader>
+            <LessonListPanel currentId={lessonId} onNavigate={() => setDrawerOpen(false)} className="rounded-none border-0 shadow-none" />
+          </SheetContent>
+        </UiSheet>
+      )}
     </div>
   );
 }

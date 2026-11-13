@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, useEffect } from "react";
+import { useMemo, useRef, useState, useEffect, type CSSProperties } from "react";
 import { addr, formatValue, indexToCol, isError, SUPPORTED_FUNCTIONS, Workbook, type CellMap } from "@/lib/formula";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +13,8 @@ type Props = {
   onEnterCheck?: () => void;
   compact?: boolean;
   ghost?: { cell: string; text: string; refs?: string[] } | null;
+  /** Zoom factor for the grid (1 = original size). Omit to render exactly as before. */
+  scale?: number;
 };
 
 type Pos = { c: number; r: number };
@@ -35,7 +37,7 @@ function rangeRef(a: Pos, b: Pos): string {
 // Matches A1-style refs and ranges, but not function names like LOG10( or SUM(
 const REF_RE = /\$?[A-Za-z]{1,2}\$?\d{1,4}(?::\$?[A-Za-z]{1,2}\$?\d{1,4})?(?!\s*\()/g;
 
-export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", highlight = [], flash, onEnterCheck, compact, ghost }: Props) {
+export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", highlight = [], flash, onEnterCheck, compact, ghost, scale }: Props) {
   const [sel, setSel] = useState(initialSelected);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
@@ -166,7 +168,10 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
   const raw = editing ? draft : cells[sel] ?? "";
 
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-xl border bg-card shadow-soft">
+    <div
+      className="flex h-full flex-col overflow-hidden rounded-xl border bg-card shadow-soft"
+      style={scale !== undefined ? ({ "--sheet-scale": scale } as CSSProperties) : undefined}
+    >
       <div className="flex items-center gap-2 border-b bg-cell-header px-3 py-1.5">
         <span className="w-10 rounded-md border bg-card px-1.5 py-0.5 text-center font-mono text-[11px] text-muted-foreground">{sel}</span>
         <span className="font-serif text-base italic text-muted-foreground">fx</span>
@@ -196,7 +201,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
       </div>
 
       <div ref={gridRef} tabIndex={0} onKeyDown={onGridKey} role="grid" aria-label="Spreadsheet" className={cn("flex-1 outline-none", compact ? "overflow-hidden" : "overflow-auto")}>
-        <table className={cn("border-collapse font-sans text-[var(--font-size-grid,13px)]", compact ? "w-full table-fixed" : "")}>
+        <table className={cn("border-collapse font-sans text-[calc(var(--font-size-grid,13px)*var(--sheet-scale,1))]", compact ? "w-full table-fixed" : "")}>
           <thead>
             <tr>
               <th className={cn("sticky left-0 top-0 z-20 border-b border-r bg-cell-header select-none", compact ? "w-9" : "w-9")} />
@@ -204,8 +209,8 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                 <th
                   key={c}
                   className={cn(
-                    "sticky top-0 border-b border-r border-grid-line bg-cell-header px-1 py-1 text-center text-[var(--font-size-header,11px)] font-medium text-muted-foreground select-none transition-colors",
-                    compact ? "min-w-0" : "min-w-24",
+                    "sticky top-0 border-b border-r border-grid-line bg-cell-header px-1 py-1 text-center text-[calc(var(--font-size-header,11px)*var(--sheet-scale,1))] font-medium text-muted-foreground select-none transition-colors",
+                    compact ? "min-w-0" : "min-w-[calc(6rem*var(--sheet-scale,1))]",
                     c === selCol && "bg-primary/15 text-primary font-semibold border-b-2 border-b-primary"
                   )}
                 >
@@ -249,7 +254,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                       style={refIdx !== undefined ? { boxShadow: `inset 0 0 0 2px var(--ref-${refIdx + 1})` } : undefined}
                       className={cn(
                         "relative cursor-cell truncate border-b border-r border-grid-line transition-colors duration-150 select-none",
-                        compact ? "h-10 px-2 text-[14px]" : "h-[var(--row-height,32px)] px-2 text-[var(--font-size-grid,13px)] max-w-40",
+                        compact ? "h-10 px-2 text-[14px]" : "h-[calc(var(--row-height,32px)*var(--sheet-scale,1))] px-2 text-[calc(var(--font-size-grid,13px)*var(--sheet-scale,1))] max-w-40",
                         r === 0 && "font-sans font-medium text-foreground",
                         typeof v === "number" && "text-right tabular-nums",
                         isError(v) && "text-destructive",
