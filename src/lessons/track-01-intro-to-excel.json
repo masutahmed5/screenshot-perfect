@@ -1,0 +1,5383 @@
+[
+  {
+    "id": "L001",
+    "number": 1,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Intro to Excel",
+    "version_badge": null,
+    "legacy_number": 1,
+    "estimated_minutes": 4,
+    "objectives": [
+      "By the end you can name any cell by its address and jump to it with the Name Box.",
+      "Tell a single cell from a range of cells."
+    ],
+    "about": "Excel stores your data in a grid called a worksheet. Every box in the grid is a cell, named by its column letter and row number, such as C4. Knowing addresses lets you read formulas, follow instructions, and jump around large sheets. Analysts and accountants say things like \"check B12\" dozens of times a day.",
+    "syntax": null,
+    "where_to_find": [
+      "Name Box: the small box to the left of the formula bar. Click it, type an address such as D7, then press Enter.",
+      "Active cell: the cell with the thick green border. It receives whatever you type."
+    ],
+    "examples": [
+      {
+        "data": "Column C, row 4",
+        "formula": "C4",
+        "result": "The cell where column C and row 4 meet",
+        "why": "The column letter comes first, then the row number."
+      },
+      {
+        "data": "A block of cells",
+        "formula": "B2:D5",
+        "result": "12 cells: 3 columns (B, C, D) by 4 rows (2 to 5)",
+        "why": "The colon means \"through\". A range is two corner cells joined by a colon."
+      },
+      {
+        "data": "You are in A1 and need F9",
+        "formula": "Type F9 in the Name Box, press Enter",
+        "result": "The active cell moves to F9",
+        "why": "The Name Box is the fastest way to reach a far-away cell."
+      }
+    ],
+    "watch_out": [
+      "Write the column letter first: C4 is valid, 4C is not.",
+      "Your typing goes into the active cell, the one with the thick green border. Check it before you type."
+    ],
+    "recap": "You can now name any cell and any range. Next, you will move between cells with Tab and Enter.",
+    "steps": [
+      {
+        "id": "L001-S1",
+        "type": "mcq",
+        "difficulty": "guided",
+        "prompt": "Look at the sheet. In which cell is Priya's department?",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Employee",
+                "B1": "Department",
+                "C1": "Monthly Pay",
+                "A2": "Amina",
+                "B2": "Sales",
+                "C2": 1800,
+                "A3": "Daniel",
+                "B3": "Finance",
+                "C3": 2100,
+                "A4": "Priya",
+                "B4": "Support",
+                "C4": 1650,
+                "A5": "Tomas",
+                "B5": "Sales",
+                "C5": 1900
+              }
+            }
+          ]
+        },
+        "target_cells": [],
+        "validation": {
+          "mode": "mcq",
+          "options": [
+            {
+              "id": "a",
+              "text": "A4"
+            },
+            {
+              "id": "b",
+              "text": "B4"
+            },
+            {
+              "id": "c",
+              "text": "C4"
+            },
+            {
+              "id": "d",
+              "text": "4B"
+            }
+          ],
+          "correct_option_id": "b"
+        },
+        "hints": [
+          "Find Priya first, then move one column across to the Department column.",
+          "Priya is in row 4. Department is column B. Remember: the column letter comes first.",
+          "Priya's name is in A4, so her department is one column right, in B4 (Support)."
+        ],
+        "explanation": "Column B holds departments and row 4 holds Priya, so the cell is B4. The letter always comes first.",
+        "common_mistakes": [
+          {
+            "pattern": "option:a",
+            "message": "A4 is Priya's name, not her department. Move one column to the right."
+          },
+          {
+            "pattern": "option:c",
+            "message": "C4 is Priya's monthly pay. The department is in column B."
+          },
+          {
+            "pattern": "option:d",
+            "message": "4B has the number first. Excel addresses always put the column letter first, so it is B4."
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L001-S2",
+        "type": "mcq",
+        "difficulty": "independent",
+        "prompt": "A colleague says: \"Check C3.\" What do you find there?",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Employee",
+                "B1": "Department",
+                "C1": "Monthly Pay",
+                "A2": "Amina",
+                "B2": "Sales",
+                "C2": 1800,
+                "A3": "Daniel",
+                "B3": "Finance",
+                "C3": 2100,
+                "A4": "Priya",
+                "B4": "Support",
+                "C4": 1650,
+                "A5": "Tomas",
+                "B5": "Sales",
+                "C5": 1900
+              }
+            }
+          ]
+        },
+        "target_cells": [],
+        "validation": {
+          "mode": "mcq",
+          "options": [
+            {
+              "id": "a",
+              "text": "Daniel"
+            },
+            {
+              "id": "b",
+              "text": "Finance"
+            },
+            {
+              "id": "c",
+              "text": "2100"
+            },
+            {
+              "id": "d",
+              "text": "1800"
+            }
+          ],
+          "correct_option_id": "c"
+        },
+        "hints": [
+          "Column first, then row. Which column is C, and which row is 3?",
+          "Look down column C and stop at row 3.",
+          "C3 is where column C (Monthly Pay) meets row 3 (Daniel). It holds 2100."
+        ],
+        "explanation": "Column C is Monthly Pay and row 3 is Daniel, so C3 holds 2100.",
+        "common_mistakes": [
+          {
+            "pattern": "option:a",
+            "message": "Daniel is in A3. Column C is the third column."
+          },
+          {
+            "pattern": "option:b",
+            "message": "Finance is in B3. C is one column further right."
+          },
+          {
+            "pattern": "option:d",
+            "message": "1800 is in C2, one row up. Check the row number."
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L001-S3",
+        "type": "menu_action",
+        "difficulty": "apply",
+        "prompt": "Tomas has had a pay rise. Use the Name Box to jump to his Monthly Pay cell and change it to 2000. Press Enter to save.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Employee",
+                "B1": "Department",
+                "C1": "Monthly Pay",
+                "A2": "Amina",
+                "B2": "Sales",
+                "C2": 1800,
+                "A3": "Daniel",
+                "B3": "Finance",
+                "C3": 2100,
+                "A4": "Priya",
+                "B4": "Support",
+                "C4": 1650,
+                "A5": "Tomas",
+                "B5": "Sales",
+                "C5": 1900
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C5"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "A1",
+          "expected": {
+            "type": "value",
+            "cells": {
+              "C5": 2000
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "NameBox:C5",
+                "Type:2000",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "NameBox:C5",
+                "Type:2000",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "Which cell holds Tomas's pay? Find his row and the Monthly Pay column, then jump there.",
+          "Click the Name Box (left of the formula bar), type the address, and press Enter. Then type the new pay.",
+          "Type C5 in the Name Box and press Enter. Type 2000, then press Enter to save."
+        ],
+        "explanation": "Tomas is in row 5 and Monthly Pay is column C, so his pay is in C5. The Name Box jumps there, and typing replaces the old value.",
+        "common_mistakes": [
+          {
+            "pattern": "state:C5=1900",
+            "message": "C5 still shows 1900. Type 2000 and press Enter to save it.",
+            "example_keys": [
+              "NameBox:C5"
+            ]
+          },
+          {
+            "pattern": "state:B5=2000",
+            "message": "2000 went into B5, which is Department. Pay is in column C.",
+            "example_keys": [
+              "NameBox:B5",
+              "Type:2000",
+              "Enter"
+            ]
+          },
+          {
+            "pattern": "state:A1=2000",
+            "message": "You typed into A1 because the active cell never moved. Jump to C5 first.",
+            "example_keys": [
+              "Type:2000",
+              "Enter"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L002",
+    "number": 2,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Cell Selection Shortcuts",
+    "version_badge": null,
+    "legacy_number": 2,
+    "estimated_minutes": 4,
+    "objectives": [
+      "By the end you can move the active cell with Tab, Enter and Home."
+    ],
+    "about": "Moving with the keyboard is faster than reaching for the mouse. Tab moves one cell right, Enter moves one cell down, and adding Shift reverses each of them. Home jumps to the start of the row. People who work through invoices, surveys or timesheets all day depend on these keys.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "One cell right",
+        "windows": "Tab",
+        "mac": "Tab"
+      },
+      {
+        "action": "One cell left",
+        "windows": "Shift+Tab",
+        "mac": "Shift+Tab"
+      },
+      {
+        "action": "One cell down",
+        "windows": "Enter",
+        "mac": "Return"
+      },
+      {
+        "action": "One cell up",
+        "windows": "Shift+Enter",
+        "mac": "Shift+Return"
+      },
+      {
+        "action": "Start of the row (column A)",
+        "windows": "Home",
+        "mac": "Fn+Left"
+      }
+    ],
+    "examples": [
+      {
+        "data": "Active cell B2",
+        "formula": "Tab",
+        "result": "The active cell becomes C2",
+        "why": "Tab moves one cell to the right."
+      },
+      {
+        "data": "Active cell C4",
+        "formula": "Enter, then Shift+Tab",
+        "result": "C5, then B5",
+        "why": "Enter goes down one row. Shift+Tab goes back one column."
+      },
+      {
+        "data": "Active cell E7, data starts in column B",
+        "formula": "Home",
+        "result": "A7",
+        "why": "Home always goes to column A, even when column A is empty."
+      }
+    ],
+    "watch_out": [
+      "Home goes to column A, not to the first cell that holds data.",
+      "Enter moves down by default. If it does not, the option may have been changed in Excel's settings."
+    ],
+    "recap": "You can now move one cell at a time without touching the mouse. Next, the arrow keys will let you move faster.",
+    "steps": [
+      {
+        "id": "L002-S1",
+        "type": "shortcut",
+        "difficulty": "guided",
+        "prompt": "Start in A2 (Amina). Using only the keyboard, reach C2, her monthly pay.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Employee",
+                "B1": "Department",
+                "C1": "Monthly Pay",
+                "A2": "Amina",
+                "B2": "Sales",
+                "C2": 1800,
+                "A3": "Daniel",
+                "B3": "Finance",
+                "C3": 2100,
+                "A4": "Priya",
+                "B4": "Support",
+                "C4": 1650,
+                "A5": "Tomas",
+                "B5": "Sales",
+                "C5": 1900,
+                "A6": "Leila",
+                "B6": "Finance",
+                "C6": 2050
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "A2",
+          "expected": {
+            "type": "active_cell",
+            "cell": "C2"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Tab",
+                "Tab"
+              ]
+            ],
+            "mac": [
+              [
+                "Tab",
+                "Tab"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Which key moves you one cell to the right? You need to press it twice.",
+          "Tab moves the active cell one cell right. Press it twice.",
+          "Press Tab, then Tab again. A2 moves to B2, then to C2."
+        ],
+        "explanation": "Tab moves right one cell at a time. Two presses take you from column A to column C.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:B2",
+            "message": "You moved only one cell. C2 is two cells right of A2.",
+            "example_keys": [
+              "Tab"
+            ]
+          },
+          {
+            "pattern": "ends:A4",
+            "message": "Enter moves down, not right. Use Tab to move right.",
+            "example_keys": [
+              "Enter",
+              "Enter"
+            ]
+          },
+          {
+            "pattern": "ends:D2",
+            "message": "One Tab too many. Column D is past the pay column.",
+            "example_keys": [
+              "Tab",
+              "Tab",
+              "Tab"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L002-S2",
+        "type": "shortcut",
+        "difficulty": "independent",
+        "prompt": "Start in C5. Reach A4, one row up and two columns left, using only the keyboard.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Employee",
+                "B1": "Department",
+                "C1": "Monthly Pay",
+                "A2": "Amina",
+                "B2": "Sales",
+                "C2": 1800,
+                "A3": "Daniel",
+                "B3": "Finance",
+                "C3": 2100,
+                "A4": "Priya",
+                "B4": "Support",
+                "C4": 1650,
+                "A5": "Tomas",
+                "B5": "Sales",
+                "C5": 1900,
+                "A6": "Leila",
+                "B6": "Finance",
+                "C6": 2050
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A4"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "C5",
+          "expected": {
+            "type": "active_cell",
+            "cell": "A4"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Enter",
+                "Shift+Tab",
+                "Shift+Tab"
+              ],
+              [
+                "Home",
+                "Shift+Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Enter",
+                "Shift+Tab",
+                "Shift+Tab"
+              ],
+              [
+                "Fn+Left",
+                "Shift+Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "You need to go up and left. Which keys reverse Enter and Tab?",
+          "Shift+Enter moves up. Shift+Tab moves left. One of them needs two presses. Home is a shortcut for the left part.",
+          "Press Shift+Enter once and Shift+Tab twice. Or press Home to reach A5, then Shift+Enter."
+        ],
+        "explanation": "Adding Shift reverses Tab and Enter. Home jumps straight to column A, so Home then Shift+Enter is the shortest route.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:A5",
+            "message": "Home took you to column A but stayed in row 5. Move up one row as well.",
+            "example_keys": [
+              "Home"
+            ]
+          },
+          {
+            "pattern": "ends:C4",
+            "message": "You went up but not left. A4 is two columns left of C.",
+            "example_keys": [
+              "Shift+Enter"
+            ]
+          },
+          {
+            "pattern": "ends:A3",
+            "message": "One Shift+Enter too many. A4 is only one row above row 5.",
+            "example_keys": [
+              "Home",
+              "Shift+Enter",
+              "Shift+Enter"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L002-S3",
+        "type": "shortcut",
+        "difficulty": "apply",
+        "prompt": "You are in F9 at the end of an invoice row. Use the keyboard to go to the start of the row, then down two rows, then one cell right.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "B1": "Invoice",
+                "C1": "Client",
+                "D1": "Date",
+                "E1": "Amount",
+                "F1": "Status",
+                "B2": "INV-101",
+                "C2": "Nova Ltd",
+                "D2": "3-Nov",
+                "E2": 120,
+                "F2": "Open",
+                "B3": "INV-102",
+                "C3": "Atlas Co",
+                "D3": "4-Nov",
+                "E3": 135,
+                "F3": "Paid",
+                "B4": "INV-103",
+                "C4": "Brightway",
+                "D4": "5-Nov",
+                "E4": 150,
+                "F4": "Open",
+                "B5": "INV-104",
+                "C5": "Cedar & Sons",
+                "D5": "6-Nov",
+                "E5": 165,
+                "F5": "Paid",
+                "B6": "INV-105",
+                "C6": "Delta Foods",
+                "D6": "7-Nov",
+                "E6": 180,
+                "F6": "Open",
+                "B7": "INV-106",
+                "C7": "Evergreen",
+                "D7": "8-Nov",
+                "E7": 195,
+                "F7": "Paid",
+                "B8": "INV-107",
+                "C8": "Fjord Labs",
+                "D8": "9-Nov",
+                "E8": 210,
+                "F8": "Open",
+                "B9": "INV-108",
+                "C9": "Granite Inc",
+                "D9": "10-Nov",
+                "E9": 225,
+                "F9": "Paid",
+                "B10": "INV-109",
+                "C10": "Harbor Trade",
+                "D10": "11-Nov",
+                "E10": 240,
+                "F10": "Open",
+                "B11": "INV-110",
+                "C11": "Ivory Works",
+                "D11": "12-Nov",
+                "E11": 255,
+                "F11": "Paid",
+                "B12": "INV-111",
+                "C12": "Juniper",
+                "D12": "13-Nov",
+                "E12": 270,
+                "F12": "Open"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B11"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "F9",
+          "expected": {
+            "type": "active_cell",
+            "cell": "B11"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Home",
+                "Enter",
+                "Enter",
+                "Tab"
+              ]
+            ],
+            "mac": [
+              [
+                "Fn+Left",
+                "Enter",
+                "Enter",
+                "Tab"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Which key takes you to the start of a row? Check which column that is in this sheet.",
+          "Home goes to column A, even when column A is empty. Then Enter twice moves you down, and Tab moves one cell right.",
+          "Press Home, Enter, Enter, Tab. You land on B11."
+        ],
+        "explanation": "Home always goes to column A, which is empty here. From A9, two Enter presses reach A11, and Tab moves to B11.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:C11",
+            "message": "You counted from column B, but Home goes to column A. A11 plus one Tab is B11.",
+            "example_keys": [
+              "Home",
+              "Enter",
+              "Enter",
+              "Tab",
+              "Tab"
+            ]
+          },
+          {
+            "pattern": "ends:A11",
+            "message": "You stopped one key short. Press Tab to move one cell right.",
+            "example_keys": [
+              "Home",
+              "Enter",
+              "Enter"
+            ]
+          },
+          {
+            "pattern": "ends:B10",
+            "message": "You pressed Enter only once. Two rows down from row 9 is row 11.",
+            "example_keys": [
+              "Home",
+              "Enter",
+              "Tab"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L003",
+    "number": 3,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Arrow Keys",
+    "version_badge": null,
+    "legacy_number": 10,
+    "estimated_minutes": 4,
+    "objectives": [
+      "By the end you can move one cell with an arrow key and jump to the edge of a block of data with Ctrl+Arrow."
+    ],
+    "about": "Arrow keys move the active cell one step at a time. Hold Ctrl (Cmd on a Mac) and they jump instead. They land on the last filled cell of a block, or cross blanks to the next filled cell. One key press replaces scrolling through hundreds of rows. Analysts use it to find the end of any list.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Move one cell",
+        "windows": "Arrow keys",
+        "mac": "Arrow keys"
+      },
+      {
+        "action": "Jump to the edge of a data block",
+        "windows": "Ctrl+Arrow",
+        "mac": "Cmd+Arrow"
+      }
+    ],
+    "examples": [
+      {
+        "data": "A list filled from A1 to A20, active cell A1",
+        "formula": "Ctrl+Down",
+        "result": "A20",
+        "why": "The jump stops at the last filled cell before a blank."
+      },
+      {
+        "data": "The same list, active cell A20",
+        "formula": "Ctrl+Up",
+        "result": "A1",
+        "why": "The same jump works in every direction."
+      },
+      {
+        "data": "A1:A5 filled, A6 blank, A7:A10 filled, active cell A5",
+        "formula": "Ctrl+Down",
+        "result": "A7",
+        "why": "From the end of a block, the jump crosses the blank and lands on the next filled cell. Press it again to reach A10."
+      }
+    ],
+    "watch_out": [
+      "A blank cell stops the jump. If you land short of where you expected, there is a gap in the data.",
+      "On a Mac, use Cmd+Arrow. Ctrl+Arrow is often taken by Mission Control."
+    ],
+    "recap": "Ctrl+Arrow now takes you to the edge of any block of data. Next, you will use Shift with the arrows to select cells.",
+    "steps": [
+      {
+        "id": "L003-S1",
+        "type": "shortcut",
+        "difficulty": "guided",
+        "prompt": "You are in A1 on an order list. Jump straight to the last order in column A.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Region",
+                "C1": "Rep",
+                "D1": "Amount",
+                "A2": "ORD-1001",
+                "B2": "East",
+                "C2": "Daniel",
+                "D2": 100,
+                "A3": "ORD-1002",
+                "B3": "West",
+                "C3": "Priya",
+                "D3": 125,
+                "A4": "ORD-1003",
+                "B4": "North",
+                "C4": "Tomas",
+                "D4": 150,
+                "A5": "ORD-1004",
+                "B5": "South",
+                "C5": "Amina",
+                "D5": 175,
+                "A6": "ORD-1005",
+                "B6": "East",
+                "C6": "Daniel",
+                "D6": 200,
+                "A7": "ORD-1006",
+                "B7": "West",
+                "C7": "Priya",
+                "D7": 225,
+                "A8": "ORD-1007",
+                "B8": "North",
+                "C8": "Tomas",
+                "D8": 250
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A8"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "A1",
+          "expected": {
+            "type": "active_cell",
+            "cell": "A8"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Down"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+Down"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Which key combination jumps to the edge of a block of data? Think arrow key plus a modifier.",
+          "Hold Ctrl (Cmd on a Mac) and press the Down arrow. Excel jumps to the last filled cell below you.",
+          "Press Ctrl+Down once (Cmd+Down on a Mac). You land on A8."
+        ],
+        "explanation": "Ctrl+Down travels down a block of filled cells and stops on the last one before a blank.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:A2",
+            "message": "The arrow alone moves one cell. Hold Ctrl so it jumps to the end of the data.",
+            "example_keys": [
+              "Down"
+            ]
+          },
+          {
+            "pattern": "ends:D1",
+            "message": "That jumped right along the header row. You need Down.",
+            "example_keys": [
+              "Ctrl+Right"
+            ]
+          },
+          {
+            "pattern": "ends:A1048576",
+            "message": "A second jump ran past the end of the data to the bottom of the sheet. One press was enough.",
+            "example_keys": [
+              "Ctrl+Down",
+              "Ctrl+Down"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L003-S2",
+        "type": "shortcut",
+        "difficulty": "independent",
+        "prompt": "The table starts in B2. Jump to its bottom-right corner cell.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "B2": "Product",
+                "C2": "Jan",
+                "D2": "Feb",
+                "E2": "Mar",
+                "F2": "Total",
+                "B3": "Widget",
+                "C3": 120,
+                "D3": 135,
+                "E3": 150,
+                "F3": 405,
+                "B4": "Gadget",
+                "C4": 90,
+                "D4": 95,
+                "E4": 110,
+                "F4": 295,
+                "B5": "Gizmo",
+                "C5": 60,
+                "D5": 70,
+                "E5": 85,
+                "F5": 215,
+                "B6": "Doohickey",
+                "C6": 45,
+                "D6": 50,
+                "E6": 55,
+                "F6": 150
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "F6"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "B2",
+          "expected": {
+            "type": "active_cell",
+            "cell": "F6"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Right",
+                "Ctrl+Down"
+              ],
+              [
+                "Ctrl+Down",
+                "Ctrl+Right"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+Right",
+                "Cmd+Down"
+              ],
+              [
+                "Cmd+Down",
+                "Cmd+Right"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "You need two jumps, in two different directions.",
+          "Use Ctrl+Right to reach the last column and Ctrl+Down to reach the last row, in either order.",
+          "Press Ctrl+Right, then Ctrl+Down. B2 jumps to F2, then to F6."
+        ],
+        "explanation": "Each jump runs to the edge of the block in one direction. Two jumps reach the corner.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:F2",
+            "message": "You reached the last column but still need to go down.",
+            "example_keys": [
+              "Ctrl+Right"
+            ]
+          },
+          {
+            "pattern": "ends:B6",
+            "message": "You reached the last row but still need to go right.",
+            "example_keys": [
+              "Ctrl+Down"
+            ]
+          },
+          {
+            "pattern": "ends:F1048576",
+            "message": "One jump too many ran past the table to the bottom of the sheet.",
+            "example_keys": [
+              "Ctrl+Right",
+              "Ctrl+Down",
+              "Ctrl+Down"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L003-S3",
+        "type": "shortcut",
+        "difficulty": "apply",
+        "prompt": "You are in A2 on a long order list. The list has a gap, so one jump is not enough. Reach the last order.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Amount",
+                "A2": "ORD-2002",
+                "B2": 104,
+                "A3": "ORD-2003",
+                "B3": 116,
+                "A4": "ORD-2004",
+                "B4": 128,
+                "A5": "ORD-2005",
+                "B5": 140,
+                "A6": "ORD-2006",
+                "B6": 152,
+                "A7": "ORD-2007",
+                "B7": 164,
+                "A9": "ORD-2009",
+                "B9": 188,
+                "A10": "ORD-2010",
+                "B10": 200,
+                "A11": "ORD-2011",
+                "B11": 212,
+                "A12": "ORD-2012",
+                "B12": 224,
+                "A13": "ORD-2013",
+                "B13": 236,
+                "A14": "ORD-2014",
+                "B14": 248,
+                "A15": "ORD-2015",
+                "B15": 260
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A15"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "A2",
+          "expected": {
+            "type": "active_cell",
+            "cell": "A15"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Down",
+                "Ctrl+Down",
+                "Ctrl+Down"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+Down",
+                "Cmd+Down",
+                "Cmd+Down"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "A blank cell stops the jump. How many times will you need to press it?",
+          "Ctrl+Down stops before the blank. Press it again to cross the gap, then once more to reach the end.",
+          "Press Ctrl+Down three times: A7, then A9, then A15."
+        ],
+        "explanation": "The first jump stops at A7, above the blank. The second crosses the gap to A9. The third runs to A15.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:A7",
+            "message": "You stopped at A7, just before the blank in A8. Press Ctrl+Down again to cross the gap.",
+            "example_keys": [
+              "Ctrl+Down"
+            ]
+          },
+          {
+            "pattern": "ends:A9",
+            "message": "You crossed the gap but are not at the end yet. One more jump.",
+            "example_keys": [
+              "Ctrl+Down",
+              "Ctrl+Down"
+            ]
+          },
+          {
+            "pattern": "ends:A1048576",
+            "message": "Four jumps ran past the data to the bottom of the sheet. Three are enough.",
+            "example_keys": [
+              "Ctrl+Down",
+              "Ctrl+Down",
+              "Ctrl+Down",
+              "Ctrl+Down"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L004",
+    "number": 4,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Larger Cell Selections",
+    "version_badge": null,
+    "legacy_number": 4,
+    "estimated_minutes": 5,
+    "objectives": [
+      "By the end you can select a block of cells using Shift+Arrow and Ctrl+Shift+Arrow."
+    ],
+    "about": "Before you can format, copy or total cells, you have to select them. Hold Shift and press an arrow key to grow the selection one cell at a time. Add Ctrl (Cmd on a Mac) to grow it to the end of a block of data. Both work without touching the mouse.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Extend by one cell",
+        "windows": "Shift+Arrow",
+        "mac": "Shift+Arrow"
+      },
+      {
+        "action": "Extend to the end of the data",
+        "windows": "Ctrl+Shift+Arrow",
+        "mac": "Cmd+Shift+Arrow"
+      }
+    ],
+    "examples": [
+      {
+        "data": "Active cell B2",
+        "formula": "Shift+Right, Shift+Right",
+        "result": "B2:D2 is selected",
+        "why": "Each press adds one cell."
+      },
+      {
+        "data": "A1 on a table with no blanks, columns A to D",
+        "formula": "Ctrl+Shift+Down",
+        "result": "A1:A8 is selected",
+        "why": "The selection stops at the last filled cell."
+      },
+      {
+        "data": "The same table, active cell A1",
+        "formula": "Ctrl+Shift+Right, then Ctrl+Shift+Down",
+        "result": "A1:D8, the whole table",
+        "why": "Two jumps cover the width and the height."
+      }
+    ],
+    "watch_out": [
+      "The selection grows from the cell where you started. The opposite arrow shrinks it again.",
+      "A blank cell stops Ctrl+Shift+Arrow, just as it stops Ctrl+Arrow."
+    ],
+    "recap": "You can now select any block from the keyboard. Next, you will select whole rows and columns.",
+    "steps": [
+      {
+        "id": "L004-S1",
+        "type": "shortcut",
+        "difficulty": "guided",
+        "prompt": "You are in B3, the February sales. Select B3:B6 using only the keyboard.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Month",
+                "B1": "Sales",
+                "C1": "Costs",
+                "A2": "Jan",
+                "B2": 4200,
+                "C2": 3100,
+                "A3": "Feb",
+                "B3": 4650,
+                "C3": 3300,
+                "A4": "Mar",
+                "B4": 5100,
+                "C4": 3500,
+                "A5": "Apr",
+                "B5": 4900,
+                "C5": 3400,
+                "A6": "May",
+                "B6": 5400,
+                "C6": 3700,
+                "A7": "Jun",
+                "B7": 5800,
+                "C7": 3900
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B3:B6"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "B3",
+          "expected": {
+            "type": "selection",
+            "range": "B3:B6"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "You want to extend the selection downward. Which key adds \"extend\" to an arrow?",
+          "Hold Shift and press Down. Each press adds one cell. You need three presses.",
+          "Press Shift+Down three times. B3 grows to B3:B6."
+        ],
+        "explanation": "Shift keeps the starting cell fixed and grows the selection one cell per arrow press.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:B3:B5",
+            "message": "You are one cell short. B3:B6 is four cells.",
+            "example_keys": [
+              "Shift+Down",
+              "Shift+Down"
+            ]
+          },
+          {
+            "pattern": "ends:B3:C3",
+            "message": "Shift+Right extends sideways. Use Shift+Down.",
+            "example_keys": [
+              "Shift+Right"
+            ]
+          },
+          {
+            "pattern": "ends:B3:B7",
+            "message": "One press too many. The target stops at B6.",
+            "example_keys": [
+              "Shift+Down",
+              "Shift+Down",
+              "Shift+Down",
+              "Shift+Down"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L004-S2",
+        "type": "shortcut",
+        "difficulty": "independent",
+        "prompt": "You are in C2. Select the block C2:E4 using only the keyboard.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Store",
+                "B1": "Jan",
+                "C1": "Feb",
+                "D1": "Mar",
+                "E1": "Apr",
+                "F1": "May",
+                "A2": "Leeds",
+                "B2": 320,
+                "C2": 340,
+                "D2": 360,
+                "E2": 355,
+                "F2": 380,
+                "A3": "Bristol",
+                "B3": 290,
+                "C3": 310,
+                "D3": 325,
+                "E3": 330,
+                "F3": 345,
+                "A4": "Derby",
+                "B4": 210,
+                "C4": 220,
+                "D4": 235,
+                "E4": 240,
+                "F4": 250,
+                "A5": "Exeter",
+                "B5": 180,
+                "C5": 190,
+                "D5": 200,
+                "E5": 210,
+                "F5": 215,
+                "A6": "Truro",
+                "B6": 150,
+                "C6": 160,
+                "D6": 170,
+                "E6": 165,
+                "F6": 175
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2:E4"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "C2",
+          "expected": {
+            "type": "selection",
+            "range": "C2:E4"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Right",
+                "Shift+Right",
+                "Shift+Down",
+                "Shift+Down"
+              ],
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Right",
+                "Shift+Right"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Right",
+                "Shift+Right",
+                "Shift+Down",
+                "Shift+Down"
+              ],
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Right",
+                "Shift+Right"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Count how many columns and rows you must add beyond the starting cell.",
+          "Hold Shift and press Right twice, then Down twice. The order does not matter.",
+          "Press Shift+Right twice and Shift+Down twice. C2 grows to C2:E4."
+        ],
+        "explanation": "The block is three columns wide and three rows tall. Each direction needs two extra presses.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:C2:E2",
+            "message": "You covered the width but not the height.",
+            "example_keys": [
+              "Shift+Right",
+              "Shift+Right"
+            ]
+          },
+          {
+            "pattern": "ends:C2:C4",
+            "message": "You covered the height but not the width.",
+            "example_keys": [
+              "Shift+Down",
+              "Shift+Down"
+            ]
+          },
+          {
+            "pattern": "ends:C2:F4",
+            "message": "One Shift+Right too many. The block ends in column E.",
+            "example_keys": [
+              "Shift+Right",
+              "Shift+Right",
+              "Shift+Right",
+              "Shift+Down",
+              "Shift+Down"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L004-S3",
+        "type": "shortcut",
+        "difficulty": "apply",
+        "prompt": "You are in B2 on a column of order amounts. One amount is missing. Select every amount down to the last filled cell, B9.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Amount",
+                "A2": "ORD-3002",
+                "B2": 190,
+                "A3": "ORD-3003",
+                "B3": 210,
+                "A4": "ORD-3004",
+                "B4": 230,
+                "A5": "ORD-3005",
+                "B5": 250,
+                "A6": "ORD-3006",
+                "A7": "ORD-3007",
+                "B7": 290,
+                "A8": "ORD-3008",
+                "B8": 310,
+                "A9": "ORD-3009",
+                "B9": 330
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B2:B9"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "B2",
+          "expected": {
+            "type": "selection",
+            "range": "B2:B9"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Shift+Down",
+                "Ctrl+Shift+Down",
+                "Ctrl+Shift+Down"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+Shift+Down",
+                "Cmd+Shift+Down",
+                "Cmd+Shift+Down"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "A blank cell stops the selection jump. How many presses might you need?",
+          "Ctrl+Shift+Down stops before the blank. Press it again to cross the gap and once more to reach the end.",
+          "Press Ctrl+Shift+Down three times: B5, then B7, then B9."
+        ],
+        "explanation": "Each Ctrl+Shift+Down grows the selection to the next edge. The blank in B6 splits the column into two blocks, so it takes three presses.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:B2:B5",
+            "message": "You stopped above the blank in B6. Press again to cross it.",
+            "example_keys": [
+              "Ctrl+Shift+Down"
+            ]
+          },
+          {
+            "pattern": "ends:B2:B7",
+            "message": "You crossed the gap but not the second block. One more press.",
+            "example_keys": [
+              "Ctrl+Shift+Down",
+              "Ctrl+Shift+Down"
+            ]
+          },
+          {
+            "pattern": "ends:B2:B1048576",
+            "message": "Too many presses ran past the data to the bottom of the sheet.",
+            "example_keys": [
+              "Ctrl+Shift+Down",
+              "Ctrl+Shift+Down",
+              "Ctrl+Shift+Down",
+              "Ctrl+Shift+Down"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L005",
+    "number": 5,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Row and Column Selections",
+    "version_badge": null,
+    "legacy_number": 27,
+    "estimated_minutes": 4,
+    "objectives": [
+      "By the end you can select whole rows and columns with Shift+Space and Ctrl+Space."
+    ],
+    "about": "Sometimes you need an entire row or column, to format it, insert a new one, or delete it. Shift+Space selects the row of the active cell. Ctrl+Space selects its column. Add Shift with an arrow key to widen the selection to neighbouring rows or columns.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Select the row",
+        "windows": "Shift+Space",
+        "mac": "Shift+Space"
+      },
+      {
+        "action": "Select the column",
+        "windows": "Ctrl+Space",
+        "mac": "Control+Space"
+      },
+      {
+        "action": "Widen the selection",
+        "windows": "Shift+Arrow",
+        "mac": "Shift+Arrow"
+      }
+    ],
+    "examples": [
+      {
+        "data": "Active cell C5",
+        "formula": "Shift+Space",
+        "result": "Row 5 is selected",
+        "why": "Shift+Space selects the whole row of the active cell."
+      },
+      {
+        "data": "Active cell C5",
+        "formula": "Ctrl+Space",
+        "result": "Column C is selected",
+        "why": "Ctrl+Space selects the whole column of the active cell."
+      },
+      {
+        "data": "Active cell C5",
+        "formula": "Ctrl+Space, then Shift+Right",
+        "result": "Columns C and D are selected",
+        "why": "Shift+Arrow widens a whole-column selection one column at a time."
+      }
+    ],
+    "watch_out": [
+      "The selection grows in one direction from where you started. To select columns B to D, start in B.",
+      "On a Mac, Control+Space may switch your keyboard language. If it does, turn that system shortcut off in System Settings."
+    ],
+    "recap": "You can now select whole rows and columns quickly. Next, you will use Ctrl+Home, Ctrl+End and Go To to travel across a sheet.",
+    "steps": [
+      {
+        "id": "L005-S1",
+        "type": "shortcut",
+        "difficulty": "guided",
+        "prompt": "You are in B4. Select the whole of row 4.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Region",
+                "C1": "Rep",
+                "D1": "Amount",
+                "A2": "ORD-1001",
+                "B2": "East",
+                "C2": "Daniel",
+                "D2": 100,
+                "A3": "ORD-1002",
+                "B3": "West",
+                "C3": "Priya",
+                "D3": 125,
+                "A4": "ORD-1003",
+                "B4": "North",
+                "C4": "Tomas",
+                "D4": 150,
+                "A5": "ORD-1004",
+                "B5": "South",
+                "C5": "Amina",
+                "D5": 175,
+                "A6": "ORD-1005",
+                "B6": "East",
+                "C6": "Daniel",
+                "D6": 200,
+                "A7": "ORD-1006",
+                "B7": "West",
+                "C7": "Priya",
+                "D7": 225,
+                "A8": "ORD-1007",
+                "B8": "North",
+                "C8": "Tomas",
+                "D8": 250
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "4:4"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "B4",
+          "expected": {
+            "type": "selection",
+            "range": "4:4"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Space"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Space"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "The whole row should turn on at once. Which key pairs with Space for a row?",
+          "Shift+Space selects the entire row of the active cell.",
+          "Press Shift+Space. Row 4 is selected from column A to the end of the sheet."
+        ],
+        "explanation": "Shift+Space selects the row that holds the active cell, whichever column you are in.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:B:B",
+            "message": "That selected the column. Use Shift+Space for the row.",
+            "example_keys": [
+              "Ctrl+Space"
+            ]
+          },
+          {
+            "pattern": "ends:B4:D4",
+            "message": "That selected three cells, not the whole row.",
+            "example_keys": [
+              "Shift+Right",
+              "Shift+Right"
+            ]
+          },
+          {
+            "pattern": "ends:4:5",
+            "message": "You widened to two rows. Stop after Shift+Space.",
+            "example_keys": [
+              "Shift+Space",
+              "Shift+Down"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L005-S2",
+        "type": "shortcut",
+        "difficulty": "independent",
+        "prompt": "You are in D3. Select columns D and E.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Region",
+                "C1": "Rep",
+                "D1": "Amount",
+                "A2": "ORD-1001",
+                "B2": "East",
+                "C2": "Daniel",
+                "D2": 100,
+                "A3": "ORD-1002",
+                "B3": "West",
+                "C3": "Priya",
+                "D3": 125,
+                "A4": "ORD-1003",
+                "B4": "North",
+                "C4": "Tomas",
+                "D4": 150,
+                "A5": "ORD-1004",
+                "B5": "South",
+                "C5": "Amina",
+                "D5": 175,
+                "A6": "ORD-1005",
+                "B6": "East",
+                "C6": "Daniel",
+                "D6": 200,
+                "A7": "ORD-1006",
+                "B7": "West",
+                "C7": "Priya",
+                "D7": 225,
+                "A8": "ORD-1007",
+                "B8": "North",
+                "C8": "Tomas",
+                "D8": 250
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D:E"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "D3",
+          "expected": {
+            "type": "selection",
+            "range": "D:E"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Space",
+                "Shift+Right"
+              ]
+            ],
+            "mac": [
+              [
+                "Control+Space",
+                "Shift+Right"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Start with the whole column, then widen it by one.",
+          "Ctrl+Space selects the column (Control+Space on a Mac). Shift+Right adds the next column.",
+          "Press Ctrl+Space, then Shift+Right. D3 becomes columns D and E."
+        ],
+        "explanation": "Ctrl+Space selects column D. Shift+Right widens a column selection by one column.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:D:D",
+            "message": "That is only column D. Widen it with Shift+Right.",
+            "example_keys": [
+              "Ctrl+Space"
+            ]
+          },
+          {
+            "pattern": "ends:3:3",
+            "message": "That selected the row. Columns use Ctrl+Space.",
+            "example_keys": [
+              "Shift+Space"
+            ]
+          },
+          {
+            "pattern": "ends:C:D",
+            "message": "Shift+Left widened to the left. You need the next column on the right.",
+            "example_keys": [
+              "Ctrl+Space",
+              "Shift+Left"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L005-S3",
+        "type": "shortcut",
+        "difficulty": "apply",
+        "prompt": "You are in C5, in the middle of the table. Select columns B, C and D so you can format them together.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Region",
+                "C1": "Rep",
+                "D1": "Amount",
+                "A2": "ORD-1001",
+                "B2": "East",
+                "C2": "Daniel",
+                "D2": 100,
+                "A3": "ORD-1002",
+                "B3": "West",
+                "C3": "Priya",
+                "D3": 125,
+                "A4": "ORD-1003",
+                "B4": "North",
+                "C4": "Tomas",
+                "D4": 150,
+                "A5": "ORD-1004",
+                "B5": "South",
+                "C5": "Amina",
+                "D5": 175,
+                "A6": "ORD-1005",
+                "B6": "East",
+                "C6": "Daniel",
+                "D6": 200,
+                "A7": "ORD-1006",
+                "B7": "West",
+                "C7": "Priya",
+                "D7": 225,
+                "A8": "ORD-1007",
+                "B8": "North",
+                "C8": "Tomas",
+                "D8": 250
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B:D"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "C5",
+          "expected": {
+            "type": "selection",
+            "range": "B:D"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Left",
+                "Ctrl+Space",
+                "Shift+Right",
+                "Shift+Right"
+              ]
+            ],
+            "mac": [
+              [
+                "Left",
+                "Control+Space",
+                "Shift+Right",
+                "Shift+Right"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "A selection grows in one direction from where you start. Where should you start?",
+          "Move to column B first, select its column, then widen to the right twice.",
+          "Press Left, then Ctrl+Space, then Shift+Right twice. You end with columns B to D."
+        ],
+        "explanation": "The selection grows in one direction from its starting column. Starting in B lets you widen right to D.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:C:C",
+            "message": "Shift+Left then Shift+Right shrinks back to C. Start in column B instead.",
+            "example_keys": [
+              "Ctrl+Space",
+              "Shift+Left",
+              "Shift+Right"
+            ]
+          },
+          {
+            "pattern": "ends:C:D",
+            "message": "You started in C, so you can only grow to the right from there.",
+            "example_keys": [
+              "Ctrl+Space",
+              "Shift+Right"
+            ]
+          },
+          {
+            "pattern": "ends:B:C",
+            "message": "One Shift+Right short. Column D is still missing.",
+            "example_keys": [
+              "Left",
+              "Ctrl+Space",
+              "Shift+Right"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L006",
+    "number": 6,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Cell Selection Shortcuts 2",
+    "version_badge": null,
+    "legacy_number": 28,
+    "estimated_minutes": 5,
+    "objectives": [
+      "By the end you can jump to A1, to the last used cell, or to any address from the keyboard."
+    ],
+    "about": "Big worksheets can run to thousands of rows. Three shortcuts help you travel. Ctrl+Home jumps to A1. Ctrl+End jumps to the last cell that holds data. Ctrl+G (Go To) lets you type any address. Auditors use them to see where a sheet really ends.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Go to A1",
+        "windows": "Ctrl+Home",
+        "mac": "Fn+Control+Left"
+      },
+      {
+        "action": "Go to the last used cell",
+        "windows": "Ctrl+End",
+        "mac": "Fn+Control+Right"
+      },
+      {
+        "action": "Go to any cell",
+        "windows": "Ctrl+G or F5",
+        "mac": "Control+G"
+      }
+    ],
+    "examples": [
+      {
+        "data": "Active cell K40",
+        "formula": "Ctrl+Home",
+        "result": "A1",
+        "why": "It always returns to the top-left corner."
+      },
+      {
+        "data": "Data fills A1:F12",
+        "formula": "Ctrl+End",
+        "result": "F12",
+        "why": "Ctrl+End goes to the last used row and the last used column."
+      },
+      {
+        "data": "Data fills A1:F12, plus a stray entry in H14",
+        "formula": "Ctrl+End",
+        "result": "H14",
+        "why": "A stray entry or old formatting stretches the used area. Ctrl+End reveals it."
+      }
+    ],
+    "watch_out": [
+      "Ctrl+End goes to the last used cell, which can look empty. Stray entries move it.",
+      "Go To accepts any address, such as J20, and also ranges, such as B2:D9."
+    ],
+    "recap": "You can now cross any sheet in a few key presses. Next, you will combine these jumps with Shift to select large areas.",
+    "steps": [
+      {
+        "id": "L006-S1",
+        "type": "shortcut",
+        "difficulty": "guided",
+        "prompt": "You are in F9, deep inside a stock list. Return to the top-left corner of the sheet in one move.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Category",
+                "C1": "Qty",
+                "D1": "Price",
+                "E1": "Total",
+                "F1": "Status",
+                "A2": "Pens",
+                "B2": "Writing",
+                "C2": 10,
+                "D2": 2,
+                "E2": 20,
+                "F2": "Low",
+                "A3": "Paper",
+                "B3": "Paper",
+                "C3": 15,
+                "D3": 3,
+                "E3": 45,
+                "F3": "In stock",
+                "A4": "Staples",
+                "B4": "Fasteners",
+                "C4": 20,
+                "D4": 4,
+                "E4": 80,
+                "F4": "In stock",
+                "A5": "Folders",
+                "B5": "Filing",
+                "C5": 25,
+                "D5": 5,
+                "E5": 125,
+                "F5": "Low",
+                "A6": "Markers",
+                "B6": "Writing",
+                "C6": 30,
+                "D6": 6,
+                "E6": 180,
+                "F6": "In stock",
+                "A7": "Tape",
+                "B7": "Fasteners",
+                "C7": 35,
+                "D7": 7,
+                "E7": 245,
+                "F7": "In stock",
+                "A8": "Glue",
+                "B8": "Craft",
+                "C8": 40,
+                "D8": 8,
+                "E8": 320,
+                "F8": "Low",
+                "A9": "Scissors",
+                "B9": "Craft",
+                "C9": 45,
+                "D9": 9,
+                "E9": 405,
+                "F9": "In stock",
+                "A10": "Binders",
+                "B10": "Filing",
+                "C10": 50,
+                "D10": 10,
+                "E10": 500,
+                "F10": "In stock",
+                "A11": "Labels",
+                "B11": "Paper",
+                "C11": 55,
+                "D11": 11,
+                "E11": 605,
+                "F11": "Low",
+                "A12": "Clips",
+                "B12": "Fasteners",
+                "C12": 60,
+                "D12": 12,
+                "E12": 720,
+                "F12": "In stock"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A1"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "F9",
+          "expected": {
+            "type": "active_cell",
+            "cell": "A1"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Home"
+              ]
+            ],
+            "mac": [
+              [
+                "Fn+Control+Left"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "One shortcut returns you to A1 from anywhere. It uses the word for \"start\".",
+          "Hold Ctrl (Control and Fn on a Mac) and press Home.",
+          "Press Ctrl+Home. On a Mac, press Fn+Control+Left."
+        ],
+        "explanation": "Ctrl+Home always returns to A1, wherever you are on the sheet.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:A9",
+            "message": "Home stays in the same row. Ctrl+Home goes all the way to A1.",
+            "example_keys": [
+              "Home"
+            ]
+          },
+          {
+            "pattern": "ends:F1",
+            "message": "That jumped up the column but stayed in column F.",
+            "example_keys": [
+              "Ctrl+Up"
+            ]
+          },
+          {
+            "pattern": "ends:F12",
+            "message": "Ctrl+End goes to the opposite corner, the last used cell.",
+            "example_keys": [
+              "Ctrl+End"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L006-S2",
+        "type": "shortcut",
+        "difficulty": "independent",
+        "prompt": "You are in A1. Jump straight to cell J20 by typing its address.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Qty",
+                "C1": "Price",
+                "D1": "Total",
+                "A2": "Pens",
+                "B2": 10,
+                "C2": 2,
+                "D2": 20,
+                "A3": "Paper",
+                "B3": 15,
+                "C3": 3,
+                "D3": 45,
+                "A4": "Staples",
+                "B4": 20,
+                "C4": 4,
+                "D4": 80,
+                "A5": "Folders",
+                "B5": 25,
+                "C5": 5,
+                "D5": 125,
+                "A6": "Markers",
+                "B6": 30,
+                "C6": 6,
+                "D6": 180
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "J20"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "A1",
+          "expected": {
+            "type": "active_cell",
+            "cell": "J20"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+G",
+                "Type:J20",
+                "Enter"
+              ],
+              [
+                "F5",
+                "Type:J20",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "Control+G",
+                "Type:J20",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "You need a shortcut that takes you to an address you type. Which one is it?",
+          "Ctrl+G opens the Go To box (F5 does too). Type the address and press Enter.",
+          "Press Ctrl+G, type J20, then press Enter."
+        ],
+        "explanation": "Go To accepts any address and jumps there at once, however far away it is.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:A1",
+            "message": "The box needs Enter to confirm. Type J20, then press Enter.",
+            "example_keys": [
+              "Ctrl+G",
+              "Type:J20"
+            ]
+          },
+          {
+            "pattern": "ends:A20",
+            "message": "That address is in column A. Check the letter in J20.",
+            "example_keys": [
+              "Ctrl+G",
+              "Type:A20",
+              "Enter"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L006-S3",
+        "type": "shortcut",
+        "difficulty": "apply",
+        "prompt": "You are in B3. The table ends at D8, yet Excel says the sheet is much bigger. Jump to the last cell Excel counts as used, to find out why.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Region",
+                "C1": "Rep",
+                "D1": "Amount",
+                "A2": "ORD-1001",
+                "B2": "East",
+                "C2": "Daniel",
+                "D2": 100,
+                "A3": "ORD-1002",
+                "B3": "West",
+                "C3": "Priya",
+                "D3": 125,
+                "A4": "ORD-1003",
+                "B4": "North",
+                "C4": "Tomas",
+                "D4": 150,
+                "A5": "ORD-1004",
+                "B5": "South",
+                "C5": "Amina",
+                "D5": 175,
+                "A6": "ORD-1005",
+                "B6": "East",
+                "C6": "Daniel",
+                "D6": 200,
+                "A7": "ORD-1006",
+                "B7": "West",
+                "C7": "Priya",
+                "D7": 225,
+                "A8": "ORD-1007",
+                "B8": "North",
+                "C8": "Tomas",
+                "D8": 250,
+                "G12": "old note"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "G12"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "B3",
+          "expected": {
+            "type": "active_cell",
+            "cell": "G12"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+End"
+              ]
+            ],
+            "mac": [
+              [
+                "Fn+Control+Right"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "The corner Excel counts as used may not be the corner of the table. Which shortcut goes to it?",
+          "Ctrl+End goes to the last used row and the last used column (Fn+Control+Right on a Mac).",
+          "Press Ctrl+End. You land on G12, where a stray note sits."
+        ],
+        "explanation": "Ctrl+End uses the last row and last column that hold data. The stray note in G12 pushes that corner past the table.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:D8",
+            "message": "That is the corner of the table, not the last used cell. Ctrl+End also counts stray entries.",
+            "example_keys": [
+              "Ctrl+Down",
+              "Ctrl+Right"
+            ]
+          },
+          {
+            "pattern": "ends:A1",
+            "message": "That is the opposite corner. Use Ctrl+End.",
+            "example_keys": [
+              "Ctrl+Home"
+            ]
+          },
+          {
+            "pattern": "ends:B8",
+            "message": "That only reaches the bottom of column B. Ctrl+End goes to the last used cell of the whole sheet.",
+            "example_keys": [
+              "Ctrl+Down"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L007",
+    "number": 7,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Larger Cell Selections 2",
+    "version_badge": null,
+    "legacy_number": 29,
+    "estimated_minutes": 5,
+    "objectives": [
+      "By the end you can select to the last used cell, back to A1, or the whole data block with Ctrl+Shift+End, Ctrl+Shift+Home and Ctrl+A."
+    ],
+    "about": "Once you can jump, you can select as far as you can jump. Ctrl+Shift+End selects from your cell to the last used cell, and Ctrl+Shift+Home selects back to A1. Ctrl+A selects the whole block of data around you, and a second press selects the entire sheet. Use them before copying, formatting or checking a table.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Select to the last used cell",
+        "windows": "Ctrl+Shift+End",
+        "mac": "Fn+Control+Shift+Right"
+      },
+      {
+        "action": "Select back to A1",
+        "windows": "Ctrl+Shift+Home",
+        "mac": "Fn+Control+Shift+Left"
+      },
+      {
+        "action": "Select the data block, then the sheet",
+        "windows": "Ctrl+A",
+        "mac": "Cmd+A"
+      }
+    ],
+    "examples": [
+      {
+        "data": "Table in A1:D8, active cell A1",
+        "formula": "Ctrl+A",
+        "result": "A1:D8",
+        "why": "One press selects the table around the active cell."
+      },
+      {
+        "data": "The same table",
+        "formula": "Ctrl+A, Ctrl+A",
+        "result": "Every cell in the sheet",
+        "why": "A second press goes from the table to the whole sheet."
+      },
+      {
+        "data": "Table in A1:D10, stray entry in F14, active cell B2",
+        "formula": "Ctrl+Shift+End",
+        "result": "B2:F14",
+        "why": "The last used cell is F14, not D10."
+      }
+    ],
+    "watch_out": [
+      "Ctrl+Shift+End reaches the last used cell, which may lie beyond the visible data.",
+      "Ctrl+A inside a table selects the table only. Press it again for the whole sheet."
+    ],
+    "recap": "You can now select to any corner of a sheet. Next, a summary lesson will mix all the selection shortcuts.",
+    "steps": [
+      {
+        "id": "L007-S1",
+        "type": "shortcut",
+        "difficulty": "guided",
+        "prompt": "You are in B3 inside a small table. Select the whole table with one shortcut.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Product",
+                "B1": "Units",
+                "C1": "Price",
+                "A2": "Pens",
+                "B2": 120,
+                "C2": 2,
+                "A3": "Paper",
+                "B3": 80,
+                "C3": 5,
+                "A4": "Staples",
+                "B4": 60,
+                "C4": 3,
+                "A5": "Folders",
+                "B5": 45,
+                "C5": 6,
+                "A6": "Markers",
+                "B6": 30,
+                "C6": 4
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A1:C6"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "B3",
+          "expected": {
+            "type": "selection",
+            "range": "A1:C6"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+A"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+A"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "One shortcut selects the whole block of data around you.",
+          "Ctrl+A selects the data block around the active cell (Cmd+A on a Mac).",
+          "Press Ctrl+A once. The table A1:C6 is selected."
+        ],
+        "explanation": "Ctrl+A first selects the block of data around the active cell. A second press would select the whole sheet.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:ALL",
+            "message": "Two presses selected the whole sheet. One press is enough to select the table.",
+            "example_keys": [
+              "Ctrl+A",
+              "Ctrl+A"
+            ]
+          },
+          {
+            "pattern": "ends:A1:B3",
+            "message": "That selected only from B3 back to A1. Ctrl+A takes the whole table.",
+            "example_keys": [
+              "Ctrl+Shift+Home"
+            ]
+          },
+          {
+            "pattern": "ends:B3:C6",
+            "message": "That went to the last used cell. Ctrl+A selects the whole table.",
+            "example_keys": [
+              "Ctrl+Shift+End"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L007-S2",
+        "type": "shortcut",
+        "difficulty": "independent",
+        "prompt": "You are in C5. Select everything from C5 back to A1.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Region",
+                "C1": "Rep",
+                "D1": "Amount",
+                "A2": "ORD-1001",
+                "B2": "East",
+                "C2": "Daniel",
+                "D2": 100,
+                "A3": "ORD-1002",
+                "B3": "West",
+                "C3": "Priya",
+                "D3": 125,
+                "A4": "ORD-1003",
+                "B4": "North",
+                "C4": "Tomas",
+                "D4": 150,
+                "A5": "ORD-1004",
+                "B5": "South",
+                "C5": "Amina",
+                "D5": 175,
+                "A6": "ORD-1005",
+                "B6": "East",
+                "C6": "Daniel",
+                "D6": 200,
+                "A7": "ORD-1006",
+                "B7": "West",
+                "C7": "Priya",
+                "D7": 225,
+                "A8": "ORD-1007",
+                "B8": "North",
+                "C8": "Tomas",
+                "D8": 250,
+                "A9": "ORD-1008",
+                "B9": "South",
+                "C9": "Amina",
+                "D9": 275
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A1:C5"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "C5",
+          "expected": {
+            "type": "selection",
+            "range": "A1:C5"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Shift+Home"
+              ]
+            ],
+            "mac": [
+              [
+                "Fn+Control+Shift+Left"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "You want to extend your selection all the way back to the start of the sheet.",
+          "Ctrl+Shift+Home extends the selection from your cell to A1.",
+          "Press Ctrl+Shift+Home. C5 becomes A1:C5."
+        ],
+        "explanation": "Ctrl+Shift+Home grows the selection from the active cell back to A1.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:A1:D9",
+            "message": "Ctrl+A selects the whole table, not just back to A1.",
+            "example_keys": [
+              "Ctrl+A"
+            ]
+          },
+          {
+            "pattern": "ends:C5:D9",
+            "message": "That went the other way, to the last used cell.",
+            "example_keys": [
+              "Ctrl+Shift+End"
+            ]
+          },
+          {
+            "pattern": "ends:A1",
+            "message": "Ctrl+Home moves without selecting. Add Shift.",
+            "example_keys": [
+              "Ctrl+Home"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L007-S3",
+        "type": "shortcut",
+        "difficulty": "apply",
+        "prompt": "You are in B2. Select down to the last used cell, wherever it is.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Region",
+                "C1": "Rep",
+                "D1": "Amount",
+                "A2": "ORD-1001",
+                "B2": "East",
+                "C2": "Daniel",
+                "D2": 100,
+                "A3": "ORD-1002",
+                "B3": "West",
+                "C3": "Priya",
+                "D3": 125,
+                "A4": "ORD-1003",
+                "B4": "North",
+                "C4": "Tomas",
+                "D4": 150,
+                "A5": "ORD-1004",
+                "B5": "South",
+                "C5": "Amina",
+                "D5": 175,
+                "A6": "ORD-1005",
+                "B6": "East",
+                "C6": "Daniel",
+                "D6": 200,
+                "A7": "ORD-1006",
+                "B7": "West",
+                "C7": "Priya",
+                "D7": 225,
+                "A8": "ORD-1007",
+                "B8": "North",
+                "C8": "Tomas",
+                "D8": 250,
+                "A9": "ORD-1008",
+                "B9": "South",
+                "C9": "Amina",
+                "D9": 275,
+                "A10": "ORD-1009",
+                "B10": "East",
+                "C10": "Daniel",
+                "D10": 300,
+                "F14": "temp"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B2:F14"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "B2",
+          "expected": {
+            "type": "selection",
+            "range": "B2:F14"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Shift+End"
+              ]
+            ],
+            "mac": [
+              [
+                "Fn+Control+Shift+Right"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "The last used cell may not be the corner of the table. Which shortcut reaches it?",
+          "Ctrl+Shift+End extends the selection to the last used cell (Fn+Control+Shift+Right on a Mac).",
+          "Press Ctrl+Shift+End. The selection runs from B2 to F14, where a stray entry sits."
+        ],
+        "explanation": "The last used cell is F14, because the stray entry sits in column F and row 14. The selection runs from B2 to that corner.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:B2:D10",
+            "message": "That stopped at the table. A stray entry in F14 makes F14 the last used cell.",
+            "example_keys": [
+              "Ctrl+Shift+Right",
+              "Ctrl+Shift+Down"
+            ]
+          },
+          {
+            "pattern": "ends:A1:B2",
+            "message": "That went back to A1. You want the opposite corner.",
+            "example_keys": [
+              "Ctrl+Shift+Home"
+            ]
+          },
+          {
+            "pattern": "ends:ALL",
+            "message": "Two presses of Ctrl+A select the whole sheet, which is more than the task asks.",
+            "example_keys": [
+              "Ctrl+A",
+              "Ctrl+A"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L008",
+    "number": 8,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Cell Selection Skill Summary",
+    "version_badge": null,
+    "legacy_number": 30,
+    "estimated_minutes": 6,
+    "objectives": [
+      "By the end you can combine jumping, selecting and Go To without the mouse."
+    ],
+    "about": "This lesson mixes every selection shortcut from lessons 01 to 07. There is no new material. Work through the five tasks without hints if you can; the point is to choose the right shortcut yourself. Fast, accurate selection is the base for formatting, copying and every formula you will write later.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Jump to the edge of data",
+        "windows": "Ctrl+Arrow",
+        "mac": "Cmd+Arrow"
+      },
+      {
+        "action": "Extend one cell",
+        "windows": "Shift+Arrow",
+        "mac": "Shift+Arrow"
+      },
+      {
+        "action": "Extend to the edge of data",
+        "windows": "Ctrl+Shift+Arrow",
+        "mac": "Cmd+Shift+Arrow"
+      },
+      {
+        "action": "Select the row / column",
+        "windows": "Shift+Space / Ctrl+Space",
+        "mac": "Shift+Space / Control+Space"
+      },
+      {
+        "action": "Go to A1 / last used cell",
+        "windows": "Ctrl+Home / Ctrl+End",
+        "mac": "Fn+Control+Left / Fn+Control+Right"
+      },
+      {
+        "action": "Go To any address",
+        "windows": "Ctrl+G",
+        "mac": "Control+G"
+      },
+      {
+        "action": "Select to A1 / last used cell",
+        "windows": "Ctrl+Shift+Home / Ctrl+Shift+End",
+        "mac": "Fn+Control+Shift+Left / Fn+Control+Shift+Right"
+      },
+      {
+        "action": "Select the data block, then the sheet",
+        "windows": "Ctrl+A",
+        "mac": "Cmd+A"
+      }
+    ],
+    "examples": [
+      {
+        "data": "Active cell A1 on a table that fills A1:E12",
+        "formula": "Ctrl+Right, then Ctrl+Down",
+        "result": "E12",
+        "why": "Two jumps reach the far corner."
+      },
+      {
+        "data": "Active cell C4",
+        "formula": "Shift+Space, then Shift+Down",
+        "result": "Rows 4 and 5 are selected",
+        "why": "Select one row, then widen by one."
+      }
+    ],
+    "watch_out": [
+      "When a shortcut lands somewhere unexpected, look for blank cells in the data.",
+      "Pick the shortest sequence. Two jumps usually beat ten arrow presses."
+    ],
+    "recap": "You now have a full toolkit for moving and selecting. Next, you will meet the shortcuts that undo, redo and edit.",
+    "steps": [
+      {
+        "id": "L008-S1",
+        "type": "shortcut",
+        "difficulty": "guided",
+        "prompt": "You are in A1 on a stock list. Jump to its bottom-right corner, E12.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Category",
+                "C1": "Qty",
+                "D1": "Price",
+                "E1": "Total",
+                "A2": "Item 1",
+                "B2": "Writing",
+                "C2": 10,
+                "D2": 2,
+                "E2": 20,
+                "A3": "Item 2",
+                "B3": "Paper",
+                "C3": 15,
+                "D3": 3,
+                "E3": 45,
+                "A4": "Item 3",
+                "B4": "Filing",
+                "C4": 20,
+                "D4": 4,
+                "E4": 80,
+                "A5": "Item 4",
+                "B5": "Writing",
+                "C5": 25,
+                "D5": 5,
+                "E5": 125,
+                "A6": "Item 5",
+                "B6": "Paper",
+                "C6": 30,
+                "D6": 6,
+                "E6": 180,
+                "A7": "Item 6",
+                "B7": "Filing",
+                "C7": 35,
+                "D7": 7,
+                "E7": 245,
+                "A8": "Item 7",
+                "B8": "Writing",
+                "C8": 40,
+                "D8": 8,
+                "E8": 320,
+                "A9": "Item 8",
+                "B9": "Paper",
+                "C9": 45,
+                "D9": 9,
+                "E9": 405,
+                "A10": "Item 9",
+                "B10": "Filing",
+                "C10": 50,
+                "D10": 10,
+                "E10": 500,
+                "A11": "Item 10",
+                "B11": "Writing",
+                "C11": 55,
+                "D11": 11,
+                "E11": 605,
+                "A12": "Item 11",
+                "B12": "Paper",
+                "C12": 60,
+                "D12": 12,
+                "E12": 720
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "E12"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "A1",
+          "expected": {
+            "type": "active_cell",
+            "cell": "E12"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Right",
+                "Ctrl+Down"
+              ],
+              [
+                "Ctrl+Down",
+                "Ctrl+Right"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+Right",
+                "Cmd+Down"
+              ],
+              [
+                "Cmd+Down",
+                "Cmd+Right"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Two jumps in two directions reach the corner.",
+          "Ctrl+Right runs to the last column. Ctrl+Down runs to the last row.",
+          "Press Ctrl+Right, then Ctrl+Down. A1 jumps to E1, then to E12."
+        ],
+        "explanation": "Each Ctrl+Arrow runs to the edge of the data block. Two jumps reach the corner.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:E1",
+            "message": "You reached the last column. Now jump down.",
+            "example_keys": [
+              "Ctrl+Right"
+            ]
+          },
+          {
+            "pattern": "ends:A12",
+            "message": "You reached the last row. Now jump right.",
+            "example_keys": [
+              "Ctrl+Down"
+            ]
+          },
+          {
+            "pattern": "ends:E1048576",
+            "message": "A third jump ran past the data to the bottom of the sheet.",
+            "example_keys": [
+              "Ctrl+Right",
+              "Ctrl+Down",
+              "Ctrl+Down"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L008-S2",
+        "type": "shortcut",
+        "difficulty": "independent",
+        "prompt": "You are in E12, the last cell of the list. Select everything back to A1.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Category",
+                "C1": "Qty",
+                "D1": "Price",
+                "E1": "Total",
+                "A2": "Item 1",
+                "B2": "Writing",
+                "C2": 10,
+                "D2": 2,
+                "E2": 20,
+                "A3": "Item 2",
+                "B3": "Paper",
+                "C3": 15,
+                "D3": 3,
+                "E3": 45,
+                "A4": "Item 3",
+                "B4": "Filing",
+                "C4": 20,
+                "D4": 4,
+                "E4": 80,
+                "A5": "Item 4",
+                "B5": "Writing",
+                "C5": 25,
+                "D5": 5,
+                "E5": 125,
+                "A6": "Item 5",
+                "B6": "Paper",
+                "C6": 30,
+                "D6": 6,
+                "E6": 180,
+                "A7": "Item 6",
+                "B7": "Filing",
+                "C7": 35,
+                "D7": 7,
+                "E7": 245,
+                "A8": "Item 7",
+                "B8": "Writing",
+                "C8": 40,
+                "D8": 8,
+                "E8": 320,
+                "A9": "Item 8",
+                "B9": "Paper",
+                "C9": 45,
+                "D9": 9,
+                "E9": 405,
+                "A10": "Item 9",
+                "B10": "Filing",
+                "C10": 50,
+                "D10": 10,
+                "E10": 500,
+                "A11": "Item 10",
+                "B11": "Writing",
+                "C11": 55,
+                "D11": 11,
+                "E11": 605,
+                "A12": "Item 11",
+                "B12": "Paper",
+                "C12": 60,
+                "D12": 12,
+                "E12": 720
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A1:E12"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "E12",
+          "expected": {
+            "type": "selection",
+            "range": "A1:E12"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Shift+Home"
+              ]
+            ],
+            "mac": [
+              [
+                "Fn+Control+Shift+Left"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "You want to extend your selection back to the start of the sheet.",
+          "Ctrl+Shift+Home extends the selection from your cell to A1.",
+          "Press Ctrl+Shift+Home. E12 becomes A1:E12."
+        ],
+        "explanation": "Ctrl+Shift+Home grows the selection from the active cell back to A1, covering the whole list.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:A1",
+            "message": "Ctrl+Home moves without selecting. Add Shift.",
+            "example_keys": [
+              "Ctrl+Home"
+            ]
+          },
+          {
+            "pattern": "ends:A12:E12",
+            "message": "That selected one row only. Ctrl+Shift+Home reaches A1.",
+            "example_keys": [
+              "Shift+Left",
+              "Shift+Left",
+              "Shift+Left",
+              "Shift+Left"
+            ]
+          },
+          {
+            "pattern": "ends:E1:E12",
+            "message": "That selected only column E. Ctrl+Shift+Home reaches A1.",
+            "example_keys": [
+              "Ctrl+Shift+Up"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L008-S3",
+        "type": "shortcut",
+        "difficulty": "independent",
+        "prompt": "You are in C4. Select row 4 and row 5 together.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Category",
+                "C1": "Qty",
+                "D1": "Price",
+                "E1": "Total",
+                "A2": "Item 1",
+                "B2": "Writing",
+                "C2": 10,
+                "D2": 2,
+                "E2": 20,
+                "A3": "Item 2",
+                "B3": "Paper",
+                "C3": 15,
+                "D3": 3,
+                "E3": 45,
+                "A4": "Item 3",
+                "B4": "Filing",
+                "C4": 20,
+                "D4": 4,
+                "E4": 80,
+                "A5": "Item 4",
+                "B5": "Writing",
+                "C5": 25,
+                "D5": 5,
+                "E5": 125,
+                "A6": "Item 5",
+                "B6": "Paper",
+                "C6": 30,
+                "D6": 6,
+                "E6": 180,
+                "A7": "Item 6",
+                "B7": "Filing",
+                "C7": 35,
+                "D7": 7,
+                "E7": 245,
+                "A8": "Item 7",
+                "B8": "Writing",
+                "C8": 40,
+                "D8": 8,
+                "E8": 320,
+                "A9": "Item 8",
+                "B9": "Paper",
+                "C9": 45,
+                "D9": 9,
+                "E9": 405,
+                "A10": "Item 9",
+                "B10": "Filing",
+                "C10": 50,
+                "D10": 10,
+                "E10": 500,
+                "A11": "Item 10",
+                "B11": "Writing",
+                "C11": 55,
+                "D11": 11,
+                "E11": 605,
+                "A12": "Item 11",
+                "B12": "Paper",
+                "C12": 60,
+                "D12": 12,
+                "E12": 720
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "4:5"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "C4",
+          "expected": {
+            "type": "selection",
+            "range": "4:5"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Space",
+                "Shift+Down"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Space",
+                "Shift+Down"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Select the row first, then widen it by one row.",
+          "Shift+Space selects the row. Shift+Down adds the row below.",
+          "Press Shift+Space, then Shift+Down. Rows 4 and 5 are selected."
+        ],
+        "explanation": "Shift+Space selects row 4. Shift+Down widens the selection by one whole row.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:4:4",
+            "message": "That is only row 4. Widen it with Shift+Down.",
+            "example_keys": [
+              "Shift+Space"
+            ]
+          },
+          {
+            "pattern": "ends:3:4",
+            "message": "Shift+Up widened upward. You need the row below.",
+            "example_keys": [
+              "Shift+Space",
+              "Shift+Up"
+            ]
+          },
+          {
+            "pattern": "ends:C:C",
+            "message": "That selected the column. Rows use Shift+Space.",
+            "example_keys": [
+              "Ctrl+Space"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L008-S4",
+        "type": "shortcut",
+        "difficulty": "independent",
+        "prompt": "You are in A1. Go to B15 and select B15:D15 without using the mouse.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Category",
+                "C1": "Qty",
+                "D1": "Price",
+                "E1": "Total",
+                "A2": "Item 1",
+                "B2": "Writing",
+                "C2": 10,
+                "D2": 2,
+                "E2": 20,
+                "A3": "Item 2",
+                "B3": "Paper",
+                "C3": 15,
+                "D3": 3,
+                "E3": 45,
+                "A4": "Item 3",
+                "B4": "Filing",
+                "C4": 20,
+                "D4": 4,
+                "E4": 80,
+                "A5": "Item 4",
+                "B5": "Writing",
+                "C5": 25,
+                "D5": 5,
+                "E5": 125,
+                "A6": "Item 5",
+                "B6": "Paper",
+                "C6": 30,
+                "D6": 6,
+                "E6": 180,
+                "A7": "Item 6",
+                "B7": "Filing",
+                "C7": 35,
+                "D7": 7,
+                "E7": 245,
+                "A8": "Item 7",
+                "B8": "Writing",
+                "C8": 40,
+                "D8": 8,
+                "E8": 320,
+                "A9": "Item 8",
+                "B9": "Paper",
+                "C9": 45,
+                "D9": 9,
+                "E9": 405,
+                "A10": "Item 9",
+                "B10": "Filing",
+                "C10": 50,
+                "D10": 10,
+                "E10": 500,
+                "A11": "Item 10",
+                "B11": "Writing",
+                "C11": 55,
+                "D11": 11,
+                "E11": 605,
+                "A12": "Item 11",
+                "B12": "Paper",
+                "C12": 60,
+                "D12": 12,
+                "E12": 720
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B15:D15"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "A1",
+          "expected": {
+            "type": "selection",
+            "range": "B15:D15"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+G",
+                "Type:B15",
+                "Enter",
+                "Shift+Right",
+                "Shift+Right"
+              ],
+              [
+                "F5",
+                "Type:B15",
+                "Enter",
+                "Shift+Right",
+                "Shift+Right"
+              ]
+            ],
+            "mac": [
+              [
+                "Control+G",
+                "Type:B15",
+                "Enter",
+                "Shift+Right",
+                "Shift+Right"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Travel first, then select. Which shortcut travels to an address you type?",
+          "Ctrl+G opens Go To. After it takes you to B15, Shift+Right extends the selection.",
+          "Press Ctrl+G, type B15, press Enter. Then press Shift+Right twice."
+        ],
+        "explanation": "Go To lands you on B15. Two Shift+Right presses then extend the selection to D15.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:B15",
+            "message": "You reached B15 but did not select. Add two Shift+Right presses.",
+            "example_keys": [
+              "Ctrl+G",
+              "Type:B15",
+              "Enter"
+            ]
+          },
+          {
+            "pattern": "ends:B15:C15",
+            "message": "One Shift+Right short. D15 is still outside the selection.",
+            "example_keys": [
+              "Ctrl+G",
+              "Type:B15",
+              "Enter",
+              "Shift+Right"
+            ]
+          },
+          {
+            "pattern": "ends:A1",
+            "message": "The box needs Enter to confirm the address.",
+            "example_keys": [
+              "Ctrl+G",
+              "Type:B15"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L008-S5",
+        "type": "shortcut",
+        "difficulty": "apply",
+        "prompt": "You are in A1. The sheet has a table, a blank row, and a Total row. Select all of it, Total row included.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Region",
+                "B1": "Q1",
+                "C1": "Q2",
+                "D1": "Q3",
+                "A2": "East",
+                "B2": 410,
+                "C2": 430,
+                "D2": 450,
+                "A3": "West",
+                "B3": 380,
+                "C3": 395,
+                "D3": 410,
+                "A4": "North",
+                "B4": 290,
+                "C4": 300,
+                "D4": 320,
+                "A5": "South",
+                "B5": 330,
+                "C5": 340,
+                "D5": 360,
+                "A6": "Central",
+                "B6": 270,
+                "C6": 285,
+                "D6": 295,
+                "A7": "Coastal",
+                "B7": 240,
+                "C7": 250,
+                "D7": 265,
+                "A8": "Islands",
+                "B8": 120,
+                "C8": 125,
+                "D8": 130,
+                "A10": "Total",
+                "B10": 2040,
+                "C10": 2125,
+                "D10": 2230
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A1:D10"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "A1",
+          "expected": {
+            "type": "selection",
+            "range": "A1:D10"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Shift+Right",
+                "Ctrl+Shift+Down",
+                "Ctrl+Shift+Down"
+              ],
+              [
+                "Ctrl+Shift+Down",
+                "Ctrl+Shift+Down",
+                "Ctrl+Shift+Right"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+Shift+Right",
+                "Cmd+Shift+Down",
+                "Cmd+Shift+Down"
+              ],
+              [
+                "Cmd+Shift+Down",
+                "Cmd+Shift+Down",
+                "Cmd+Shift+Right"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "A blank row stops the selection jump. Think about how many presses that costs you.",
+          "Select across with Ctrl+Shift+Right, then Ctrl+Shift+Down once to stop above the blank row and once more to cross it.",
+          "Press Ctrl+Shift+Right, then Ctrl+Shift+Down twice. The selection reaches D10."
+        ],
+        "explanation": "The first downward jump stops at row 8, above the blank row. The second crosses the gap and reaches the Total row in row 10.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:A1:D8",
+            "message": "The blank row 9 stopped the selection. Press Ctrl+Shift+Down again to cross it.",
+            "example_keys": [
+              "Ctrl+Shift+Right",
+              "Ctrl+Shift+Down"
+            ]
+          },
+          {
+            "pattern": "ends:A1:D1",
+            "message": "You covered the width only. Now extend downward.",
+            "example_keys": [
+              "Ctrl+Shift+Right"
+            ]
+          },
+          {
+            "pattern": "ends:A1:D1048576",
+            "message": "One press too many ran past the Total row to the bottom of the sheet.",
+            "example_keys": [
+              "Ctrl+Shift+Right",
+              "Ctrl+Shift+Down",
+              "Ctrl+Shift+Down",
+              "Ctrl+Shift+Down"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L009",
+    "number": 9,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Intro to Shortcuts",
+    "version_badge": null,
+    "legacy_number": 48,
+    "estimated_minutes": 4,
+    "objectives": [
+      "By the end you can undo, redo, edit and cancel without the mouse."
+    ],
+    "about": "A shortcut replaces several mouse clicks with one key press. Learn these first, because they fix mistakes. Ctrl+Z undoes your last action. Ctrl+Y redoes it. F2 edits the cell you are in. Esc cancels an entry before you save it.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Undo",
+        "windows": "Ctrl+Z",
+        "mac": "Cmd+Z"
+      },
+      {
+        "action": "Redo",
+        "windows": "Ctrl+Y",
+        "mac": "Cmd+Y"
+      },
+      {
+        "action": "Edit the active cell",
+        "windows": "F2",
+        "mac": "Control+U"
+      },
+      {
+        "action": "Cancel an entry",
+        "windows": "Esc",
+        "mac": "Esc"
+      },
+      {
+        "action": "Clear the contents",
+        "windows": "Delete",
+        "mac": "Delete"
+      }
+    ],
+    "examples": [
+      {
+        "data": "B2 holds 50. You type 500 and press Enter.",
+        "formula": "Ctrl+Z",
+        "result": "B2 shows 50 again",
+        "why": "Undo reverses your last action."
+      },
+      {
+        "data": "You just pressed Ctrl+Z",
+        "formula": "Ctrl+Y",
+        "result": "B2 shows 500 again",
+        "why": "Redo restores what you just undid."
+      },
+      {
+        "data": "You start typing 99 in D4, then change your mind",
+        "formula": "Esc",
+        "result": "D4 keeps its old value",
+        "why": "Esc cancels an entry that has not been saved. After Enter, use Ctrl+Z instead."
+      }
+    ],
+    "watch_out": [
+      "Typing straight into a cell replaces what is there. Press F2 first to edit the existing text.",
+      "Undo works step by step, and a new action clears the redo history."
+    ],
+    "recap": "You can now fix mistakes without reaching for the mouse. Next, you will format text from the keyboard.",
+    "steps": [
+      {
+        "id": "L009-S1",
+        "type": "shortcut",
+        "difficulty": "guided",
+        "prompt": "B2 holds 50. Type 500 and press Enter. Then undo it, and redo it, so B2 ends on 500.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Qty",
+                "A2": "Pens",
+                "B2": 50
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B2"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "B2",
+          "expected": {
+            "type": "value",
+            "cells": {
+              "B2": 500
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Type:500",
+                "Enter",
+                "Ctrl+Z",
+                "Ctrl+Y"
+              ]
+            ],
+            "mac": [
+              [
+                "Type:500",
+                "Enter",
+                "Cmd+Z",
+                "Cmd+Y"
+              ]
+            ]
+          },
+          "mouse_allowed": false,
+          "must_include_keys": {
+            "windows": [
+              "Ctrl+Z",
+              "Ctrl+Y"
+            ],
+            "mac": [
+              "Cmd+Z",
+              "Cmd+Y"
+            ]
+          }
+        },
+        "hints": [
+          "Two shortcuts reverse and restore actions. One starts with Z, the other with Y.",
+          "Ctrl+Z undoes your last action (Cmd+Z on a Mac). Ctrl+Y redoes it (Cmd+Y).",
+          "Type 500, press Enter, press Ctrl+Z (B2 shows 50), then press Ctrl+Y (B2 shows 500 again)."
+        ],
+        "explanation": "Undo reverses the last action and redo restores it. After the redo, B2 is back on 500.",
+        "common_mistakes": [
+          {
+            "pattern": "state:B2=50",
+            "message": "B2 is back at 50 because you undid the entry. Redo it with Ctrl+Y.",
+            "example_keys": [
+              "Type:500",
+              "Enter",
+              "Ctrl+Z"
+            ]
+          },
+          {
+            "pattern": "missing:Ctrl+Y",
+            "message": "Use Ctrl+Z and then Ctrl+Y so you practise both shortcuts."
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L009-S2",
+        "type": "shortcut",
+        "difficulty": "independent",
+        "prompt": "D4 shows 45. Start typing 99, then change your mind before saving. D4 must still show 45.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Region",
+                "C1": "Rep",
+                "D1": "Amount",
+                "A2": "ORD-1",
+                "B2": "East",
+                "C2": "Amina",
+                "D2": 120,
+                "A3": "ORD-2",
+                "B3": "West",
+                "C3": "Daniel",
+                "D3": 80,
+                "A4": "ORD-3",
+                "B4": "North",
+                "C4": "Priya",
+                "D4": 45
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D4"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "D4",
+          "expected": {
+            "type": "value",
+            "cells": {
+              "D4": 45
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Type:99",
+                "Esc"
+              ]
+            ],
+            "mac": [
+              [
+                "Type:99",
+                "Esc"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "You are mid-entry and want to back out. Which key cancels an entry that has not been saved?",
+          "Esc cancels an entry before you press Enter.",
+          "Type 99, then press Esc. D4 keeps its value of 45."
+        ],
+        "explanation": "Esc cancels an entry that has not been saved yet. Once you press Enter, you would need Ctrl+Z instead.",
+        "common_mistakes": [
+          {
+            "pattern": "state:D4=99",
+            "message": "Enter saved the 99. Press Esc instead to cancel, or Ctrl+Z to undo it.",
+            "example_keys": [
+              "Type:99",
+              "Enter"
+            ]
+          },
+          {
+            "pattern": "state:D4=",
+            "message": "Delete cleared the cell. Esc cancels an entry without changing the cell.",
+            "example_keys": [
+              "Delete"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L009-S3",
+        "type": "shortcut",
+        "difficulty": "apply",
+        "prompt": "E2 says \"Sale Pending\". Without retyping the whole cell, add an exclamation mark to the end.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Client",
+                "C1": "Date",
+                "D1": "Amount",
+                "E1": "Notes",
+                "A2": "ORD-7",
+                "B2": "Nova Ltd",
+                "C2": "03-Nov",
+                "D2": 300,
+                "E2": "Sale Pending"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "E2"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "E2",
+          "expected": {
+            "type": "value",
+            "cells": {
+              "E2": "Sale Pending!"
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "F2",
+                "Type:!",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "Control+U",
+                "Type:!",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Typing straight into a cell replaces what is there. How can you edit what is already in it?",
+          "F2 puts the cell into edit mode with the cursor at the end (Control+U on a Mac).",
+          "Press F2, type !, then press Enter."
+        ],
+        "explanation": "F2 opens the existing text for editing, so what you type is added to the end instead of replacing it.",
+        "common_mistakes": [
+          {
+            "pattern": "state:E2=!",
+            "message": "Typing straight away replaced the whole cell. Press F2 first so you edit the existing text.",
+            "example_keys": [
+              "Type:!",
+              "Enter"
+            ]
+          },
+          {
+            "pattern": "state:E2=Sale Pending",
+            "message": "You opened the cell but did not add the exclamation mark.",
+            "example_keys": [
+              "F2",
+              "Enter"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L010",
+    "number": 10,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Text Formatting Shortcuts",
+    "version_badge": null,
+    "legacy_number": 49,
+    "estimated_minutes": 4,
+    "objectives": [
+      "By the end you can bold, italicise, underline and strike through cells from the keyboard."
+    ],
+    "about": "Formatting makes headers and totals easy to spot. Ctrl+B makes text bold, Ctrl+I italic, Ctrl+U underlined and Ctrl+5 adds a strikethrough. Pressing the same shortcut again turns the format off. They work on one cell or on a whole selection, so a header row takes two key presses.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Bold",
+        "windows": "Ctrl+B",
+        "mac": "Cmd+B"
+      },
+      {
+        "action": "Italic",
+        "windows": "Ctrl+I",
+        "mac": "Cmd+I"
+      },
+      {
+        "action": "Underline",
+        "windows": "Ctrl+U",
+        "mac": "Cmd+U"
+      },
+      {
+        "action": "Strikethrough",
+        "windows": "Ctrl+5",
+        "mac": "Cmd+Shift+X"
+      }
+    ],
+    "examples": [
+      {
+        "data": "Select A1:C1, the header row",
+        "formula": "Ctrl+B",
+        "result": "All three headers become bold",
+        "why": "The shortcut formats everything selected."
+      },
+      {
+        "data": "B5 is already bold",
+        "formula": "Ctrl+B",
+        "result": "The bold is removed",
+        "why": "The shortcuts toggle."
+      },
+      {
+        "data": "Order 1004 was cancelled",
+        "formula": "Ctrl+5",
+        "result": "The cell text is struck through",
+        "why": "Strikethrough marks something as cancelled without deleting it."
+      }
+    ],
+    "watch_out": [
+      "Each shortcut is a toggle. If a cell is already formatted, the same shortcut removes the format.",
+      "Select the cells first. The shortcut formats whatever is selected."
+    ],
+    "recap": "You can now format text without the ribbon. Next, you will enter dates, times and multi-line text quickly.",
+    "steps": [
+      {
+        "id": "L010-S1",
+        "type": "shortcut",
+        "difficulty": "guided",
+        "prompt": "Make the header row, A1:C1, bold. You are in A1.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Product",
+                "B1": "Units",
+                "C1": "Price",
+                "A2": "Pens",
+                "B2": 120,
+                "C2": 2,
+                "A3": "Paper",
+                "B3": 80,
+                "C3": 5
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A1:C1"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "A1",
+          "expected": {
+            "type": "format",
+            "cells": {
+              "A1": {
+                "bold": true
+              },
+              "B1": {
+                "bold": true
+              },
+              "C1": {
+                "bold": true
+              }
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Right",
+                "Shift+Right",
+                "Ctrl+B"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Right",
+                "Shift+Right",
+                "Cmd+B"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Select the three headers first, then apply the format.",
+          "Shift+Right twice selects A1:C1. Ctrl+B makes the selection bold (Cmd+B on a Mac).",
+          "Press Shift+Right twice, then Ctrl+B."
+        ],
+        "explanation": "The shortcut formats whatever is selected, so selecting the row first makes all three headers bold at once.",
+        "common_mistakes": [
+          {
+            "pattern": "state:B1.bold=false",
+            "message": "Only A1 became bold. Select A1:C1 first with Shift+Right.",
+            "example_keys": [
+              "Ctrl+B"
+            ]
+          },
+          {
+            "pattern": "state:C1.bold=false",
+            "message": "You selected only two headers. Press Shift+Right twice.",
+            "example_keys": [
+              "Shift+Right",
+              "Ctrl+B"
+            ]
+          },
+          {
+            "pattern": "state:A1.italic=true",
+            "message": "That is italic. Bold is Ctrl+B.",
+            "example_keys": [
+              "Shift+Right",
+              "Shift+Right",
+              "Ctrl+I"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L010-S2",
+        "type": "shortcut",
+        "difficulty": "independent",
+        "prompt": "Order 1004 (A5) was cancelled. Mark it with strikethrough and italic. You are in A5.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Region",
+                "C1": "Rep",
+                "D1": "Amount",
+                "A2": "ORD-1001",
+                "B2": "East",
+                "C2": "Daniel",
+                "D2": 100,
+                "A3": "ORD-1002",
+                "B3": "West",
+                "C3": "Priya",
+                "D3": 125,
+                "A4": "ORD-1003",
+                "B4": "North",
+                "C4": "Tomas",
+                "D4": 150,
+                "A5": "ORD-1004",
+                "B5": "South",
+                "C5": "Amina",
+                "D5": 175,
+                "A6": "ORD-1005",
+                "B6": "East",
+                "C6": "Daniel",
+                "D6": 200
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A5"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "A5",
+          "expected": {
+            "type": "format",
+            "cells": {
+              "A5": {
+                "strike": true,
+                "italic": true
+              }
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+5",
+                "Ctrl+I"
+              ],
+              [
+                "Ctrl+I",
+                "Ctrl+5"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+Shift+X",
+                "Cmd+I"
+              ],
+              [
+                "Cmd+I",
+                "Cmd+Shift+X"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Two separate formats are needed. One of them uses a number key.",
+          "Ctrl+5 adds strikethrough (Cmd+Shift+X on a Mac). Ctrl+I adds italic.",
+          "Press Ctrl+5, then Ctrl+I."
+        ],
+        "explanation": "Each shortcut adds one format. Strikethrough marks the order as cancelled without deleting it.",
+        "common_mistakes": [
+          {
+            "pattern": "state:A5.italic=false",
+            "message": "Strikethrough is on, but the task also asks for italic. Add Ctrl+I.",
+            "example_keys": [
+              "Ctrl+5"
+            ]
+          },
+          {
+            "pattern": "state:A5.strike=false",
+            "message": "Italic is on, but the cancellation needs strikethrough. Use Ctrl+5.",
+            "example_keys": [
+              "Ctrl+I"
+            ]
+          },
+          {
+            "pattern": "state:A5.underline=true",
+            "message": "Ctrl+U underlines. Strikethrough is Ctrl+5.",
+            "example_keys": [
+              "Ctrl+U",
+              "Ctrl+I"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L010-S3",
+        "type": "shortcut",
+        "difficulty": "apply",
+        "prompt": "B2 is bold by mistake. Remove the bold and underline it instead. You are in B2.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Product",
+                "B1": "Units",
+                "C1": "Price",
+                "A2": "Pens",
+                "B2": 120,
+                "C2": 2,
+                "A3": "Paper",
+                "B3": 80,
+                "C3": 5
+              },
+              "formats": {
+                "B2": {
+                  "bold": true
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B2"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "B2",
+          "expected": {
+            "type": "format",
+            "cells": {
+              "B2": {
+                "bold": false,
+                "underline": true
+              }
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+B",
+                "Ctrl+U"
+              ],
+              [
+                "Ctrl+U",
+                "Ctrl+B"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+B",
+                "Cmd+U"
+              ],
+              [
+                "Cmd+U",
+                "Cmd+B"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "These shortcuts switch a format on or off. What happens when it is already on?",
+          "Ctrl+B turns bold off when the cell is already bold. Ctrl+U adds underline.",
+          "Press Ctrl+B to remove the bold, then Ctrl+U to underline."
+        ],
+        "explanation": "Each shortcut is a toggle. Because B2 was already bold, Ctrl+B switched bold off.",
+        "common_mistakes": [
+          {
+            "pattern": "state:B2.bold=true",
+            "message": "B2 is still bold. Ctrl+B turns bold off because it is already on.",
+            "example_keys": [
+              "Ctrl+U"
+            ]
+          },
+          {
+            "pattern": "state:B2.underline=false",
+            "message": "Bold is off but B2 is not underlined yet. Add Ctrl+U.",
+            "example_keys": [
+              "Ctrl+B"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L011",
+    "number": 11,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Data Shortcuts",
+    "version_badge": null,
+    "legacy_number": 51,
+    "estimated_minutes": 5,
+    "objectives": [
+      "By the end you can enter dates and times, start a new line in a cell, and fill a selection with one entry."
+    ],
+    "about": "Data-entry shortcuts save typing and prevent mistakes. Ctrl+; enters today's date. Ctrl+Shift+; enters the current time. Alt+Enter starts a new line inside a cell. Ctrl+Enter fills your entry into every selected cell at once. Logbooks and timesheets use all four.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Today's date",
+        "windows": "Ctrl+;",
+        "mac": "Control+;"
+      },
+      {
+        "action": "Current time",
+        "windows": "Ctrl+Shift+;",
+        "mac": "Cmd+;"
+      },
+      {
+        "action": "New line inside a cell",
+        "windows": "Alt+Enter",
+        "mac": "Control+Option+Return"
+      },
+      {
+        "action": "Fill the selection with your entry",
+        "windows": "Ctrl+Enter",
+        "mac": "Control+Return"
+      }
+    ],
+    "examples": [
+      {
+        "data": "Active cell D2",
+        "formula": "Ctrl+;, then Enter",
+        "result": "Today's date appears in D2",
+        "why": "The date is typed as a fixed value. It will not change tomorrow."
+      },
+      {
+        "data": "B2:B6 selected",
+        "formula": "Type Paid, then Ctrl+Enter",
+        "result": "All five cells show Paid",
+        "why": "Ctrl+Enter fills every selected cell instead of just one."
+      },
+      {
+        "data": "Typing in a cell",
+        "formula": "Alt+Enter between two lines",
+        "result": "Two lines in one cell",
+        "why": "Enter would save the cell and move on. Alt+Enter keeps you inside it."
+      }
+    ],
+    "watch_out": [
+      "Ctrl+; enters a fixed date. For a date that updates every day, use the TODAY function later in the course.",
+      "Ctrl+Enter fills the typed entry into every selected cell. Select first, then type."
+    ],
+    "recap": "You can now enter common data in a single key press. Next, you will change how numbers look with number-format shortcuts.",
+    "steps": [
+      {
+        "id": "L011-S1",
+        "type": "shortcut",
+        "difficulty": "guided",
+        "prompt": "Enter today's date in D2 and the current time in E2 using shortcuts. Press Tab to move from D2 to E2.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Client",
+                "C1": "Amount",
+                "D1": "Date",
+                "E1": "Time",
+                "A2": "ORD-5",
+                "B2": "Nova Ltd",
+                "C2": 300
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D2",
+          "E2"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "D2",
+          "expected": {
+            "type": "value",
+            "cells": {
+              "D2": "$TODAY",
+              "E2": "$NOW"
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+;",
+                "Tab",
+                "Ctrl+Shift+;",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "Control+;",
+                "Tab",
+                "Cmd+;",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Two shortcuts use the semicolon key. One of them adds Shift.",
+          "Ctrl+; enters the date. Press Tab to save it and move right. Ctrl+Shift+; enters the time. Finish with Enter.",
+          "Press Ctrl+;, then Tab, then Ctrl+Shift+;, then Enter. On a Mac, the time is Cmd+;."
+        ],
+        "explanation": "Ctrl+; types today's date as a fixed value and Ctrl+Shift+; types the current time. Tab saves the date and moves to E2.",
+        "common_mistakes": [
+          {
+            "pattern": "state:D2=$NOW",
+            "message": "D2 holds the time and E2 the date. The date shortcut is Ctrl+; and the time shortcut adds Shift.",
+            "example_keys": [
+              "Ctrl+Shift+;",
+              "Tab",
+              "Ctrl+;",
+              "Enter"
+            ]
+          },
+          {
+            "pattern": "state:E2=",
+            "message": "Enter saved the date and moved down, so E2 is still empty. Press Tab to move to E2 first.",
+            "example_keys": [
+              "Ctrl+;",
+              "Enter"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L011-S2",
+        "type": "shortcut",
+        "difficulty": "independent",
+        "prompt": "You are in E2. Mark all five orders, E2:E6, as Paid with a single entry.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Client",
+                "C1": "Date",
+                "D1": "Amount",
+                "E1": "Status",
+                "A2": "ORD-4001",
+                "B2": "Nova Ltd",
+                "C2": "3-Nov",
+                "D2": 200,
+                "A3": "ORD-4002",
+                "B3": "Atlas Co",
+                "C3": "4-Nov",
+                "D3": 230,
+                "A4": "ORD-4003",
+                "B4": "Brightway",
+                "C4": "5-Nov",
+                "D4": 260,
+                "A5": "ORD-4004",
+                "B5": "Cedar & Sons",
+                "C5": "6-Nov",
+                "D5": 290,
+                "A6": "ORD-4005",
+                "B6": "Delta Foods",
+                "C6": "7-Nov",
+                "D6": 320
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "E2:E6"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "E2",
+          "expected": {
+            "type": "value",
+            "cells": {
+              "E2": "Paid",
+              "E3": "Paid",
+              "E4": "Paid",
+              "E5": "Paid",
+              "E6": "Paid"
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Type:Paid",
+                "Ctrl+Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Type:Paid",
+                "Control+Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Select all five cells first. Then find the shortcut that fills them all at once.",
+          "Select E2:E6 with Shift+Down. Type Paid, then press Ctrl+Enter (Control+Return on a Mac).",
+          "Press Shift+Down four times, type Paid, then press Ctrl+Enter."
+        ],
+        "explanation": "Ctrl+Enter writes your entry into every selected cell, instead of just the active one.",
+        "common_mistakes": [
+          {
+            "pattern": "state:E3=",
+            "message": "Only one cell was filled. Select E2:E6 first, then press Ctrl+Enter.",
+            "example_keys": [
+              "Type:Paid",
+              "Enter"
+            ]
+          },
+          {
+            "pattern": "state:E6=",
+            "message": "You selected only four cells. Select E2:E6 with four Shift+Down presses.",
+            "example_keys": [
+              "Shift+Down",
+              "Shift+Down",
+              "Shift+Down",
+              "Type:Paid",
+              "Ctrl+Enter"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L011-S3",
+        "type": "shortcut",
+        "difficulty": "apply",
+        "prompt": "You are in F2. Type a note in two lines inside the same cell: Rush on the first line, Ship by Fri on the second. Then press Enter to save.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Client",
+                "C1": "Date",
+                "D1": "Amount",
+                "E1": "Status",
+                "F1": "Note",
+                "A2": "ORD-4101",
+                "B2": "Nova Ltd",
+                "C2": "05-Nov",
+                "D2": 450,
+                "E2": "Open"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "F2"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "F2",
+          "expected": {
+            "type": "value",
+            "cells": {
+              "F2": "Rush\nShip by Fri"
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Type:Rush",
+                "Alt+Enter",
+                "Type:Ship by Fri",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "Type:Rush",
+                "Control+Option+Enter",
+                "Type:Ship by Fri",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Pressing Enter would save the cell. Which key combination starts a new line inside it?",
+          "Alt+Enter starts a new line inside the cell (Control+Option+Return on a Mac).",
+          "Type Rush, press Alt+Enter, type Ship by Fri, then press Enter."
+        ],
+        "explanation": "Alt+Enter keeps you inside the cell and starts a new line. The final Enter saves both lines together.",
+        "common_mistakes": [
+          {
+            "pattern": "state:F2=Rush",
+            "message": "Enter saved the cell after the first line. Press Alt+Enter to start a new line inside the cell.",
+            "example_keys": [
+              "Type:Rush",
+              "Enter"
+            ]
+          },
+          {
+            "pattern": "state:F2=RushShip by Fri",
+            "message": "The two lines ran together. Press Alt+Enter between them.",
+            "example_keys": [
+              "Type:Rush",
+              "Type:Ship by Fri",
+              "Enter"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L012",
+    "number": 12,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Number Formatting Shortcuts",
+    "version_badge": null,
+    "legacy_number": 8,
+    "estimated_minutes": 4,
+    "objectives": [
+      "By the end you can change how numbers look using number-format shortcuts."
+    ],
+    "about": "The same number can look very different: 1250, 1,250.00, $1,250.00, or 125000%. Number-format shortcuts change how a value is displayed without changing the value itself. They save a trip to the ribbon every time you build a report, and they work on any selection.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Number with commas",
+        "windows": "Ctrl+Shift+1",
+        "mac": "Control+Shift+1"
+      },
+      {
+        "action": "Currency",
+        "windows": "Ctrl+Shift+4",
+        "mac": "Control+Shift+4"
+      },
+      {
+        "action": "Percent",
+        "windows": "Ctrl+Shift+5",
+        "mac": "Control+Shift+5"
+      },
+      {
+        "action": "Date",
+        "windows": "Ctrl+Shift+3",
+        "mac": "Control+Shift+3"
+      },
+      {
+        "action": "General (reset)",
+        "windows": "Ctrl+Shift+~",
+        "mac": "Control+Shift+~"
+      }
+    ],
+    "examples": [
+      {
+        "data": "A cell holds 1250",
+        "formula": "Ctrl+Shift+4",
+        "result": "$1,250.00",
+        "why": "Currency adds a symbol, thousands separators and two decimals."
+      },
+      {
+        "data": "A cell holds 0.25",
+        "formula": "Ctrl+Shift+5",
+        "result": "25%",
+        "why": "Percent multiplies the display by 100. The stored value stays 0.25."
+      },
+      {
+        "data": "A cell holds 25",
+        "formula": "Ctrl+Shift+5",
+        "result": "2500%",
+        "why": "The format only changes the display. Apply percent to 0.25, not to 25."
+      }
+    ],
+    "watch_out": [
+      "The format changes how a value looks, not what it is. Formulas still use the original number.",
+      "The currency symbol follows your regional settings, so it may not be a dollar sign."
+    ],
+    "recap": "You can now format numbers from the keyboard. Next, you will move between worksheets.",
+    "steps": [
+      {
+        "id": "L012-S1",
+        "type": "shortcut",
+        "difficulty": "guided",
+        "prompt": "You are in B2. Show the four prices, B2:B5, as currency.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Price",
+                "A2": "Desk",
+                "B2": 1250,
+                "A3": "Chair",
+                "B3": 980,
+                "A4": "Lamp",
+                "B4": 1100,
+                "A5": "Shelf",
+                "B5": 760
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B2:B5"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "B2",
+          "expected": {
+            "type": "format",
+            "cells": {
+              "B2": {
+                "num_format": "currency"
+              },
+              "B3": {
+                "num_format": "currency"
+              },
+              "B4": {
+                "num_format": "currency"
+              },
+              "B5": {
+                "num_format": "currency"
+              }
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Ctrl+Shift+4"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Control+Shift+4"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Select the four prices first. The currency shortcut uses the number key with the dollar sign.",
+          "Select B2:B5 with Shift+Down, then press Ctrl+Shift+4 (Control+Shift+4 on a Mac).",
+          "Press Shift+Down three times, then Ctrl+Shift+4."
+        ],
+        "explanation": "The shortcut changes how the numbers are displayed, not the values. 1250 becomes $1,250.00 in the sheet.",
+        "common_mistakes": [
+          {
+            "pattern": "state:B3.num_format=general",
+            "message": "Only B2 changed. Select B2:B5 first.",
+            "example_keys": [
+              "Ctrl+Shift+4"
+            ]
+          },
+          {
+            "pattern": "state:B2.num_format=percent",
+            "message": "That is the percent format. Currency is Ctrl+Shift+4.",
+            "example_keys": [
+              "Shift+Down",
+              "Shift+Down",
+              "Shift+Down",
+              "Ctrl+Shift+5"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L012-S2",
+        "type": "shortcut",
+        "difficulty": "independent",
+        "prompt": "You are in C2. The discount rates are decimals. Show them as percentages for C2:C5.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Price",
+                "C1": "Discount",
+                "A2": "Desk",
+                "B2": 1250,
+                "C2": 0.15,
+                "A3": "Chair",
+                "B3": 980,
+                "C3": 0.2,
+                "A4": "Lamp",
+                "B4": 1100,
+                "C4": 0.05,
+                "A5": "Shelf",
+                "B5": 760,
+                "C5": 0.1
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2:C5"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "C2",
+          "expected": {
+            "type": "format",
+            "cells": {
+              "C2": {
+                "num_format": "percent"
+              },
+              "C3": {
+                "num_format": "percent"
+              },
+              "C4": {
+                "num_format": "percent"
+              },
+              "C5": {
+                "num_format": "percent"
+              }
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Ctrl+Shift+5"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Control+Shift+5"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "0.15 should read as a different kind of number. Which number-format shortcut matches?",
+          "Select C2:C5, then press Ctrl+Shift+5 for percent (Control+Shift+5 on a Mac).",
+          "Press Shift+Down three times, then Ctrl+Shift+5."
+        ],
+        "explanation": "Percent format shows 0.15 as 15%. The stored value stays 0.15.",
+        "common_mistakes": [
+          {
+            "pattern": "state:C2.num_format=currency",
+            "message": "That is currency. Percent is Ctrl+Shift+5.",
+            "example_keys": [
+              "Shift+Down",
+              "Shift+Down",
+              "Shift+Down",
+              "Ctrl+Shift+4"
+            ]
+          },
+          {
+            "pattern": "state:C5.num_format=general",
+            "message": "C5 was left out. Four rates need three Shift+Down presses.",
+            "example_keys": [
+              "Shift+Down",
+              "Shift+Down",
+              "Ctrl+Shift+5"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L012-S3",
+        "type": "shortcut",
+        "difficulty": "apply",
+        "prompt": "E2 shows 45000, a date exported as a plain number. You are in E2. Show it as a date.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Client",
+                "C1": "Amount",
+                "D1": "Qty",
+                "E1": "Ship Date",
+                "A2": "ORD-9",
+                "B2": "Nova Ltd",
+                "C2": 300,
+                "D2": 2,
+                "E2": 45000
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "E2"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "E2",
+          "expected": {
+            "type": "format",
+            "cells": {
+              "E2": {
+                "num_format": "date"
+              }
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Shift+3"
+              ]
+            ],
+            "mac": [
+              [
+                "Control+Shift+3"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "A date is stored as a number of days. Which number-format shortcut turns that number into a date?",
+          "Ctrl+Shift+3 applies the date format (Control+Shift+3 on a Mac).",
+          "Press Ctrl+Shift+3. E2 shows 15-Mar-23."
+        ],
+        "explanation": "Excel stores dates as serial numbers. 45000 is 15 March 2023, and the date format shows it that way. The value itself does not change.",
+        "common_mistakes": [
+          {
+            "pattern": "state:E2.num_format=number_comma",
+            "message": "That adds a thousands separator, so E2 would show 45,000.00. Dates use Ctrl+Shift+3.",
+            "example_keys": [
+              "Ctrl+Shift+1"
+            ]
+          },
+          {
+            "pattern": "state:E2.num_format=general",
+            "message": "That resets to General, which shows the plain number. Dates use Ctrl+Shift+3.",
+            "example_keys": [
+              "Ctrl+Shift+~"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L013",
+    "number": 13,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Worksheets",
+    "version_badge": null,
+    "legacy_number": 70,
+    "estimated_minutes": 5,
+    "objectives": [
+      "By the end you can switch, insert and rename worksheets."
+    ],
+    "about": "A workbook can hold many worksheets, shown as tabs along the bottom. Use them to separate months, regions, or raw data from reports. Ctrl+PageDown and Ctrl+PageUp switch between tabs, Shift+F11 inserts a new one, and double-clicking a tab renames it. Clear sheet names make a workbook easy to navigate.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Next sheet",
+        "windows": "Ctrl+PageDown",
+        "mac": "Option+Right"
+      },
+      {
+        "action": "Previous sheet",
+        "windows": "Ctrl+PageUp",
+        "mac": "Option+Left"
+      },
+      {
+        "action": "Insert a sheet",
+        "windows": "Shift+F11",
+        "mac": "Shift+Fn+F11"
+      }
+    ],
+    "where_to_find": [
+      "Rename: double-click the sheet tab, or right-click the tab and choose Rename.",
+      "Insert: click the + beside the tabs, or press Shift+F11 to insert to the left of the active sheet."
+    ],
+    "examples": [
+      {
+        "data": "Tabs named Jan, Feb, Mar. You are on Jan",
+        "formula": "Ctrl+PageDown",
+        "result": "You move to Feb",
+        "why": "Each press moves one sheet to the right."
+      },
+      {
+        "data": "You are on Feb",
+        "formula": "Shift+F11",
+        "result": "A new sheet appears to the left of Feb",
+        "why": "Insert puts the new sheet before the active one."
+      },
+      {
+        "data": "A new tab named Sheet4",
+        "formula": "Double-click the tab, type Summary, press Enter",
+        "result": "The tab is renamed Summary",
+        "why": "Names can have up to 31 characters and cannot contain : \\ / ? * [ ]"
+      }
+    ],
+    "watch_out": [
+      "A new sheet is inserted next to the sheet you are on, so check which tab is active first.",
+      "Sheet names cannot be empty and cannot contain : \\ / ? * [ ]."
+    ],
+    "recap": "You can now manage the sheets in a workbook. Next, Track 02 starts with formulas, where every calculation begins with an equals sign.",
+    "steps": [
+      {
+        "id": "L013-S1",
+        "type": "shortcut",
+        "difficulty": "guided",
+        "prompt": "You are on the Jan sheet. Use the keyboard to reach the Mar sheet.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Jan",
+              "cells": {
+                "A1": "Item",
+                "B1": "Units",
+                "A2": "Pens",
+                "B2": 100,
+                "A3": "Paper",
+                "B3": 80
+              }
+            },
+            {
+              "name": "Feb",
+              "cells": {
+                "A1": "Item",
+                "B1": "Units",
+                "A2": "Pens",
+                "B2": 100,
+                "A3": "Paper",
+                "B3": 80
+              }
+            },
+            {
+              "name": "Mar",
+              "cells": {
+                "A1": "Item",
+                "B1": "Units",
+                "A2": "Pens",
+                "B2": 100,
+                "A3": "Paper",
+                "B3": 80
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "Mar"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "A1",
+          "expected": {
+            "type": "sheets",
+            "names": [
+              "Jan",
+              "Feb",
+              "Mar"
+            ],
+            "active": "Mar"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+PageDown",
+                "Ctrl+PageDown"
+              ]
+            ],
+            "mac": [
+              [
+                "Option+Right",
+                "Option+Right"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Sheets sit side by side like pages. One key combination turns to the next page.",
+          "Ctrl+PageDown moves to the next sheet (Option+Right on a Mac). You need two presses.",
+          "Press Ctrl+PageDown twice. Jan moves to Feb, then to Mar."
+        ],
+        "explanation": "Ctrl+PageDown moves one sheet to the right each time you press it.",
+        "common_mistakes": [
+          {
+            "pattern": "sheet:Feb",
+            "message": "You are one sheet short. Press Ctrl+PageDown once more.",
+            "example_keys": [
+              "Ctrl+PageDown"
+            ]
+          },
+          {
+            "pattern": "sheet:Jan",
+            "message": "Ctrl+PageUp goes left. From the first sheet there is nowhere further left to go.",
+            "example_keys": [
+              "Ctrl+PageUp"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L013-S2",
+        "type": "menu_action",
+        "difficulty": "independent",
+        "prompt": "Rename the sheet called Sheet2 to Costs. Click its tab first.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sales",
+              "cells": {
+                "A1": "Item",
+                "B1": "Units",
+                "A2": "Pens",
+                "B2": 100,
+                "A3": "Paper",
+                "B3": 80
+              }
+            },
+            {
+              "name": "Sheet2",
+              "cells": {
+                "A1": "Item",
+                "B1": "Units",
+                "A2": "Pens",
+                "B2": 100,
+                "A3": "Paper",
+                "B3": 80
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "Costs"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "A1",
+          "expected": {
+            "type": "sheets",
+            "names": [
+              "Sales",
+              "Costs"
+            ]
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Click:Tab:Sheet2",
+                "Rename:Costs"
+              ]
+            ],
+            "mac": [
+              [
+                "Click:Tab:Sheet2",
+                "Rename:Costs"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "The new name applies to the sheet you have selected. Which sheet is that right now?",
+          "Click the Sheet2 tab, then double-click it (or right-click and choose Rename) and type the new name.",
+          "Click Sheet2, double-click its tab, type Costs, and press Enter."
+        ],
+        "explanation": "A rename always applies to the active sheet, so you select the tab first.",
+        "common_mistakes": [
+          {
+            "pattern": "names:Costs,Sheet2",
+            "message": "You renamed the active sheet, Sales. Click the Sheet2 tab first, then rename.",
+            "example_keys": [
+              "Rename:Costs"
+            ]
+          },
+          {
+            "pattern": "names:Sales,Sheet2",
+            "message": "You selected the tab but did not rename it. Double-click the tab and type the new name.",
+            "example_keys": [
+              "Click:Tab:Sheet2"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L013-S3",
+        "type": "menu_action",
+        "difficulty": "apply",
+        "prompt": "You are on the Jan sheet. Insert a new sheet to the left of Jan and name it Summary.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Jan",
+              "cells": {
+                "A1": "Item",
+                "B1": "Units",
+                "A2": "Pens",
+                "B2": 100,
+                "A3": "Paper",
+                "B3": 80
+              }
+            },
+            {
+              "name": "Feb",
+              "cells": {
+                "A1": "Item",
+                "B1": "Units",
+                "A2": "Pens",
+                "B2": 100,
+                "A3": "Paper",
+                "B3": 80
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "Summary"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "A1",
+          "expected": {
+            "type": "sheets",
+            "names": [
+              "Summary",
+              "Jan",
+              "Feb"
+            ],
+            "active": "Summary"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+F11",
+                "Rename:Summary"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Fn+F11",
+                "Rename:Summary"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "A new sheet appears next to the sheet you are on. Which key combination inserts one?",
+          "Shift+F11 inserts a sheet to the left of the active sheet (Shift+Fn+F11 on a Mac). Then rename it.",
+          "Press Shift+F11, double-click the new tab, type Summary, and press Enter."
+        ],
+        "explanation": "Shift+F11 inserts a new sheet to the left of the active sheet. Starting on Jan puts the new sheet first.",
+        "common_mistakes": [
+          {
+            "pattern": "names:Sheet3,Jan,Feb",
+            "message": "The new sheet still needs a name. Double-click its tab and type Summary.",
+            "example_keys": [
+              "Shift+F11"
+            ]
+          },
+          {
+            "pattern": "names:Jan,Summary,Feb",
+            "message": "Summary is not first. Shift+F11 inserts to the left of the sheet you are on, so start from Jan.",
+            "example_keys": [
+              "Ctrl+PageDown",
+              "Shift+F11",
+              "Rename:Summary"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "T01-CP",
+    "kind": "checkpoint",
+    "number": null,
+    "track": "01-intro-to-excel",
+    "level": "beginner",
+    "title": "Track 01 Checkpoint: Intro to Excel",
+    "about": "Three problems, one per level. Passing a level unlocks the next. Easy has hints on, Medium offers a hint only after a wrong attempt, and Hard has no hints.",
+    "steps": [
+      {
+        "id": "T01-E",
+        "type": "shortcut",
+        "difficulty": "easy",
+        "prompt": "Your manager wants the first-quarter figures for Widget. You are in B2. Select B2:D2 using only the keyboard.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Product",
+                "B1": "Jan",
+                "C1": "Feb",
+                "D1": "Mar",
+                "A2": "Widget",
+                "B2": 120,
+                "C2": 135,
+                "D2": 150,
+                "A3": "Gadget",
+                "B3": 90,
+                "C3": 95,
+                "D3": 110,
+                "A4": "Gizmo",
+                "B4": 60,
+                "C4": 70,
+                "D4": 85,
+                "A5": "Doohickey",
+                "B5": 45,
+                "C5": 50,
+                "D5": 55
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B2:D2"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "B2",
+          "expected": {
+            "type": "selection",
+            "range": "B2:D2"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Right",
+                "Shift+Right"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Right",
+                "Shift+Right"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "You want to extend the selection sideways. Which key adds \"extend\" to an arrow?",
+          "Hold Shift and press Right. Each press adds one cell. You need two presses.",
+          "Press Shift+Right twice. B2 grows to B2:D2."
+        ],
+        "explanation": "Shift+Right adds one cell to the selection each time. Two presses cover January to March.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:B2:C2",
+            "message": "One cell short. March is in column D.",
+            "example_keys": [
+              "Shift+Right"
+            ]
+          },
+          {
+            "pattern": "ends:B2:B5",
+            "message": "That extends downward. Use Shift+Right.",
+            "example_keys": [
+              "Shift+Down",
+              "Shift+Down",
+              "Shift+Down"
+            ]
+          }
+        ],
+        "engine_support": "menu_only",
+        "hints_policy": "always"
+      },
+      {
+        "id": "T01-M",
+        "type": "shortcut",
+        "difficulty": "medium",
+        "prompt": "You are in A1 on an order export. Select the whole table, headers included, ready to copy.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Region",
+                "C1": "Rep",
+                "D1": "Amount",
+                "A2": "ORD-1001",
+                "B2": "East",
+                "C2": "Daniel",
+                "D2": 100,
+                "A3": "ORD-1002",
+                "B3": "West",
+                "C3": "Priya",
+                "D3": 125,
+                "A4": "ORD-1003",
+                "B4": "North",
+                "C4": "Tomas",
+                "D4": 150,
+                "A5": "ORD-1004",
+                "B5": "South",
+                "C5": "Amina",
+                "D5": 175,
+                "A6": "ORD-1005",
+                "B6": "East",
+                "C6": "Daniel",
+                "D6": 200,
+                "A7": "ORD-1006",
+                "B7": "West",
+                "C7": "Priya",
+                "D7": 225,
+                "A8": "ORD-1007",
+                "B8": "North",
+                "C8": "Tomas",
+                "D8": 250
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A1:D8"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "A1",
+          "expected": {
+            "type": "selection",
+            "range": "A1:D8"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Shift+Right",
+                "Ctrl+Shift+Down"
+              ],
+              [
+                "Ctrl+Shift+Down",
+                "Ctrl+Shift+Right"
+              ],
+              [
+                "Ctrl+A"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+Shift+Right",
+                "Cmd+Shift+Down"
+              ],
+              [
+                "Cmd+Shift+Down",
+                "Cmd+Shift+Right"
+              ],
+              [
+                "Cmd+A"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "You need to cover both the width and the height of the table.",
+          "Use Ctrl+Shift+Right to cover the width and Ctrl+Shift+Down to cover the height.",
+          "Press Ctrl+Shift+Right, then Ctrl+Shift+Down. The selection becomes A1:D8."
+        ],
+        "explanation": "Two jumps with Shift select the width and the height. Ctrl+A would also select the table.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:A1:D1",
+            "message": "You covered the width only. Now extend downward.",
+            "example_keys": [
+              "Ctrl+Shift+Right"
+            ]
+          },
+          {
+            "pattern": "ends:A1:A8",
+            "message": "You covered the height only. Now extend to the right.",
+            "example_keys": [
+              "Ctrl+Shift+Down"
+            ]
+          },
+          {
+            "pattern": "ends:ALL",
+            "message": "Two presses of Ctrl+A selected the whole sheet. One press selects the table.",
+            "example_keys": [
+              "Ctrl+A",
+              "Ctrl+A"
+            ]
+          }
+        ],
+        "engine_support": "menu_only",
+        "hints_policy": "after_wrong_attempt"
+      },
+      {
+        "id": "T01-H",
+        "type": "shortcut",
+        "difficulty": "hard",
+        "prompt": "A colleague pasted a stray note into this sheet. Starting from D7, select everything from A1 to the last used cell without scrolling.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Category",
+                "C1": "Qty",
+                "D1": "Price",
+                "E1": "Total",
+                "F1": "Status",
+                "A2": "Item 1",
+                "B2": "Paper",
+                "C2": 10,
+                "D2": 2,
+                "E2": 20,
+                "F2": "In stock",
+                "A3": "Item 2",
+                "B3": "Paper",
+                "C3": 11,
+                "D3": 3,
+                "E3": 33,
+                "F3": "In stock",
+                "A4": "Item 3",
+                "B4": "Paper",
+                "C4": 12,
+                "D4": 4,
+                "E4": 48,
+                "F4": "In stock",
+                "A5": "Item 4",
+                "B5": "Paper",
+                "C5": 13,
+                "D5": 5,
+                "E5": 65,
+                "F5": "In stock",
+                "A6": "Item 5",
+                "B6": "Paper",
+                "C6": 14,
+                "D6": 6,
+                "E6": 84,
+                "F6": "In stock",
+                "A7": "Item 6",
+                "B7": "Paper",
+                "C7": 15,
+                "D7": 7,
+                "E7": 105,
+                "F7": "In stock",
+                "A8": "Item 7",
+                "B8": "Paper",
+                "C8": 16,
+                "D8": 8,
+                "E8": 128,
+                "F8": "In stock",
+                "A9": "Item 8",
+                "B9": "Paper",
+                "C9": 17,
+                "D9": 9,
+                "E9": 153,
+                "F9": "In stock",
+                "A10": "Item 9",
+                "B10": "Paper",
+                "C10": 18,
+                "D10": 10,
+                "E10": 180,
+                "F10": "In stock",
+                "A11": "Item 10",
+                "B11": "Paper",
+                "C11": 19,
+                "D11": 11,
+                "E11": 209,
+                "F11": "In stock",
+                "A12": "Item 11",
+                "B12": "Paper",
+                "C12": 20,
+                "D12": 12,
+                "E12": 240,
+                "F12": "In stock",
+                "H14": "x"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A1:H14"
+        ],
+        "validation": {
+          "mode": "shortcut",
+          "start_cell": "D7",
+          "expected": {
+            "type": "selection",
+            "range": "A1:H14"
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+Home",
+                "Ctrl+Shift+End"
+              ]
+            ],
+            "mac": [
+              [
+                "Fn+Control+Left",
+                "Fn+Control+Shift+Right"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [],
+        "explanation": "The last used cell is H14 because of the stray note. Ctrl+Home goes to A1, and Ctrl+Shift+End extends the selection to that corner.",
+        "common_mistakes": [
+          {
+            "pattern": "ends:A1:F12",
+            "message": "That stops at the table. The stray note in H14 makes H14 the last used cell.",
+            "example_keys": [
+              "Ctrl+Home",
+              "Ctrl+Shift+Right",
+              "Ctrl+Shift+Down"
+            ]
+          },
+          {
+            "pattern": "ends:D7:H14",
+            "message": "You started from D7. Go to A1 first with Ctrl+Home.",
+            "example_keys": [
+              "Ctrl+Shift+End"
+            ]
+          },
+          {
+            "pattern": "ends:ALL",
+            "message": "Two presses of Ctrl+A select the whole sheet, which is more than the task asks.",
+            "example_keys": [
+              "Ctrl+A",
+              "Ctrl+A"
+            ]
+          }
+        ],
+        "engine_support": "menu_only",
+        "hints_policy": "none"
+      }
+    ]
+  }
+]
