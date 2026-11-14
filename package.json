@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
+    "validate:lessons": "vitest run src/lib/lesson-content.validate.test.ts src/lib/lesson-function-coverage.test.ts src/lib/lesson-workbook-schema.test.ts",
     "test": "vitest run",
     "test:watch": "vitest"
   },

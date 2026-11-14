@@ -1,17 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, Clock } from "lucide-react";
+import { ArrowUpRight, Clock, Search } from "lucide-react";
+import { useMemo, useState } from "react";
 import { AppShell } from "@/components/AppShell";
+import { LESSON_INDEX } from "@/lib/lesson-index";
+import { filterLessonIndex, lessonTracks } from "@/lib/lesson-catalog";
 import { LESSONS, type Lesson } from "@/lib/lessons";
 import { useProgress, type Progress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/learn")({
   head: () => ({
     meta: [
-      { title: "Skill map · Gridwise" },
-      { name: "description", content: "Six Excel skills, from basic formulas to lookups and data cleaning." },
-      { property: "og:title", content: "Skill map · Gridwise" },
-      { property: "og:description", content: "Pick an Excel skill and start practicing in a real spreadsheet." },
+      { title: "Excel lessons · Gridwise" },
+      { name: "description", content: `${LESSON_INDEX.length} structured Excel lessons, from spreadsheet basics to advanced formulas.` },
+      { property: "og:title", content: "Excel lessons · Gridwise" },
+      { property: "og:description", content: "Search the lesson library and practice Excel in an interactive spreadsheet." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -31,11 +35,45 @@ export function mastery(l: Lesson, p: Progress) {
 
 function Learn() {
   const p = useProgress();
+  const [query, setQuery] = useState("");
+  const [track, setTrack] = useState("all");
+  const tracks = useMemo(() => lessonTracks(LESSON_INDEX), []);
+  const visibleLessons = useMemo(() => filterLessonIndex(LESSON_INDEX, query, track), [query, track]);
   return (
     <AppShell>
       <div className="mx-auto max-w-5xl px-6 py-10">
-        <h1 className="font-serif text-5xl tracking-tight">Skill map</h1>
-        <p className="mt-2 text-muted-foreground">Each skill is five short exercises. Start anywhere.</p>
+        <h1 className="font-serif text-5xl tracking-tight">Excel lessons</h1>
+        <p className="mt-2 text-muted-foreground">Search the lesson library or choose a track to practice Excel one exercise at a time.</p>
+        <section className="mt-10" aria-labelledby="structured-lessons-heading">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 id="structured-lessons-heading" className="text-xl font-semibold">Excel lessons</h2>
+              <p className="mt-1 text-sm text-muted-foreground">{LESSON_INDEX.length} lessons across {tracks.length} tracks</p>
+            </div>
+            <div className="flex w-full flex-wrap gap-2 sm:w-auto">
+              <label className="relative min-w-56 flex-1 sm:flex-none">
+                <Search aria-hidden className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search lessons" aria-label="Search lessons" className="pl-9" />
+              </label>
+              <select aria-label="Filter by track" value={track} onChange={(event) => setTrack(event.target.value)}
+                className="h-10 rounded-md border bg-background px-3 text-sm">
+                <option value="all">All tracks</option>
+                {tracks.map((item) => <option key={item} value={item}>Track {item}</option>)}
+              </select>
+            </div>
+          </div>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {visibleLessons.map((lesson) => (
+              <Link key={lesson.id} to="/practice/$lessonId" params={{ lessonId: lesson.id }}
+                className="group rounded-2xl border bg-card p-5 shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lift">
+                <p className="font-mono text-xs text-muted-foreground">Lesson {String(lesson.number).padStart(2, "0")} · Track {lesson.track}</p>
+                <h3 className="mt-3 font-semibold">{lesson.title}</h3>
+                <p className="mt-2 text-sm capitalize text-muted-foreground">{lesson.level} · {p.lessonRuns[lesson.id]?.status === "completed" ? "Completed" : p.lessonRuns[lesson.id] ? "In progress" : "New"}</p>
+              </Link>
+            ))}
+            {visibleLessons.length === 0 && <p className="col-span-full rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">No lessons match your search. Try another title or track.</p>}
+          </div>
+        </section>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {LESSONS.map((l, k) => {
             const m = mastery(l, p);

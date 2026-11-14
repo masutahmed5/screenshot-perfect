@@ -1,0 +1,77 @@
+[
+  {
+    "id": "L018",
+    "number": 18,
+    "track": "02",
+    "level": "beginner",
+    "title": "Relative and absolute references",
+    "version_badge": null,
+    "legacy_number": null,
+    "estimated_minutes": 5,
+    "objectives": ["Use relative references that adjust when copied.", "Lock a shared input with absolute references."],
+    "about": "Relative references move with a copied formula. Absolute references keep pointing to the same cell, which is useful for shared rates and assumptions.",
+    "syntax": "=B2*$F$1",
+    "examples": [
+      { "data": [["Units", "Rate"], [5, 12]], "formula": "=A2*B2", "result": 60, "why": "Both references move if the formula is copied." },
+      { "data": [["Units", "Tax rate"], [5, 12], ["", 0.1]], "formula": "=A2*$B$3", "result": 0.5, "why": "The absolute reference keeps the tax rate fixed." }
+    ],
+    "watch_out": ["Lock both the column and row with $B$3 when both must stay fixed.", "A relative reference is often correct for the row data; do not lock it unnecessarily."],
+    "recap": "Use relative references for row-specific values and absolute references for fixed assumptions. Check the copied results before filling a whole column.",
+    "steps": [
+      {
+        "id": "L018-S1",
+        "type": "formula",
+        "difficulty": "guided",
+        "prompt": "In C2, calculate the line total by multiplying the units in A2 by the price in B2.",
+        "workbook": { "sheets": [{ "name": "Orders", "cells": { "A1": "Units", "B1": "Price", "C1": "Total", "A2": 5, "B2": 12, "A3": 3, "B3": 8, "A4": 7, "B4": 4 } }] },
+        "target_cells": ["C2"],
+        "validation": { "mode": "value", "accepted_values": { "C2": 60 }, "required_functions": [], "forbid_hardcoded": true, "recalc_variants": [{ "change": { "A2": 6 }, "expect": { "C2": 72 } }], "fill_test": { "range": "C2:C4", "direction": "down" } },
+        "hints": ["A line total is units multiplied by price.", "Use the row's cells A2 and B2.", "=A2*B2"],
+        "explanation": "A2 and B2 are relative references, so each one shifts to the corresponding row when you fill the formula down.",
+        "common_mistakes": [
+          { "pattern": "^=A2\\+B2$", "message": "That adds units and price. Multiply them to calculate the line total." },
+          { "pattern": "^=A2\\*B1$", "message": "Use the price on the same row: B2." },
+          { "pattern": "^=5\\*12$", "message": "Use cell references instead of typing the current values, so the result updates with the row." }
+        ],
+        "engine_support": "supported",
+        "reference_solution": "=A2*B2"
+      },
+      {
+        "id": "L018-S2",
+        "type": "formula",
+        "difficulty": "independent",
+        "prompt": "The tax rate is stored in F1. In C2, calculate tax on A2 using that rate, then fill the formula down through C4.",
+        "workbook": { "sheets": [{ "name": "Orders", "cells": { "A1": "Units", "B1": "Price", "C1": "Tax", "A2": 5, "A3": 3, "A4": 7, "F1": 0.1 } }] },
+        "target_cells": ["C2"],
+        "validation": { "mode": "value", "accepted_values": { "C2": 0.5 }, "required_functions": [], "forbid_hardcoded": true, "recalc_variants": [{ "change": { "F1": 0.2 }, "expect": { "C2": 1 } }], "fill_test": { "range": "C2:C4", "direction": "down" } },
+        "hints": ["Multiply the row's units by the tax rate in F1.", "Lock F1 with dollar signs so it stays fixed when copied.", "=A2*$F$1"],
+        "explanation": "The row reference A2 changes as you fill down, while $F$1 remains fixed on the tax rate.",
+        "common_mistakes": [
+          { "pattern": "^=A2\\*F1$", "message": "F1 would shift when copied. Lock the shared rate as $F$1." },
+          { "pattern": "^=A2\\*\\$F1$", "message": "The row is still relative. Use $F$1 to lock both parts." },
+          { "pattern": "^=A2\\*0\\.1$", "message": "Refer to F1 instead of typing the current rate into the formula." }
+        ],
+        "engine_support": "supported",
+        "reference_solution": "=A2*$F$1"
+      },
+      {
+        "id": "L018-S3",
+        "type": "formula",
+        "difficulty": "apply",
+        "prompt": "In C2, calculate each row's discounted price using the discount rate in F1. Fill the formula down through C4.",
+        "workbook": { "sheets": [{ "name": "Orders", "cells": { "A1": "Price", "B1": "Discounted price", "C1": "Discounted", "A2": 100, "A3": 80, "A4": 50, "F1": 0.15 } }] },
+        "target_cells": ["C2"],
+        "validation": { "mode": "value", "accepted_values": { "C2": 85 }, "required_functions": [], "forbid_hardcoded": true, "recalc_variants": [{ "change": { "F1": 0.2 }, "expect": { "C2": 80 } }], "fill_test": { "range": "C2:C4", "direction": "down" } },
+        "hints": ["Subtract the discount rate from 1, then multiply by the row's price.", "The discount rate is shared by every row.", "=A2*(1-$F$1)"],
+        "explanation": "Lock the shared discount rate but leave the price reference relative so each copied formula uses its own row.",
+        "common_mistakes": [
+          { "pattern": "^=A2\\*F1$", "message": "The rate reference will shift on copy. Lock it with dollar signs." },
+          { "pattern": "^=A2\\*\\$F\\$1$", "message": "That multiplies by the discount amount instead of subtracting the discount from 1." },
+          { "pattern": "^=100\\*\\(1-\\$F\\$1\\)$", "message": "Use A2 as the price reference so the formula can be filled to other rows." }
+        ],
+        "engine_support": "supported",
+        "reference_solution": "=A2*(1-$F$1)"
+      }
+    ]
+  }
+]

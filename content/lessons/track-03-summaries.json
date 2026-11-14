@@ -1,0 +1,77 @@
+[
+  {
+    "id": "L024",
+    "number": 24,
+    "track": "03",
+    "level": "beginner",
+    "title": "SUM: add a range",
+    "version_badge": null,
+    "legacy_number": null,
+    "estimated_minutes": 4,
+    "objectives": ["Use SUM to total a group of cells.", "Choose a range that includes every relevant row."],
+    "about": "SUM adds the values in one or more cells. A colon between two cell references includes every cell in the range.",
+    "syntax": "=SUM(number1, [number2], ...)",
+    "examples": [
+      { "data": [["Amount"], [120], [90], [160]], "formula": "=SUM(A2:A4)", "result": 370, "why": "The range includes all three amounts." },
+      { "data": [["Jan", "Feb", "Mar"], [20, 35, 45]], "formula": "=SUM(A2:C2)", "result": 100, "why": "SUM works across a row as well as down a column." }
+    ],
+    "watch_out": ["Check both ends of the range; missing the last row gives a plausible but incorrect total.", "Text and blank cells are ignored by SUM."],
+    "recap": "Use SUM with a colon-separated range to total cells. The correct range matters just as much as the function.",
+    "steps": [
+      {
+        "id": "L024-S1",
+        "type": "formula",
+        "difficulty": "guided",
+        "prompt": "In B6, total every daily sale from B2 through B5 using SUM.",
+        "workbook": { "sheets": [{ "name": "Sales", "cells": { "A1": "Day", "B1": "Sales", "A2": "Mon", "A3": "Tue", "A4": "Wed", "A5": "Thu", "B2": 120, "B3": 90, "B4": 160, "B5": 80 } }] },
+        "target_cells": ["B6"],
+        "validation": { "mode": "value", "accepted_values": { "B6": 450 }, "required_functions": ["SUM"], "forbid_hardcoded": true, "recalc_variants": [{ "change": { "B5": 100 }, "expect": { "B6": 470 } }] },
+        "hints": ["SUM adds cells or ranges.", "The daily sales run from B2 to B5.", "=SUM(B2:B5)"],
+        "explanation": "The colon includes every cell from B2 through B5, so the total updates when any sale changes.",
+        "common_mistakes": [
+          { "pattern": "^=SUM\\(B2:B4\\)$", "message": "That stops at Wednesday. Include Thursday in B5." },
+          { "pattern": "^=SUM\\(B1:B5\\)$", "message": "That range includes the header. Start with the first sale in B2." },
+          { "pattern": "^=450$", "message": "The total is right today, but type a SUM formula so it updates when a sale changes." }
+        ],
+        "engine_support": "supported",
+        "reference_solution": "=SUM(B2:B5)"
+      },
+      {
+        "id": "L024-S2",
+        "type": "formula",
+        "difficulty": "independent",
+        "prompt": "In C7, calculate the combined units for the six stores in C2:C6 and C8.",
+        "workbook": { "sheets": [{ "name": "Stores", "cells": { "A1": "Store", "C1": "Units", "A2": "Harbor St", "A3": "Elm Ave", "A4": "Pier 9", "A5": "Oak Plaza", "A6": "Mill Rd", "C2": 120, "C3": 85, "C4": 142, "C5": 64, "C6": 98, "C8": 31 } }] },
+        "target_cells": ["C7"],
+        "validation": { "mode": "value", "accepted_values": { "C7": 540 }, "required_functions": ["SUM"], "forbid_hardcoded": true, "recalc_variants": [{ "change": { "C8": 40 }, "expect": { "C7": 549 } }] },
+        "hints": ["Include all six store values, not the blank result cell.", "The data starts at C2 and ends at C6; C8 is also a store value.", "=SUM(C2:C6,C8)"],
+        "explanation": "SUM can combine a continuous range and a separate cell in one formula.",
+        "common_mistakes": [
+          { "pattern": "^=SUM\\(C2:C6\\)$", "message": "That leaves out the final store value in C8." },
+          { "pattern": "^=SUM\\(C2:C8\\)$", "message": "That range includes the answer cell C7. Add C8 separately instead." },
+          { "pattern": "^=SUM\\(C2:C5,C8\\)$", "message": "Your first range stops one store too soon. Include C6." }
+        ],
+        "engine_support": "supported",
+        "reference_solution": "=SUM(C2:C6,C8)"
+      },
+      {
+        "id": "L024-S3",
+        "type": "formula",
+        "difficulty": "apply",
+        "prompt": "In D6, total the North-region sales in D2:D5.",
+        "workbook": { "sheets": [{ "name": "Regional sales", "cells": { "A1": "Store", "B1": "Region", "D1": "Sales", "A2": "Harbor St", "A3": "Elm Ave", "A4": "Pier 9", "A5": "Oak Plaza", "B2": "North", "B3": "South", "B4": "North", "B5": "East", "D2": 120, "D3": 85, "D4": 142, "D5": 64 } }] },
+        "target_cells": ["D6"],
+        "validation": { "mode": "value", "accepted_values": { "D6": 262 }, "required_functions": ["SUM"], "forbid_hardcoded": true, "recalc_variants": [{ "change": { "D4": 150 }, "expect": { "D6": 270 } }] },
+        "hints": ["Use the visible North sales values in D2 and D4.", "A SUM formula can take more than one argument.", "=SUM(D2,D4)"],
+        "explanation": "SUM accepts individual cell references when the values to add are not in one continuous range.",
+        "common_mistakes": [
+          { "pattern": "^=SUM\\(D2:D5\\)$", "message": "That includes the South and East values. Add only the North sales." },
+          { "pattern": "^=D2\\+D4$", "message": "The arithmetic works, but this exercise asks you to use SUM." },
+          { "pattern": "^=SUM\\(D2,D3,D4\\)$", "message": "That also includes the South sale in D3. Leave it out." }
+        ],
+        "engine_support": "supported",
+        "reference_solution": "=SUM(D2,D4)"
+      }
+    ]
+  }
+]

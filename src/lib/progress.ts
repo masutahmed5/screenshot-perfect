@@ -6,12 +6,43 @@ export type Progress = {
   lastDay: string | null;
   completed: Record<string, { firstTry: boolean; hints: number; at: number }>;
   mistakes: Record<string, number>; // stepId -> count (review queue)
+  attempts: LessonAttempt[];
+  lessonRuns: Record<string, LessonRun>;
+};
+export type LessonRun = {
+  status: "in_progress" | "completed";
+  current_step: string;
+  last_opened: number;
+  steps: Record<string, { status: "in_progress" | "completed"; attempts: number; hints_used: number; time_ms: number }>;
+  sheets: Record<string, Record<string, string>>;
+  workbooks?: Record<string, Record<string, Record<string, string>>>;
+};
+export type LessonAttempt = {
+  lesson_id?: string;
+  step_id: string;
+  formula: string;
+  result: string;
+  correct: boolean;
+  time_ms: number;
+  hints_used: number;
+  timestamp: string;
 };
 const KEY = "gridwise.progress.v1";
-const empty: Progress = { xp: 0, streak: 0, lastDay: null, completed: {}, mistakes: {} };
+const empty: Progress = { xp: 0, streak: 0, lastDay: null, completed: {}, mistakes: {}, attempts: [], lessonRuns: {} };
 let state: Progress = empty;
 let loaded = false;
 const subs = new Set<() => void>();
+
+function mergeWorkbooks(
+  previous: LessonRun["workbooks"] = {},
+  patch: LessonRun["workbooks"] = {},
+) {
+  const merged = { ...previous };
+  for (const [stepId, sheets] of Object.entries(patch)) {
+    merged[stepId] = { ...merged[stepId], ...sheets };
+  }
+  return merged;
+}
 
 function load() {
   if (loaded || typeof window === "undefined") return;
@@ -36,6 +67,63 @@ export function useProgress() {
 export function recordMistake(stepId: string) {
   load();
   save({ ...state, mistakes: { ...state.mistakes, [stepId]: (state.mistakes[stepId] ?? 0) + 1 } });
+}
+
+export function recordLessonAttempt(attempt: LessonAttempt) {
+  load();
+  const lessonRun = attempt.lesson_id ? state.lessonRuns[attempt.lesson_id] ?? {
+    status: "in_progress" as const,
+    current_step: attempt.step_id,
+    last_opened: Date.now(),
+    steps: {},
+    sheets: {},
+    workbooks: {},
+  } : null;
+  const previous = lessonRun?.steps[attempt.step_id] ?? { status: "in_progress" as const, attempts: 0, hints_used: 0, time_ms: 0 };
+  const nextRun = lessonRun ? {
+    ...lessonRun,
+    steps: {
+      ...lessonRun.steps,
+      [attempt.step_id]: {
+        status: attempt.correct ? "completed" as const : "in_progress" as const,
+        attempts: previous.attempts + 1,
+        hints_used: Math.max(previous.hints_used, attempt.hints_used),
+        time_ms: previous.time_ms + attempt.time_ms,
+      },
+    },
+    last_opened: Date.now(),
+  } : lessonRun;
+  save({
+    ...state,
+    attempts: [...state.attempts, attempt],
+    ...(attempt.lesson_id && nextRun ? { lessonRuns: { ...state.lessonRuns, [attempt.lesson_id]: nextRun } } : {}),
+  });
+}
+
+export function recordLessonProgress(lessonId: string, patch: Partial<LessonRun>) {
+  load();
+  const previous = state.lessonRuns[lessonId] ?? {
+    status: "in_progress" as const,
+    current_step: "",
+    last_opened: Date.now(),
+    steps: {},
+    sheets: {},
+    workbooks: {},
+  };
+  save({
+    ...state,
+    lessonRuns: {
+      ...state.lessonRuns,
+      [lessonId]: {
+        ...previous,
+        ...patch,
+        steps: patch.steps ? { ...previous.steps, ...patch.steps } : previous.steps,
+        sheets: patch.sheets ? { ...previous.sheets, ...patch.sheets } : previous.sheets,
+        workbooks: patch.workbooks ? mergeWorkbooks(previous.workbooks, patch.workbooks) : previous.workbooks,
+        last_opened: Date.now(),
+      },
+    },
+  });
 }
 
 export function xpFor(firstTry: boolean, hints: number) {

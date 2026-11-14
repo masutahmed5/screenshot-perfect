@@ -205,6 +205,7 @@
   transform: translateY(-2px);
   box-shadow: var(--shadow-soft);
 }
+.gw-sheet-practice { --practice-sheet-scale: 0.88; --row-height: calc(32px * var(--practice-sheet-scale)); }
 .gw-formula-chip { max-width: 100%; overflow-wrap: anywhere; color: var(--primary); }
 .gw-formula-chip::first-line { background: var(--gw-band-tint); }
 @media (max-width: 767px) { .gw-track { min-height: 170px; } }

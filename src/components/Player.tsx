@@ -49,9 +49,9 @@ export function Player({ steps, title, exitTo = "/learn", lessonId }: { steps: S
     );
   }
 
-  const check = () => {
+  const check = (submittedCells = cells) => {
     if (result?.ok) return next();
-    const r = checkStep(step, cells);
+    const r = checkStep(step, submittedCells);
     setResult(r);
     setAttempts((a) => a + 1);
     setFlash({ cell: step.targetCells[0]!, kind: r.ok ? "correct" : "wrong", key: Date.now() });
@@ -141,7 +141,7 @@ export function Player({ steps, title, exitTo = "/learn", lessonId }: { steps: S
           </Button>
           <Button variant="ghost" size="sm" onClick={next}><SkipForward className="size-4" />Skip</Button>
         </div>
-        <div className="flex items-center gap-2">
+<div className="flex items-center gap-2">
           {lessonId && (
             <Button variant="ghost" size="sm" className="lg:hidden" onClick={() => setDrawerOpen(true)}>
               <List className="size-4" />Lessons
@@ -152,7 +152,7 @@ export function Player({ steps, title, exitTo = "/learn", lessonId }: { steps: S
               <PanelRight className="size-4" />{panelOpen ? "Hide list" : "Lessons"}
             </Button>
           )}
-          <Button onClick={check} className="min-w-32">{result?.ok ? <>Next <ArrowRight className="size-4" /></> : "Check"}</Button>
+          <Button onClick={() => check()} className="min-w-32">{result?.ok ? <>Next <ArrowRight className="size-4" /></> : "Check"}</Button>
         </div>
       </footer>
 

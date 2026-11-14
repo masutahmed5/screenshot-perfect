@@ -10,11 +10,14 @@ type Props = {
   initialSelected?: string;
   highlight?: string[];
   flash?: { cell: string; kind: "correct" | "wrong"; key: number } | null;
-  onEnterCheck?: () => void;
+  onEnterCheck?: (cells?: CellMap) => void;
+  enterChecks?: boolean;
   compact?: boolean;
   ghost?: { cell: string; text: string; refs?: string[] } | null;
-  /** Zoom factor for the grid (1 = original size). Omit to render exactly as before. */
+/** Zoom factor for the grid (1 = original size). Omit to render exactly as before. */
   scale?: number;
+  editableCells?: string[];
+  variant?: "standard" | "practice";
 };
 
 type Pos = { c: number; r: number };
@@ -37,7 +40,32 @@ function rangeRef(a: Pos, b: Pos): string {
 // Matches A1-style refs and ranges, but not function names like LOG10( or SUM(
 const REF_RE = /\$?[A-Za-z]{1,2}\$?\d{1,4}(?::\$?[A-Za-z]{1,2}\$?\d{1,4})?(?!\s*\()/g;
 
-export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", highlight = [], flash, onEnterCheck, compact, ghost, scale }: Props) {
+export function cycleReference(formula: string, caret: number) {
+  if (((formula.slice(0, caret).match(/"/g)?.length ?? 0) % 2) === 1) return null;
+  const refs = [...formula.matchAll(/\$?[A-Z]{1,3}\$?\d+/gi)]
+    .filter((item) => ((formula.slice(0, item.index ?? 0).match(/"/g)?.length ?? 0) % 2) === 0);
+  const ref = refs.filter((item) => (item.index ?? 0) <= caret).pop();
+  if (!ref || ref.index === undefined) return null;
+  const parts = /^(\$?)([A-Z]+)(\$?)(\d+)$/i.exec(ref[0]);
+  if (!parts) return null;
+  const [, colLock, col, rowLock, row] = parts;
+  const locks = `${colLock ? "c" : ""}${rowLock ? "r" : ""}`;
+  const nextLocks: Record<string, [boolean, boolean]> = {
+    "": [true, true],
+    "cr": [false, true],
+    "r": [true, false],
+    "c": [false, false],
+  };
+  const next = nextLocks[locks];
+  if (!next) return null;
+  const replacement = `${next[0] ? "$" : ""}${col}${next[1] ? "$" : ""}${row}`;
+  return {
+    formula: formula.slice(0, ref.index) + replacement + formula.slice(ref.index + ref[0].length),
+    caret: ref.index + replacement.length,
+  };
+}
+
+export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", highlight = [], flash, onEnterCheck, enterChecks, compact, ghost, scale, editableCells, variant = "standard" }: Props) {
   const [sel, setSel] = useState(initialSelected);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
@@ -53,10 +81,12 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
   const selPos = parseCell(sel);
   const selCol = selPos.c;
   const selRow = selPos.r;
+  const canEdit = (cell = sel) => editableCells === undefined || editableCells.includes(cell);
 
   const formulaMode = editing && draft.startsWith("=");
 
   const commit = (val: string, dc = 0, dr = 1) => {
+    if (!canEdit()) { setEditing(false); return; }
     onChange({ ...cells, [sel]: val });
     setEditing(false);
     if (dc || dr) setSel(addr(Math.max(0, Math.min(cols - 1, selCol + dc)), Math.max(0, Math.min(rows - 1, selRow + dr))));
@@ -64,6 +94,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
   };
 
   const startEdit = (initial?: string) => {
+    if (!canEdit()) return;
     const v = initial ?? cells[sel] ?? "";
     setDraft(v);
     setEditing(true);
@@ -140,16 +171,28 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
     else if (e.key === "ArrowLeft" || (e.key === "Tab" && e.shiftKey)) mv(-1, 0);
     else if (e.key === "ArrowRight" || e.key === "Tab") mv(1, 0);
     else if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); onEnterCheck?.(); }
+    else if (!canEdit()) return;
     else if (e.key === "Enter" || e.key === "F2") { e.preventDefault(); startEdit(); }
     else if (e.key === "Backspace" || e.key === "Delete") { e.preventDefault(); onChange({ ...cells, [sel]: "" }); }
     else if (e.key.length === 1 && !e.metaKey && !e.ctrlKey) { e.preventDefault(); startEdit(e.key); }
   };
 
   const onEditorKey = (e: React.KeyboardEvent<HTMLInputElement>, moveOnEnter: boolean) => {
-    if (e.key === "Enter") {
+    if (e.key === "F4" && variant === "practice" && draft.startsWith("=")) {
       e.preventDefault();
-      commit(draft, 0, moveOnEnter ? 1 : 0);
-      if (e.metaKey || e.ctrlKey) setTimeout(() => onEnterCheck?.(), 0);
+      const active = activeInputRef.current;
+      const result = cycleReference(draft, active?.selectionStart ?? draft.length);
+      if (!result) return;
+      setDraft(result.formula);
+      requestAnimationFrame(() => {
+        active?.focus();
+        active?.setSelectionRange(result.caret, result.caret);
+      });
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const committedCells = { ...cells, [sel]: draft };
+      commit(draft, 0, moveOnEnter && !enterChecks ? 1 : 0);
+      if (enterChecks || e.metaKey || e.ctrlKey) setTimeout(() => onEnterCheck?.(committedCells), 0);
     } else if (e.key === "Escape") {
       e.preventDefault();
       setEditing(false);
@@ -168,8 +211,8 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
   const raw = editing ? draft : cells[sel] ?? "";
 
   return (
-    <div
-      className="flex h-full flex-col overflow-hidden rounded-xl border bg-card shadow-soft"
+<div
+      className={cn("flex h-full flex-col overflow-hidden rounded-xl border bg-card shadow-soft", variant === "practice" && "gw-sheet-practice")}
       style={scale !== undefined ? ({ "--sheet-scale": scale } as CSSProperties) : undefined}
     >
       <div className="flex items-center gap-2 border-b bg-cell-header px-3 py-1.5">
@@ -181,6 +224,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
             aria-label={`Formula bar for cell ${sel}`}
             className="w-full rounded-md border bg-card px-2 py-0.5 font-mono text-[13px] outline-none focus:border-primary"
             value={raw}
+            disabled={!canEdit()}
             onFocus={(e) => { activeInputRef.current = e.currentTarget; if (!editing) { setDraft(cells[sel] ?? ""); setEditing(true); } }}
             onChange={(e) => { setDraft(e.target.value); setEditing(true); }}
             onKeyDown={(e) => onEditorKey(e, false)}
@@ -227,6 +271,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                   const a = addr(c, r);
                   const v = wb.get(a);
                   const isSel = a === sel;
+                  const isEditable = canEdit(a);
                   const isHL = highlight.includes(a);
                   const fl = flash && flash.cell === a ? flash : null;
                   const ghostRef = ghost?.refs?.findIndex((g) => {
@@ -239,7 +284,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                   const ghostHere = !editing && ghost?.cell === a;
                   const inDrag = dragCells.has(a);
                   return (
-                    <td key={fl ? `${a}-${fl.key}` : a} role="gridcell" aria-selected={isSel} aria-label={a}
+                    <td key={fl ? `${a}-${fl.key}` : a} role="gridcell" aria-selected={isSel} aria-readonly={!isEditable} aria-label={isEditable ? a : `${a}, read only`} title={isEditable ? undefined : "Read-only cell"}
                       onMouseDown={(e) => {
                         if (formulaMode) {
                           e.preventDefault();
@@ -254,6 +299,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                       style={refIdx !== undefined ? { boxShadow: `inset 0 0 0 2px var(--ref-${refIdx + 1})` } : undefined}
                       className={cn(
                         "relative cursor-cell truncate border-b border-r border-grid-line transition-colors duration-150 select-none",
+!isEditable && "bg-muted/20 text-muted-foreground",
                         compact ? "h-10 px-2 text-[14px]" : "h-[calc(var(--row-height,32px)*var(--sheet-scale,1))] px-2 text-[calc(var(--font-size-grid,13px)*var(--sheet-scale,1))] max-w-40",
                         r === 0 && "font-sans font-medium text-foreground",
                         typeof v === "number" && "text-right tabular-nums",
@@ -270,6 +316,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                           ref={cellInputRef}
                           aria-label={`Edit cell ${sel}`}
                           className="absolute inset-0 z-10 h-full bg-card px-2 font-mono text-[13px] outline-none"
+                          disabled={!canEdit()}
                           style={{ minWidth: "100%", width: `max(100%, ${draft.length + 2}ch)` }}
                           value={draft}
                           onFocus={(e) => { activeInputRef.current = e.currentTarget; }}

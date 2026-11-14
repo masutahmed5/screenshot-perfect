@@ -1,0 +1,77 @@
+[
+  {
+    "id": "L078",
+    "number": 78,
+    "track": "07",
+    "level": "intermediate",
+    "title": "Introduction to SUMIF",
+    "version_badge": null,
+    "legacy_number": null,
+    "estimated_minutes": 5,
+    "objectives": ["Sum values that match one condition.", "Use a cell reference for a changeable criterion."],
+    "about": "SUMIF checks one range against a condition and adds the corresponding values from a sum range.",
+    "syntax": "=SUMIF(range, criteria, [sum_range])",
+    "examples": [
+      { "data": [["Region", "Sales"], ["North", 120], ["South", 85], ["North", 142]], "formula": "=SUMIF(A2:A4,\"North\",B2:B4)", "result": 262, "why": "Only sales from rows where Region is North are added." },
+      { "data": [["Region", "Sales"], ["South", 90], ["East", 40]], "formula": "=SUMIF(A2:A3,\"South\",B2:B3)", "result": 90, "why": "The criterion can be text or a cell reference." }
+    ],
+    "watch_out": ["The criteria range and sum range must have matching dimensions.", "Text criteria need quotation marks when written directly in a formula."],
+    "recap": "SUMIF is useful when a total depends on one condition. Keep the criteria and sum ranges aligned row by row.",
+    "steps": [
+      {
+        "id": "L078-S1",
+        "type": "formula",
+        "difficulty": "guided",
+        "prompt": "In E2, total the Units in C2:C6 for stores whose Region in B2:B6 is North.",
+        "workbook": { "sheets": [{ "name": "Stores", "cells": { "A1": "Store", "B1": "Region", "C1": "Units", "A2": "Harbor St", "B2": "North", "C2": 120, "A3": "Elm Ave", "B3": "South", "C3": 85, "A4": "Pier 9", "B4": "North", "C4": 142, "A5": "Oak Plaza", "B5": "East", "C5": 64, "A6": "Mill Rd", "B6": "South", "C6": 98 } }] },
+        "target_cells": ["E2"],
+        "validation": { "mode": "value", "accepted_values": { "E2": 262 }, "required_functions": ["SUMIF"], "forbid_hardcoded": true, "recalc_variants": [{ "change": { "C4": 150 }, "expect": { "E2": 270 } }] },
+        "hints": ["SUMIF takes a criteria range, a criterion, and a sum range.", "Check the Region values in B2:B6 and add matching Units from C2:C6.", "=SUMIF(B2:B6,\"North\",C2:C6)"],
+        "explanation": "SUMIF tests each Region and adds the Units from the same row when the region is North.",
+        "common_mistakes": [
+          { "pattern": "^=SUMIF\\(C2:C6,", "message": "The first argument should be the Region range, not the Units range." },
+          { "pattern": "SUMIF\\(B2:B6,\"North\",B2:B6\\)", "message": "The sum range should contain Units in C2:C6." },
+          { "pattern": "SUMIF\\(B2:B6,\"South\",C2:C6\\)", "message": "That totals South stores. The prompt asks for North." }
+        ],
+        "engine_support": "supported",
+        "reference_solution": "=SUMIF(B2:B6,\"North\",C2:C6)"
+      },
+      {
+        "id": "L078-S2",
+        "type": "formula",
+        "difficulty": "independent",
+        "prompt": "In E2, total sales in D2:D6 for rows marked Online in C2:C6.",
+        "workbook": { "sheets": [{ "name": "Orders", "cells": { "A1": "Order", "C1": "Channel", "D1": "Sales", "A2": "Order 1", "C2": "Online", "D2": 240, "A3": "Order 2", "C3": "Store", "D3": 175, "A4": "Order 3", "C4": "Online", "D4": 320, "A5": "Order 4", "C5": "Partner", "D5": 90, "A6": "Order 5", "C6": "Online", "D6": 110 } }] },
+        "target_cells": ["E2"],
+        "validation": { "mode": "value", "accepted_values": { "E2": 670 }, "required_functions": ["SUMIF"], "forbid_hardcoded": true, "recalc_variants": [{ "change": { "D6": 120 }, "expect": { "E2": 680 } }] },
+        "hints": ["Identify which column has the criteria and which has the numbers to add.", "Use C2:C6 as the criteria range and D2:D6 as the sum range.", "=SUMIF(C2:C6,\"Online\",D2:D6)"],
+        "explanation": "The criteria range and sum range line up row by row, so only Online orders contribute to the total.",
+        "common_mistakes": [
+          { "pattern": "^=SUMIF\\(D2:D6,", "message": "Use the Channel column as the criteria range." },
+          { "pattern": "SUMIF\\(C2:C6,\"Store\",D2:D6\\)", "message": "That selects Store orders, not Online orders." },
+          { "pattern": "SUMIF\\(C2:C6,\"Online\",C2:C6\\)", "message": "The last argument should be the Sales range D2:D6." }
+        ],
+        "engine_support": "supported",
+        "reference_solution": "=SUMIF(C2:C6,\"Online\",D2:D6)"
+      },
+      {
+        "id": "L078-S3",
+        "type": "formula",
+        "difficulty": "apply",
+        "prompt": "E1 contains the region to report. In E2, use E1 as the criterion and total the matching units from C2:C6.",
+        "workbook": { "sheets": [{ "name": "Stores", "cells": { "A1": "Store", "B1": "Region", "C1": "Units", "E1": "South", "A2": "Harbor St", "B2": "North", "C2": 120, "A3": "Elm Ave", "B3": "South", "C3": 85, "A4": "Pier 9", "B4": "North", "C4": 142, "A5": "Oak Plaza", "B5": "East", "C5": 64, "A6": "Mill Rd", "B6": "South", "C6": 98 } }] },
+        "target_cells": ["E2"],
+        "validation": { "mode": "value", "accepted_values": { "E2": 183 }, "required_functions": ["SUMIF"], "forbid_hardcoded": true, "recalc_variants": [{ "change": { "E1": "North" }, "expect": { "E2": 262 } }] },
+        "hints": ["The report criterion is already in E1.", "Reference the criterion cell to make the report easy to change.", "=SUMIF(B2:B6,E1,C2:C6)"],
+        "explanation": "Using E1 as the criterion lets the user switch regions without editing the formula.",
+        "common_mistakes": [
+          { "pattern": "SUMIF\\(B2:B6,\"South\",C2:C6\\)", "message": "The formula should use E1 as its criterion so the report can change." },
+          { "pattern": "SUMIF\\(C2:C6,E1,B2:B6\\)", "message": "Use the Region column for matching and the Units column for summing." },
+          { "pattern": "SUMIF\\(B2:B6,E1,B2:B6\\)", "message": "The sum range should be Units in C2:C6." }
+        ],
+        "engine_support": "supported",
+        "reference_solution": "=SUMIF(B2:B6,E1,C2:C6)"
+      }
+    ]
+  }
+]
