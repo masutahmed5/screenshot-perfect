@@ -9,8 +9,10 @@ import { formatValue, parseRef, type CellMap } from "@/lib/formula";
 import type { LessonContent, LessonContentStep } from "@/lib/lesson-schema";
 import { recordComplete, recordLessonAttempt, recordLessonProgress, recordMistake, useProgress } from "@/lib/progress";
 import { Sheet } from "./Sheet";
+import type { Lesson } from "@/lib/lessons";
+import { checkStep } from "@/lib/validate";
 
-type Props = { lesson: LessonContent };
+type Props = { lesson: LessonContent; legacyLesson?: Lesson };
 type InteractionAnswers = Record<string, unknown>;
 
 const menuNames = ["Home", "Insert", "Page Layout", "Formulas", "Data", "Review", "View"];
@@ -35,6 +37,7 @@ function canonicalShortcutKey(value: string) {
     esc: "ESC",
     spacebar: "SPACE",
     " ": "SPACE",
+    arrowdown: "DOWN", arrowup: "UP", arrowleft: "LEFT", arrowright: "RIGHT",
   };
   return aliases[value.toLowerCase()] ?? value.toUpperCase();
 }
@@ -186,6 +189,7 @@ function MenuActionControl({
   answers: InteractionAnswers;
   onChange: (key: string, value: unknown) => void;
 }) {
+  const [drafts, setDrafts] = useState<Record<string, string>>({});
   const commands = menuCommands(step, String(expected.type));
   return (
     <div className="space-y-4 rounded-lg border bg-card p-5">
@@ -220,7 +224,8 @@ function MenuActionControl({
           <label key={key} className="block space-y-1 text-sm font-medium">
             <span>{label}</span>
             {typeof expectedValue === "object" && expectedValue !== null
-              ? <textarea aria-label={label} className="w-full rounded-md border bg-background px-3 py-2 font-mono text-sm" rows={3} value={typeof answer === "string" ? answer : ""} placeholder="Enter a JSON value" onChange={(event) => {
+              ? <textarea aria-label={label} className="w-full rounded-md border bg-background px-3 py-2 font-mono text-sm" rows={3} value={drafts[key] ?? ""} placeholder="Enter a JSON value" onChange={(event) => {
+                setDrafts((current) => ({ ...current, [key]: event.target.value }));
                 try { onChange(key, JSON.parse(event.target.value)); }
                 catch { onChange(key, event.target.value); }
               }} />
@@ -299,7 +304,7 @@ function examplesFor(lesson: LessonContent) {
   ));
 }
 
-export function ContentLessonPlayer({ lesson }: Props) {
+export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
   const progress = useProgress();
   const savedRun = progress.lessonRuns[lesson.id];
   const savedStepIndex = Math.max(0, lesson.steps.findIndex((item) => item.id === savedRun?.current_step));
@@ -364,7 +369,11 @@ export function ContentLessonPlayer({ lesson }: Props) {
     }
 
     let checked: LessonCheckResult;
-    if (sheetStep) {
+    const legacyStep = legacyLesson?.steps[stepIndex];
+    if (legacyStep) {
+      const legacyResult = checkStep(legacyStep, submittedCells);
+      checked = { status: legacyResult.ok ? "correct" : "incorrect", feedbackKey: legacyResult.ok ? "correct" : "legacy-check", message: legacyResult.ok ? legacyResult.message : [legacyResult.message, legacyResult.diagnosis].filter(Boolean).join(" ") };
+    } else if (sheetStep) {
       checked = validateLessonStep(step, submittedCells);
     } else if (step.type === "shortcut" && step.validation.mode === "shortcut") {
       const accepted = step.validation.accepted_sequences[platformShortcutKey()];
@@ -458,7 +467,7 @@ export function ContentLessonPlayer({ lesson }: Props) {
   const versionTooltip = "Needs Excel 2019/2021/Microsoft 365. Older versions: see the fallback in Watch out.";
 
   return (
-    <div className="mx-auto grid max-w-7xl gap-5 px-4 py-6 lg:grid-cols-[minmax(360px,0.8fr)_minmax(0,1.2fr)]">
+    <div className="mx-auto grid max-w-7xl gap-5 px-4 py-6 lg:grid-cols-[minmax(280px,0.8fr)_minmax(0,1.2fr)]">
       <section className="max-h-[calc(100vh-7rem)] overflow-auto rounded-xl border bg-card p-5 shadow-soft" aria-labelledby="lesson-title">
         <header className="border-b pb-4">
           <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Lesson {String(lesson.number).padStart(2, "0")} · {titleCase(lesson.level)} · ~{lesson.estimated_minutes} min</p>
@@ -470,7 +479,7 @@ export function ContentLessonPlayer({ lesson }: Props) {
         <div className="space-y-5 py-5">
           <div><h2 className="text-sm font-semibold">Goal</h2><p className="mt-1 text-sm leading-relaxed text-muted-foreground">{lesson.objectives[0]}</p></div>
           <div><h2 className="text-sm font-semibold">About</h2><p className="mt-1 text-sm leading-relaxed text-muted-foreground">{lesson.about}</p></div>
-          <div><h2 className="text-sm font-semibold">Syntax</h2><code className="mt-2 block rounded bg-muted px-3 py-2 font-mono text-sm">{lesson.syntax}</code></div>
+          {lesson.syntax !== "—" && <div><h2 className="text-sm font-semibold">Syntax</h2><code className="mt-2 block overflow-x-auto rounded bg-muted px-3 py-2 font-mono text-sm">{lesson.syntax}</code></div>}
           <div><h2 className="text-sm font-semibold">Examples</h2><div className="mt-2 space-y-3">{examplesFor(lesson)}</div></div>
           <div><h2 className="text-sm font-semibold">Watch out</h2><ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-muted-foreground">{lesson.watch_out.map((item) => <li key={item}>{item}</li>)}</ul></div>
         </div>
@@ -553,6 +562,7 @@ export function ContentLessonPlayer({ lesson }: Props) {
           </>
         ) : step.type === "shortcut" && step.validation.mode === "shortcut" ? (
           <ShortcutControl
+            key={step.id}
             accepted={step.validation.accepted_sequences[platformShortcutKey()]}
             onChange={(sequence) => setInteractionAnswers((current) => ({
               ...current,
@@ -577,12 +587,14 @@ export function ContentLessonPlayer({ lesson }: Props) {
           </fieldset>
         ) : isMenuActionStep(step) && step.validation.mode === "state" ? (
           <MenuActionControl
+            key={step.id}
             step={step}
             expected={step.validation.expect}
             answers={interaction}
             onChange={(key, value) => setInteractionAnswers((current) => ({ ...current, [step.id]: { ...(current[step.id] ?? {}), [key]: value } }))}
           />
         ) : null}
+        {!sheetStep && <div className="mt-3 h-[360px]"><Sheet key={`preview:${step.id}`} cells={cells} onChange={() => undefined} cols={size.cols} rows={size.rows} initialSelected={step.validation.mode === "shortcut" ? step.validation.start_cell : "A1"} editableCells={[]} variant="practice" /></div>}
         <div className="mt-3 flex items-center justify-between gap-3">
           <p className="text-xs text-muted-foreground">{sheetStep ? "Press Enter to check your formula." : "Check your answer when you are ready."}</p>
           <Button onClick={() => check()} disabled={sheetStep && !supported}>{result?.status === "correct" ? stepIndex === lesson.steps.length - 1 ? "Finish lesson" : "Next step" : "Check"}</Button>

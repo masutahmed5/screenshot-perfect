@@ -1,4 +1,5 @@
 import { LESSON_INDEX } from "./lesson-index";
+import { JSON_TRACK_LESSONS } from "./jsonLessons";
 import { lessonSchema, type LessonContent, type LessonIndexEntry } from "./lesson-schema";
 
 const trackModules = import.meta.glob("../../content/lessons/track-*.json", {
@@ -63,6 +64,8 @@ export async function loadContentLesson(id: string): Promise<{
 }> {
   const entry = LESSON_INDEX.find((item) => item.id === id) ?? null;
   if (!entry) return { lesson: null, indexEntry: null, error: null };
+  const imported = JSON_TRACK_LESSONS.find((lesson) => lesson.id === id);
+  if (imported) return { lesson: imported, indexEntry: entry, error: null };
   const lessons = await loadTrack(entry.track);
   const lesson = lessons.find((item) => item.id === id) ?? null;
   return {

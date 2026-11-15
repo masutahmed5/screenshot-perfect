@@ -4,6 +4,7 @@ import { Check, Circle, CircleDot, Search } from "lucide-react";
 import { LESSONS, type Lesson } from "@/lib/lessons";
 import { useProgress } from "@/lib/progress";
 import { cn } from "@/lib/utils";
+import { LESSON_INDEX } from "@/lib/lesson-index";
 
 export type LessonLevel = "Beginner" | "Intermediate" | "Advanced";
 
@@ -22,7 +23,7 @@ type Status = "completed" | "in-progress" | "not-started";
 
 export function LessonListPanel({ currentId, onNavigate, className }: { currentId?: string; onNavigate?: () => void; className?: string }) {
   const [query, setQuery] = useState("");
-  const { completed } = useProgress();
+  const { completed, lessonRuns } = useProgress();
   const currentRef = useRef<HTMLAnchorElement>(null);
 
   const statusOf = (lesson: Lesson): Status => {
@@ -30,17 +31,21 @@ export function LessonListPanel({ currentId, onNavigate, className }: { currentI
     return done === 0 ? "not-started" : done === lesson.steps.length ? "completed" : "in-progress";
   };
 
-  const completedLessons = LESSONS.filter((l) => statusOf(l) === "completed").length;
+  const catalog = [
+    ...LESSON_INDEX.map((lesson) => ({ id: lesson.id, title: lesson.title, num: String(lesson.number).padStart(2, "0"), level: (lesson.level.charAt(0).toUpperCase() + lesson.level.slice(1)) as LessonLevel, status: lessonRuns[lesson.id]?.status === "completed" ? "completed" : lessonRuns[lesson.id] ? "in-progress" : "not-started" })),
+    ...LESSONS.filter((lesson) => !LESSON_INDEX.some((entry) => entry.id === lesson.id)).map((lesson, i) => ({ id: lesson.id, title: lesson.title, num: String(lesson.lessonNumber ?? i + 1).padStart(2, "0"), level: lessonLevel(i), status: statusOf(lesson) })),
+  ];
+  const completedLessons = catalog.filter((lesson) => lesson.status === "completed").length;
 
   const groups = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const items = LESSONS.map((lesson, i) => ({ lesson, num: String(i + 1).padStart(2, "0"), level: lessonLevel(i) })).filter(
+    const items = catalog.map((lesson) => ({ lesson, num: lesson.num, level: lesson.level })).filter(
       ({ lesson, num }) => !q || lesson.title.toLowerCase().includes(q) || num.includes(q),
     );
     return (["Beginner", "Intermediate", "Advanced"] as const)
       .map((level) => ({ level, items: items.filter((it) => it.level === level) }))
       .filter((g) => g.items.length > 0);
-  }, [query]);
+  }, [query, completed, lessonRuns]);
 
   // Auto-scroll the current lesson into view on load
   useEffect(() => {
@@ -61,11 +66,11 @@ export function LessonListPanel({ currentId, onNavigate, className }: { currentI
           />
         </div>
         <div className="mt-2.5 flex items-center gap-2">
-          <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted" role="progressbar" aria-valuenow={completedLessons} aria-valuemin={0} aria-valuemax={LESSONS.length} aria-label="Lessons completed">
-            <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${(completedLessons / LESSONS.length) * 100}%` }} />
+          <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted" role="progressbar" aria-valuenow={completedLessons} aria-valuemin={0} aria-valuemax={catalog.length} aria-label="Lessons completed">
+            <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${(completedLessons / catalog.length) * 100}%` }} />
           </div>
           <span className="text-[11px] tabular-nums text-muted-foreground">
-            {completedLessons}/{LESSONS.length}
+            {completedLessons}/{catalog.length}
           </span>
         </div>
       </div>
@@ -75,7 +80,7 @@ export function LessonListPanel({ currentId, onNavigate, className }: { currentI
             <h3 className="sticky top-0 z-10 border-b bg-card px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">{g.level}</h3>
             <ul>
               {g.items.map(({ lesson, num }) => {
-                const status = statusOf(lesson);
+                const status = lesson.status;
                 const current = lesson.id === currentId;
                 return (
                   <li key={lesson.id}>

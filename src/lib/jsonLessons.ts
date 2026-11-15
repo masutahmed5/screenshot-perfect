@@ -1,6 +1,8 @@
 // Loads lesson JSON files from src/lessons/ at build time, validates them, and adapts them to the Lesson/Step model.
 import { z } from "zod";
 import type { Lesson, Step } from "./lessons";
+import { adaptTrackLesson } from "./track-json";
+import type { LessonContent } from "./lesson-schema";
 
 const cellValue = z.union([z.number(), z.string(), z.boolean(), z.object({ date: z.string() }), z.object({ formula: z.string() })]);
 const stepSchema = z.object({
@@ -56,10 +58,10 @@ function adaptStep(js: JsonStep, lesson: JsonLesson, file: string): Step | null 
     targetCells: [c.data.cell.toUpperCase()],
     validation: { mode: "formula_pattern", acceptedValues: [] },
     accepted: c.data.accepted,
-    exactMistakes: (js.commonMistakes ?? []).filter((m) => m.formula).map((m) => ({ formula: m.formula!, message: m.message })),
+    exactMistakes: (js.commonMistakes ?? []).flatMap((m) => m.formula ? [{ formula: m.formula, message: m.message }] : []),
     incorrect: js.feedback.incorrect,
-    hints: [js.hint, js.hint, c.data.accepted[0]!],
-    solution: c.data.accepted[0]!,
+    hints: [js.hint, js.hint, c.data.accepted[0] ?? ""],
+    solution: c.data.accepted[0] ?? "",
     explanation: js.feedback.correct,
   };
 }
@@ -79,9 +81,17 @@ export function adaptLesson(raw: unknown, file: string): Lesson | null {
 
 const files = import.meta.glob("../lessons/*.json", { eager: true, import: "default" }) as Record<string, unknown>;
 export const JSON_LESSONS: Lesson[] = Object.entries(files)
-  .map(([path, data]) => adaptLesson(data, path.split("/").pop()!))
+  .filter(([, data]) => !Array.isArray(data))
+  .map(([path, data]) => adaptLesson(data, path.split("/").pop() ?? path))
   .filter((l): l is Lesson => !!l)
   .sort((a, b) => (a.lessonNumber ?? 0) - (b.lessonNumber ?? 0));
+
+export const JSON_TRACK_LESSONS: LessonContent[] = Object.entries(files)
+  .flatMap(([path, data]) => Array.isArray(data)
+    ? data.map((item, index) => adaptTrackLesson(item, `${path}[${index}]`))
+    : [])
+  .filter((lesson): lesson is LessonContent => lesson !== null)
+  .sort((a, b) => a.number - b.number);
 
 /** Trim, drop spaces and upper-case everything outside double quotes. */
 export function normalizeFormula(f: string) {

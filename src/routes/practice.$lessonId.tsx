@@ -1,9 +1,9 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { ContentLessonPlayer, InvalidContentLesson } from "@/components/ContentLessonPlayer";
-import { Player } from "@/components/Player";
 import { getContentIndexEntry, loadContentLesson } from "@/lib/lesson-content";
-import { getLesson } from "@/lib/lessons";
+import { getLesson, LESSONS } from "@/lib/lessons";
+import { structuredLegacy } from "@/lib/structured-legacy";
 
 export const Route = createFileRoute("/practice/$lessonId")({
   loader: async ({ params }) => {
@@ -32,8 +32,9 @@ export const Route = createFileRoute("/practice/$lessonId")({
 function Practice() {
   const { lessonId } = Route.useParams();
 const { lesson, invalidContent } = Route.useLoaderData();
-  if (invalidContent) return <AppShell><InvalidContentLesson id={lessonId} /></AppShell>;
-  if (lesson) return <AppShell><ContentLessonPlayer lesson={lesson} /></AppShell>;
-  const legacyLesson = getLesson(lessonId)!;
-  return <AppShell><Player key={lessonId} steps={legacyLesson.steps} title={legacyLesson.title} lessonId={lessonId} /></AppShell>;
+  if (invalidContent) return <AppShell practiceLessonId={lessonId}><InvalidContentLesson id={lessonId} /></AppShell>;
+  if (lesson) return <AppShell practiceLessonId={lessonId}><ContentLessonPlayer key={lessonId} lesson={lesson} /></AppShell>;
+  const legacyLesson = getLesson(lessonId);
+  if (!legacyLesson) return <AppShell practiceLessonId={lessonId}><InvalidContentLesson id={lessonId} /></AppShell>;
+  return <AppShell practiceLessonId={lessonId}><ContentLessonPlayer key={lessonId} lesson={structuredLegacy(legacyLesson, LESSONS.indexOf(legacyLesson))} legacyLesson={legacyLesson} /></AppShell>;
 }

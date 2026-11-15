@@ -96,6 +96,7 @@ describe("full structured lesson flow", () => {
       type: "scenario",
       target_cells: ["B6", "C6"],
       workbook: {
+        named_ranges: {},
         sheets: [{
           name: "Sales",
           cells: {
@@ -166,7 +167,7 @@ describe("full structured lesson flow", () => {
 
   it("checks MCQ selections and progresses to the next step", async () => {
     const original = sampleLesson.steps[0]!;
-    const mcq = {
+    const mcq: Partial<LessonContentStep> = {
       ...original,
       id: "MCQ",
       type: "mcq",
@@ -178,7 +179,7 @@ describe("full structured lesson flow", () => {
         accepted_choice: "sum",
       },
     };
-    const shortcut = {
+    const shortcut: Partial<LessonContentStep> = {
       ...original,
       id: "SHORTCUT",
       type: "shortcut",
@@ -230,6 +231,7 @@ describe("full structured lesson flow", () => {
     const step = {
       ...original,
       workbook: {
+        named_ranges: {},
         sheets: [
           original.workbook.sheets[0]!,
           { name: "Totals", cells: { A1: "Result" } },

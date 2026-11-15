@@ -1,5 +1,9 @@
 # Tasks
 
+- [ ] Load array-based JSON tracks directly and expose their lessons in the catalog and browser.
+- [ ] Use the structured practice layout for all lessons, with left lesson browser and mutually exclusive hamburger navigation.
+- [ ] Verify imported questions, existing formula checking, and desktop/mobile navigation.
+
 - [x] Redesign only the learning path, Why Gridwise, and closing CTA; verify existing lesson links and four screen sizes. Placement-test link omitted because no placement test exists and routing is out of scope.
 
 - [x] Redesign only the recognition section and verify its once-on-scroll animation, CTA, and mobile layout.
