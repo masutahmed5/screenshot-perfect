@@ -1,12 +1,12 @@
 import type { Lesson } from "./lessons";
 import type { LessonContent } from "./lesson-schema";
-import { colLabel, parseRef, type CellMap } from "./formula";
+import { indexToCol, parseRef, type CellMap } from "./formula";
 
 function exampleGrid(cells: CellMap) {
   const positions = Object.keys(cells).map(parseRef).filter((position) => position !== null);
   const cols = Math.max(1, ...positions.map((position) => position.col + 1));
   const rows = Math.max(1, ...positions.map((position) => position.row + 1));
-  return Array.from({ length: rows }, (_, row) => Array.from({ length: cols }, (_, col) => cells[`${colLabel(col)}${row + 1}`] ?? ""));
+  return Array.from({ length: rows }, (_, row) => Array.from({ length: cols }, (_, col) => cells[`${indexToCol(col)}${row + 1}`] ?? ""));
 }
 
 /** Presentation adapter; original steps remain the authority for grading. */
