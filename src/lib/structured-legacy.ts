@@ -1,5 +1,13 @@
 import type { Lesson } from "./lessons";
 import type { LessonContent } from "./lesson-schema";
+import { colLabel, parseRef, type CellMap } from "./formula";
+
+function exampleGrid(cells: CellMap) {
+  const positions = Object.keys(cells).map(parseRef).filter((position) => position !== null);
+  const cols = Math.max(1, ...positions.map((position) => position.col + 1));
+  const rows = Math.max(1, ...positions.map((position) => position.row + 1));
+  return Array.from({ length: rows }, (_, row) => Array.from({ length: cols }, (_, col) => cells[`${colLabel(col)}${row + 1}`] ?? ""));
+}
 
 /** Presentation adapter; original steps remain the authority for grading. */
 export function structuredLegacy(lesson: Lesson, index: number): LessonContent {
@@ -16,7 +24,7 @@ export function structuredLegacy(lesson: Lesson, index: number): LessonContent {
     about: lesson.summary,
     syntax: lesson.steps[0]?.solution ?? "",
     examples: lesson.steps.slice(0, 2).map((step) => ({
-      data: Object.entries(step.workbook).map(([address, value]) => [address, value]),
+      data: exampleGrid(step.workbook),
       formula: step.solution,
       result: step.validation.acceptedValues[0] ?? "",
       why: step.explanation,

@@ -1,8 +1,8 @@
 # Tasks
 
-- [ ] Load array-based JSON tracks directly and expose their lessons in the catalog and browser.
-- [ ] Use the structured practice layout for all lessons, with left lesson browser and mutually exclusive hamburger navigation.
-- [ ] Verify imported questions, existing formula checking, and desktop/mobile navigation.
+- [x] Load array-based JSON tracks directly and expose their 13 numbered lessons in the catalog and browser; unnumbered checkpoint retained in source, outside the numbered catalog.
+- [x] Use the structured practice layout for all lessons, with left lesson browser and mutually exclusive hamburger navigation.
+- [x] Verify imported questions, existing formula checking, and desktop/mobile navigation.
 
 - [x] Redesign only the learning path, Why Gridwise, and closing CTA; verify existing lesson links and four screen sizes. Placement-test link omitted because no placement test exists and routing is out of scope.
 

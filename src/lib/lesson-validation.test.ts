@@ -68,7 +68,8 @@ describe("formula lesson validation", () => {
     expect(validateLessonStep(multiCellStep, cells).status).toBe("correct");
   });
 
-  it("keeps the lesson index independent of loaded lesson content", () => {
-    expect(LESSON_INDEX.map((entry) => entry.id)).toEqual(["L018", "L024", "L078"]);
+  it("retains registered content tracks alongside auto-loaded JSON tracks", () => {
+    expect(LESSON_INDEX.filter((entry) => entry.track !== "01").map((entry) => entry.id)).toEqual(["L018", "L024", "L078"]);
+    expect(LESSON_INDEX.filter((entry) => entry.track === "01")).toHaveLength(13);
   });
 });

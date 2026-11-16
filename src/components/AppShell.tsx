@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
-import { BookOpen, Flame, Home, Keyboard, RotateCcw, Briefcase, Target, Trophy, User, Sparkles, Menu, PanelLeftClose, List, X } from "lucide-react";
+import { BookOpen, Flame, Home, Keyboard, RotateCcw, Briefcase, Target, Trophy, User, Sparkles, Menu, PanelLeftClose, List } from "lucide-react";
 import { useProgress } from "@/lib/progress";
 import { Logo } from "./Logo";
 import { Button } from "./ui/button";
