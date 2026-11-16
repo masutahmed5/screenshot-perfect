@@ -17,7 +17,9 @@ import { Route as ReviewRouteImport } from './routes/review'
 import { Route as SitemapRouteImport } from './routes/sitemap'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TryLessonsRouteImport } from './routes/try-lessons'
 import { Route as PracticeLessonIdRouteImport } from './routes/practice.$lessonId'
+import { Route as LearnTrackTrackIdRouteImport } from './routes/learn.track.$trackId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -59,45 +61,61 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TryLessonsRoute = TryLessonsRouteImport.update({
+  id: '/try-lessons',
+  path: '/try-lessons',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PracticeLessonIdRoute = PracticeLessonIdRouteImport.update({
   id: '/practice/$lessonId',
   path: '/practice/$lessonId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LearnTrackTrackIdRoute = LearnTrackTrackIdRouteImport.update({
+  id: '/track/$trackId',
+  path: '/track/$trackId',
+  getParentRoute: () => LearnRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
-  '/learn': typeof LearnRoute
+  '/learn': typeof LearnRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/review': typeof ReviewRoute
   '/sitemap': typeof SitemapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/try-lessons': typeof TryLessonsRoute
   '/practice/$lessonId': typeof PracticeLessonIdRoute
+  '/learn/track/$trackId': typeof LearnTrackTrackIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
-  '/learn': typeof LearnRoute
+  '/learn': typeof LearnRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/review': typeof ReviewRoute
   '/sitemap': typeof SitemapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/try-lessons': typeof TryLessonsRoute
   '/practice/$lessonId': typeof PracticeLessonIdRoute
+  '/learn/track/$trackId': typeof LearnTrackTrackIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
-  '/learn': typeof LearnRoute
+  '/learn': typeof LearnRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/review': typeof ReviewRoute
   '/sitemap': typeof SitemapRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/try-lessons': typeof TryLessonsRoute
   '/practice/$lessonId': typeof PracticeLessonIdRoute
+  '/learn/track/$trackId': typeof LearnTrackTrackIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -110,7 +128,9 @@ export interface FileRouteTypes {
     | '/sitemap'
     | '/sitemap.xml'
     | '/terms'
+    | '/try-lessons'
     | '/practice/$lessonId'
+    | '/learn/track/$trackId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -121,7 +141,9 @@ export interface FileRouteTypes {
     | '/sitemap'
     | '/sitemap.xml'
     | '/terms'
+    | '/try-lessons'
     | '/practice/$lessonId'
+    | '/learn/track/$trackId'
   id:
     | '__root__'
     | '/'
@@ -132,18 +154,21 @@ export interface FileRouteTypes {
     | '/sitemap'
     | '/sitemap.xml'
     | '/terms'
+    | '/try-lessons'
     | '/practice/$lessonId'
+    | '/learn/track/$trackId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
-  LearnRoute: typeof LearnRoute
+  LearnRoute: typeof LearnRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   ReviewRoute: typeof ReviewRoute
   SitemapRoute: typeof SitemapRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  TryLessonsRoute: typeof TryLessonsRoute
   PracticeLessonIdRoute: typeof PracticeLessonIdRoute
 }
 
@@ -205,6 +230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/try-lessons': {
+      id: '/try-lessons'
+      path: '/try-lessons'
+      fullPath: '/try-lessons'
+      preLoaderRoute: typeof TryLessonsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/practice/$lessonId': {
       id: '/practice/$lessonId'
       path: '/practice/$lessonId'
@@ -212,18 +244,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PracticeLessonIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/learn/track/$trackId': {
+      id: '/learn/track/$trackId'
+      path: '/track/$trackId'
+      fullPath: '/learn/track/$trackId'
+      preLoaderRoute: typeof LearnTrackTrackIdRouteImport
+      parentRoute: typeof LearnRoute
+    }
   }
 }
+
+interface LearnRouteChildren {
+  LearnTrackTrackIdRoute: typeof LearnTrackTrackIdRoute
+}
+
+const LearnRouteChildren: LearnRouteChildren = {
+  LearnTrackTrackIdRoute: LearnTrackTrackIdRoute,
+}
+
+const LearnRouteWithChildren = LearnRoute._addFileChildren(LearnRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
-  LearnRoute: LearnRoute,
+  LearnRoute: LearnRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   ReviewRoute: ReviewRoute,
   SitemapRoute: SitemapRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  TryLessonsRoute: TryLessonsRoute,
   PracticeLessonIdRoute: PracticeLessonIdRoute,
 }
 export const routeTree = rootRouteImport

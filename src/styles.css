@@ -263,3 +263,24 @@
   .gw-recognition .gw-empty-cursor { animation: none; }
   .gw-recognition .gw-watching { background-color: var(--muted); }
 }
+
+/* Compact structured practice only; no landing or grading changes. */
+.gw-practice-workspace { font-size: 16.5px; }
+.gw-practice-workspace .text-xs { font-size: 12.5px; }
+.gw-practice-workspace .text-sm { font-size: 14.5px; }
+.gw-practice-workspace .text-base { font-size: 16.5px; }
+.gw-practice-workspace .text-lg { font-size: 18.5px; }
+.gw-practice-workspace .text-xl { font-size: 20.5px; }
+.gw-practice-workspace .gw-sheet-practice { --row-height: 32px; --font-size-grid: 15.341px; --font-size-header: 13.068px; }
+.gw-practice-workspace .gw-sheet-practice input { font-size: 13.5px; }
+.gw-practice-workspace .gw-sheet-practice th.sticky.left-0 { font-size: 11.5px; }
+.gw-practice-grid { height: 330px; min-height: 240px; }
+.gw-practice-reference .space-y-5 { gap: 0; padding-block: 12px; }
+.gw-practice-reference .space-y-5 > * + * { margin-top: 12px; }
+.gw-practice-task .leading-relaxed { line-height: 1.5; }
+@media (min-width: 900px) {
+  .gw-practice-workspace { grid-template-columns: minmax(230px, 0.72fr) minmax(0, 1.28fr); }
+  .gw-practice-reference { max-height: calc(100dvh - 80px); }
+  .gw-practice-exercise { display: flex; flex-direction: column; height: calc(100dvh - 80px); min-height: 560px; overflow-y: auto; }
+  .gw-practice-grid { flex: 1; min-height: 240px; max-height: 500px; }
+}

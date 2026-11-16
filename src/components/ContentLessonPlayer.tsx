@@ -467,8 +467,8 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
   const versionTooltip = "Needs Excel 2019/2021/Microsoft 365. Older versions: see the fallback in Watch out.";
 
   return (
-    <div className="mx-auto grid max-w-7xl gap-5 px-4 py-6 lg:grid-cols-[minmax(280px,0.8fr)_minmax(0,1.2fr)]">
-      <section className="max-h-[calc(100vh-7rem)] overflow-auto rounded-xl border bg-card p-5 shadow-soft" aria-labelledby="lesson-title">
+    <div className="gw-practice-workspace mx-auto grid max-w-7xl gap-3 px-3 py-3">
+      <section className="gw-practice-reference overflow-auto rounded-lg border bg-card p-4 shadow-soft" aria-labelledby="lesson-title">
         <header className="border-b pb-4">
           <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Lesson {String(lesson.number).padStart(2, "0")} · {titleCase(lesson.level)} · ~{lesson.estimated_minutes} min</p>
           <div className="mt-2 flex items-center gap-2">
@@ -485,8 +485,8 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
         </div>
       </section>
 
-      <section className="min-w-0" aria-labelledby="step-title">
-        <div className="mb-3 rounded-xl border bg-card p-4">
+      <section className="gw-practice-exercise min-w-0" aria-labelledby="step-title">
+        <div className="gw-practice-task mb-2 rounded-lg border bg-card p-3">
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Do it yourself · {step.difficulty}</p>
@@ -534,7 +534,7 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
                 ))}
               </div>
             )}
-            <div className="h-[min(62vh,680px)] min-h-[360px]">
+            <div className="gw-practice-grid">
               <Sheet
                 key={`${step.id}:${activeSheet.name}`}
                 cells={cells}
@@ -556,7 +556,7 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
                 editableCells={targetCells}
                 onEnterCheck={check}
                 enterChecks
-                variant="practice"
+                variant="practice" scale={0.88}
               />
             </div>
           </>
@@ -594,7 +594,7 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
             onChange={(key, value) => setInteractionAnswers((current) => ({ ...current, [step.id]: { ...(current[step.id] ?? {}), [key]: value } }))}
           />
         ) : null}
-        {!sheetStep && <div className="mt-3 h-[360px]"><Sheet key={`preview:${step.id}`} cells={cells} onChange={() => undefined} cols={size.cols} rows={size.rows} initialSelected={step.validation.mode === "shortcut" ? step.validation.start_cell : "A1"} editableCells={[]} variant="practice" /></div>}
+        {!sheetStep && <div className="gw-practice-grid mt-2"><Sheet key={`preview:${step.id}`} cells={cells} onChange={() => undefined} cols={size.cols} rows={size.rows} initialSelected={step.validation.mode === "shortcut" ? step.validation.start_cell : "A1"} editableCells={[]} variant="practice" scale={0.88} /></div>}
         <div className="mt-3 flex items-center justify-between gap-3">
           <p className="text-xs text-muted-foreground">{sheetStep ? "Press Enter to check your formula." : "Check your answer when you are ready."}</p>
           <Button onClick={() => check()} disabled={sheetStep && !supported}>{result?.status === "correct" ? stepIndex === lesson.steps.length - 1 ? "Finish lesson" : "Next step" : "Check"}</Button>

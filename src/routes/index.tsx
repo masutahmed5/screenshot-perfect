@@ -85,7 +85,7 @@ function Landing() {
             <h1 className="mt-6 font-serif text-6xl leading-[1.02] tracking-tight md:text-7xl">Become confident in Excel <em className="text-primary">in days.</em></h1>
             <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">Practice Excel online with interactive exercises in a real spreadsheet, not through boring videos. Learn Excel formulas, functions, and keyboard shortcuts as you work through practical challenges. Every formula is checked instantly, with helpful feedback that shows you exactly what went wrong.</p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Button asChild size="lg"><Link to="/practice/$lessonId" params={{ lessonId: "basics" }}>Try the first lesson <ArrowRight /></Link></Button>
+              <Button asChild size="lg"><Link to="/try-lessons">Try the first lesson <ArrowRight /></Link></Button>
               <Button asChild size="lg" variant="ghost"><Link to="/learn">See all skills</Link></Button>
             </div>
             <p className="mt-8 text-sm text-muted-foreground">30 exercises · 6 skills · 3–7 minute sessions</p>

@@ -136,7 +136,7 @@ export function ClosingSection() {
         </div>
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
           <Button asChild size="lg" className="gw-closing-button group h-14 rounded-xl px-8 text-base font-semibold shadow-soft">
-            <Link to="/practice/$lessonId" params={{ lessonId: "basics" }}>Try the first lesson <ArrowRight aria-hidden className="transition-transform group-hover:translate-x-1" /></Link>
+            <Link to="/try-lessons">Try the first lesson <ArrowRight aria-hidden className="transition-transform group-hover:translate-x-1" /></Link>
           </Button>
         </div>
         <p className="mt-6 text-sm font-semibold text-primary">No sign-up needed to start. Practice in your browser.</p>
