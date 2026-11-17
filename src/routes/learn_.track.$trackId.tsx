@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { getSkillTrack } from "@/lib/skill-tracks";
 import { useProgress } from "@/lib/progress";
 
-export const Route = createFileRoute("/learn/track/$trackId")({
+export const Route = createFileRoute("/learn_/track/$trackId")({
   loader: ({ params }) => {
     const track = getSkillTrack(params.trackId);
     if (!track) throw notFound();
@@ -38,7 +38,7 @@ function TrackLessons() {
       {track.lessons.length > 0 && <div className="relative w-full sm:w-64"><Search aria-hidden className="absolute left-3 top-3 size-4 text-muted-foreground" /><Input aria-label="Search track lessons" placeholder="Search lessons" value={query} onChange={(event) => setQuery(event.target.value)} className="pl-9" /></div>}
     </div>
     <div className="mt-4 divide-y border-y">
-      {lessons.map((lesson, index) => <Button key={lesson.id} asChild variant="ghost" className="h-auto w-full justify-start gap-4 whitespace-normal rounded-none px-3 py-5 text-left">
+      {lessons.map((lesson) => <Button key={lesson.id} asChild variant="ghost" className="h-auto w-full justify-start gap-4 whitespace-normal rounded-none px-3 py-5 text-left">
         <Link to="/practice/$lessonId" params={{ lessonId: lesson.id }}><span className="w-7 shrink-0 font-mono text-xs text-muted-foreground">{String(track.lessons.indexOf(lesson) + 1).padStart(2, "0")}</span><span className="min-w-0 flex-1"><span className="block font-semibold">{lesson.title}</span><span className="mt-1 block text-xs font-normal capitalize text-muted-foreground">{lesson.level} · {progress.lessonRuns[lesson.id]?.status === "completed" ? "Completed" : progress.lessonRuns[lesson.id] ? "In progress" : "New"}</span></span><ArrowUpRight aria-hidden className="size-4 shrink-0 text-primary" /></Link>
       </Button>)}
     </div>

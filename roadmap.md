@@ -14,5 +14,5 @@
 - [x] Add the two supplied descriptions side by side in the closing section; verify desktop side-by-side, mobile stacking, no overflow.
 - [x] Update "For every level" section title and description with the supplied copy; verified heading, description, mobile stacking, no overflow.
 - [x] Practice page: zoomed-out spreadsheet via single scale setting (0.88), right-side lesson list panel (groups, search, progress, collapse), drawer on tablet/mobile, Prev/Next lesson buttons; landing sheet untouched.
-- [ ] Show ten track cards, track lesson lists, and first-lesson choices using available content only.
-- [ ] Compact only the structured practice workspace and increase its text sizes by 0.5px; verify navigation and original grading.
+- [x] Show ten track cards, track lesson lists, and first-lesson choices using available content only. Tracks 09–10 are marked coming soon until lesson content is supplied; purchasing remains unchanged.
+- [x] Compact only the structured practice workspace and increase its text sizes by 0.5px; verified Track 01 navigation, level filtering, mobile layout, and a correct formula in the live spreadsheet.

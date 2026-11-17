@@ -278,6 +278,9 @@
 .gw-practice-reference .space-y-5 { gap: 0; padding-block: 12px; }
 .gw-practice-reference .space-y-5 > * + * { margin-top: 12px; }
 .gw-practice-task .leading-relaxed { line-height: 1.5; }
+.gw-practice-exercise > fieldset { padding: 12px; }
+.gw-practice-exercise > fieldset > label { padding: 8px 12px; }
+.gw-practice-exercise > fieldset > label + label { margin-top: 8px; }
 @media (min-width: 900px) {
   .gw-practice-workspace { grid-template-columns: minmax(230px, 0.72fr) minmax(0, 1.28fr); }
   .gw-practice-reference { max-height: calc(100dvh - 80px); }
