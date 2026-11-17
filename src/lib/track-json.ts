@@ -1,4 +1,5 @@
 import { lessonSchema, type LessonContent } from "./lesson-schema";
+import { indexToCol, parseRef } from "./formula";
 
 /** Normalize exported track aliases without weakening the content schema. */
 export function adaptTrackLesson(raw: unknown, file: string): LessonContent | null {
@@ -28,8 +29,13 @@ export function adaptTrackLesson(raw: unknown, file: string): LessonContent | nu
   }) : item.steps;
   const examples = Array.isArray(item.examples) ? item.examples.map((rawExample) => {
     const example = rawExample as Record<string, unknown>;
-    return { ...example, data: typeof example.data === "string" ? [[example.data]] : example.data };
-  }) : item.examples;
+    const cells = example.cells && typeof example.cells === "object" ? example.cells as Record<string, unknown> : null;
+    const addresses = cells ? Object.keys(cells).map(parseRef).filter((ref) => ref !== null) : [];
+    const rows = Math.max(1, ...addresses.map((ref) => ref.row));
+    const cols = Math.max(1, ...addresses.map((ref) => ref.col + 1));
+    const data = cells ? Array.from({ length: rows }, (_, row) => Array.from({ length: cols }, (_, col) => cells[`${indexToCol(col)}${row + 1}`] ?? null)) : example.data;
+    return { ...example, data: typeof data === "string" ? [[data]] : data };
+  }).slice(0, 3) : item.examples;
   const parsed = lessonSchema.safeParse({
     ...item,
     track: typeof item.track === "string" ? item.track.slice(0, 2) : item.track,

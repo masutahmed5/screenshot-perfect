@@ -14,5 +14,6 @@
 - Normalize array-based source tracks through the track adapter and auto-register them; keep the strict content schema intact so malformed lessons remain detectable.
 - Practice routes use the structured player; legacy lessons retain their original grader through a presentation adapter to preserve answer rules and progress IDs.
 - Practice navigation and the left lesson browser are mutually exclusive in AppShell; other pages retain their existing navigation.
-- Organize skill browsing through a presentation-only ten-track catalog with real lesson counts and first available lessons; keep lesson sources, graders, and progress IDs unchanged.
+- Derive visible skill tracks and their counts/levels from registered lesson content, showing only populated tracks so new JSON tracks appear automatically.
+- Prefer updated content/lessons track files over matching src/lessons files, normalizing both through the strict track adapter to prevent stale duplicates.
 - Scope compact practice sizing and typography to the structured workspace so landing spreadsheets and other pages remain unchanged.

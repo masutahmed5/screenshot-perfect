@@ -32,10 +32,18 @@ const catalog: LessonIndexEntry[] = [
   }),
 ];
 
-export const SKILL_TRACKS = definitions.map((definition) => ({
-  ...definition,
-  lessons: catalog.filter((lesson) => lesson.track === definition.id).sort((a, b) => a.number - b.number),
-}));
+export function buildSkillTracks(entries: LessonIndexEntry[]) {
+  return [...new Set(entries.map((lesson) => lesson.track))].sort().map((id) => {
+    const lessons = entries.filter((lesson) => lesson.track === id).sort((a, b) => a.number - b.number);
+    const definition = definitions.find((track) => track.id === id);
+    return {
+      id, title: definition?.title ?? `Excel skills · Track ${id}`,
+      summary: definition?.summary ?? lessons.map((lesson) => lesson.title).slice(0, 3).join(" · "),
+      level: lessons[0]?.level ?? "beginner", lessons,
+    };
+  });
+}
+export const SKILL_TRACKS = buildSkillTracks(catalog);
 export function getSkillTrack(id: string) {
   return SKILL_TRACKS.find((track) => track.id === id);
 }

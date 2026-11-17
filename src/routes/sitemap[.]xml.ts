@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { LESSONS } from "@/lib/lessons";
+import { LESSON_INDEX as LESSONS } from "@/lib/lesson-index";
 
 const PAGES = ["/", "/learn", "/dashboard", "/review", "/terms", "/privacy", "/sitemap"];
 

@@ -80,14 +80,18 @@ export function adaptLesson(raw: unknown, file: string): Lesson | null {
 }
 
 const files = import.meta.glob("../lessons/*.json", { eager: true, import: "default" }) as Record<string, unknown>;
+const contentFiles = import.meta.glob("../../content/lessons/track-*.json", { eager: true, import: "default" }) as Record<string, unknown>;
+// Updated content tracks take precedence over older exports with the same filename.
+const trackFiles = new Map(Object.entries(files).filter(([, data]) => Array.isArray(data)).map(([path, data]) => [path.split("/").pop(), { path, data }]));
+for (const [path, data] of Object.entries(contentFiles)) trackFiles.set(path.split("/").pop(), { path, data });
 export const JSON_LESSONS: Lesson[] = Object.entries(files)
   .filter(([, data]) => !Array.isArray(data))
   .map(([path, data]) => adaptLesson(data, path.split("/").pop() ?? path))
   .filter((l): l is Lesson => !!l)
   .sort((a, b) => (a.lessonNumber ?? 0) - (b.lessonNumber ?? 0));
 
-export const JSON_TRACK_LESSONS: LessonContent[] = Object.entries(files)
-  .flatMap(([path, data]) => Array.isArray(data)
+export const JSON_TRACK_LESSONS: LessonContent[] = [...trackFiles.values()]
+  .flatMap(({ path, data }) => Array.isArray(data)
     ? data.map((item, index) => adaptTrackLesson(item, `${path}[${index}]`))
     : [])
   .filter((lesson): lesson is LessonContent => lesson !== null)

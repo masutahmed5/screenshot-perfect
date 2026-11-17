@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Logo } from "@/components/Logo";
-import { LESSONS } from "@/lib/lessons";
+import { LESSON_INDEX as LESSONS } from "@/lib/lesson-index";
 
 export const Route = createFileRoute("/sitemap")({
   head: () => ({
