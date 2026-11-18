@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SKILL_TRACKS } from "@/lib/skill-tracks";
 
 function useSectionReveal() {
   const ref = useRef<HTMLElement>(null);
@@ -23,18 +24,7 @@ function useSectionReveal() {
   return ref;
 }
 
-const tracks = [
-  { id: "intro-to-excel", title: "Intro to Excel", outcome: "Cells, rows, and moving around fast.", formula: "A1", level: "Beginner" },
-  { id: "basics", title: "Formulas & arithmetic", outcome: "Build your first formulas with confidence.", formula: "=B2*C2", level: "Beginner" },
-  { id: "math", title: "Summaries that matter", outcome: "Totals, averages, and counts in seconds.", formula: "=SUM(B2:B9)", level: "Beginner" },
-  { id: "logical", title: "Decisions with IF", outcome: "Make your sheet think for you.", formula: '=IF(B2>100,"High","Low")', level: "Intermediate" },
-  { id: "lookups", title: "VLOOKUP, XLOOKUP & INDEX/MATCH", outcome: "Find anything in any table.", formula: "=XLOOKUP(A2,F:F,G:G)", level: "Intermediate" },
-  { id: "text", title: "Clean & reshape text", outcome: "Fix messy names, codes and dates.", formula: "=TRIM(A2)", level: "Intermediate" },
-  { id: "cleaning", title: "Debug & clean", outcome: "Track down errors and fix broken sheets.", formula: "#N/A", level: "Advanced" },
-  { id: "math", title: "Conditional summaries", outcome: "Summarize data by specific criteria with SUMIFS and COUNTIFS.", formula: '=SUMIFS(C:C,A:A,"East")', level: "Intermediate" },
-  { id: "cleaning", title: "Error trapping", outcome: "Stop broken formulas from ruining dashboards and totals.", formula: '=IFERROR(formula,"Fallback")', level: "Advanced" },
-  { id: "lookups", title: "Dynamic filtering", outcome: "A modern core formula in Microsoft 365 and Excel 2021+.", formula: '=FILTER(A2:D50,C2:C50="Active")', level: "Advanced" },
-];
+const tracks = SKILL_TRACKS;
 
 const principles = [
   ["Learn by doing", "Every concept is a short exercise in a real spreadsheet."],
@@ -53,24 +43,24 @@ export function LearningPathSection() {
           <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-muted-foreground">Practice Excel online, starting with spreadsheet basics and essential Excel formulas and functions. Work your way up to advanced Excel skills like XLOOKUP, SUMIFS and data analysis. Our structured Excel lessons are organised by skill level, so beginners can build a solid foundation while experienced users can focus on the formulas and techniques they want to master.</p>
         </div>
         <div className="gw-track-grid relative mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-          {tracks.map((track, index) => (
+          {tracks.map((track) => (
             <Button key={track.title} asChild variant="outline" className={`gw-track group`}>
-              <Link to="/practice/$lessonId" params={{ lessonId: track.id }}>
+              <Link to="/learn/track/$trackId" params={{ trackId: track.id }}>
                 <div className="flex items-center gap-2">
-                  <span className="bg-card font-mono text-xs text-primary">{String(index + 1).padStart(2, "0")}</span>
-                  <span className="rounded-full border px-2 py-1 text-[11px] font-normal text-muted-foreground">{track.level}</span>
+                  <span className="bg-card font-mono text-xs text-primary">{track.id}</span>
+                  <span className="rounded-full border px-2 py-1 text-[11px] font-normal capitalize text-muted-foreground">{track.level}</span>
                   <ArrowUpRight aria-hidden className="ml-auto text-primary opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100" />
                 </div>
                 <h3 className="mt-3 text-base font-medium leading-snug">{track.title}</h3>
-                <p className="mt-2 text-xs font-normal leading-relaxed text-muted-foreground">{track.outcome}</p>
-                <code className="gw-formula-chip mt-auto self-start pt-4 font-mono text-[11px] font-normal">{track.formula}</code>
+                <p className="mt-2 text-xs font-normal leading-relaxed text-muted-foreground">{track.summary}</p>
+                <span className="gw-formula-chip mt-auto self-start pt-4 font-mono text-[11px] font-normal">{track.lessons.length} lessons</span>
               </Link>
             </Button>
           ))}
         </div>
         <div className="mt-10 flex justify-center">
           <Button asChild size="lg">
-            <Link to="/practice/$lessonId" params={{ lessonId: "intro-to-excel" }}>Start your first lesson <ArrowRight aria-hidden className="ml-1" /></Link>
+            <Link to="/try-lessons">Start your first lesson <ArrowRight aria-hidden className="ml-1" /></Link>
           </Button>
         </div>
       </div>

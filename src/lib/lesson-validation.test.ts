@@ -1,14 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { LESSON_INDEX } from "./lesson-index";
 import { validateLessonStep } from "./lesson-validation";
-import { loadContentLesson } from "./lesson-content";
+import { formulaLesson, referenceStep } from "@/test/fixtures/formula-lessons";
 import type { CellMap } from "./formula";
 import type { LessonContentStep } from "./lesson-schema";
 
 async function getStep(lessonId: string, stepIndex = 0) {
-  const { lesson } = await loadContentLesson(lessonId);
-  if (!lesson) throw new Error(`Missing lesson ${lessonId}`);
-  const step = lesson.steps[stepIndex]!;
+  const step = lessonId === "L018" ? referenceStep : formulaLesson.steps[stepIndex];
+  if (!step) throw new Error("Missing test step");
   const values = step.workbook.sheets[0]!.cells;
   const cells: CellMap = Object.fromEntries(Object.entries(values).map(([address, value]) => [
     address.toUpperCase(),
@@ -68,8 +67,8 @@ describe("formula lesson validation", () => {
     expect(validateLessonStep(multiCellStep, cells).status).toBe("correct");
   });
 
-  it("retains registered content tracks alongside auto-loaded JSON tracks", () => {
-    expect(LESSON_INDEX.filter((entry) => entry.track !== "01").map((entry) => entry.id)).toEqual(["L018", "L024", "L078"]);
+  it("publishes only the updated Track 01", () => {
+    expect(LESSON_INDEX.filter((entry) => entry.track !== "01").map((entry) => entry.id)).toEqual([]);
     expect(LESSON_INDEX.filter((entry) => entry.track === "01")).toHaveLength(13);
   });
 });

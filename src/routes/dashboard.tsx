@@ -2,9 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Flame, RotateCcw } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
-import { LESSONS } from "@/lib/lessons";
+import { JSON_TRACK_LESSONS } from "@/lib/jsonLessons";
+import { SKILL_TRACKS } from "@/lib/skill-tracks";
 import { useProgress } from "@/lib/progress";
-import { mastery } from "./learn";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -36,11 +36,18 @@ function Radar({ values }: { values: { label: string; v: number }[] }) {
 
 function Dashboard() {
   const p = useProgress();
-  const next = LESSONS.find((l) => l.steps.some((s) => !p.completed[s.id])) ?? LESSONS[0];
-  const nextDone = next.steps.filter((s) => p.completed[s.id]).length;
-  const review = Object.keys(p.mistakes).length;
-  const total = LESSONS.reduce((a, l) => a + l.steps.length, 0);
-  const completed = Object.keys(p.completed).length;
+  const next = JSON_TRACK_LESSONS.find((l) => l.steps.some((s) => !p.completed[s.id])) ?? JSON_TRACK_LESSONS[0];
+  const nextDone = next?.steps.filter((s) => p.completed[s.id]).length ?? 0;
+  const activeSteps = JSON_TRACK_LESSONS.flatMap((lesson) => lesson.steps);
+  const review = activeSteps.filter((step) => p.mistakes[step.id]).length;
+  const total = activeSteps.length;
+  const completed = activeSteps.filter((step) => p.completed[step.id]).length;
+  const skills = SKILL_TRACKS.map((track) => {
+    const steps = JSON_TRACK_LESSONS.filter((lesson) => lesson.track === track.id).flatMap((lesson) => lesson.steps);
+    const done = steps.filter((step) => p.completed[step.id]).length;
+    const pct = steps.length ? Math.round(done / steps.length * 100) : 0;
+    return { id: track.id, title: track.title, pct, label: pct === 100 ? "Strong" : pct > 0 ? "Learning" : "New" };
+  });
   return (
     <AppShell>
       <div className="mx-auto max-w-5xl px-6 py-10">
@@ -48,18 +55,18 @@ function Dashboard() {
         <h1 className="mt-1 font-serif text-5xl tracking-tight">Today</h1>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
-          <div className="relative overflow-hidden rounded-2xl border bg-secondary p-7 text-secondary-foreground shadow-lift lg:col-span-2">
+          {next && <div className="relative overflow-hidden rounded-2xl border bg-secondary p-7 text-secondary-foreground shadow-lift lg:col-span-2">
             <div className="absolute inset-0 grid-motif opacity-10" />
             <div className="relative">
               <span className="text-xs font-medium uppercase tracking-wider opacity-70">{nextDone ? "Continue" : "Up next"} · {next.track}</span>
               <h2 className="mt-3 font-serif text-3xl">{next.title}</h2>
-              <p className="mt-2 max-w-md text-sm opacity-75">{next.summary}</p>
+              <p className="mt-2 max-w-md text-sm opacity-75">{next.about}</p>
               <div className="mt-6 flex items-center gap-4">
                 <Button asChild variant="hero"><Link to="/practice/$lessonId" params={{ lessonId: next.id }}>{nextDone ? "Continue" : "Start"} <ArrowRight className="size-4" /></Link></Button>
-                <span className="text-sm opacity-70">{nextDone}/{next.steps.length} done · {next.estimatedMinutes} min</span>
+                <span className="text-sm opacity-70">{nextDone}/{next.steps.length} done · {next.estimated_minutes} min</span>
               </div>
             </div>
-          </div>
+          </div>}
 
           <div className="flex flex-col rounded-2xl border bg-card p-6 shadow-soft">
             <div className="flex items-center gap-2 text-sm font-medium"><RotateCcw className="size-4 text-primary" />5-minute review</div>
@@ -73,17 +80,17 @@ function Dashboard() {
               <div><dt className="text-xs text-muted-foreground">XP</dt><dd className="mt-1 text-2xl font-semibold tabular-nums">{p.xp}</dd></div>
               <div><dt className="text-xs text-muted-foreground">Streak</dt><dd className="mt-1 flex items-center gap-1 text-2xl font-semibold tabular-nums"><Flame className="size-5 text-warning" />{p.streak}</dd></div>
               <div className="col-span-2"><dt className="text-xs text-muted-foreground">Exercises</dt><dd className="mt-1 text-sm"><span className="font-semibold tabular-nums">{completed}</span> / {total}</dd>
-                <div className="mt-2 h-1 rounded-full bg-muted"><div className="h-1 rounded-full bg-primary" style={{ width: `${(completed / total) * 100}%` }} /></div></div>
+                <div className="mt-2 h-1 rounded-full bg-muted"><div className="h-1 rounded-full bg-primary" style={{ width: `${total ? (completed / total) * 100 : 0}%` }} /></div></div>
             </dl>
           </div>
 
           <div className="rounded-2xl border bg-card p-6 shadow-soft lg:col-span-2">
             <div className="text-sm font-medium">Skills</div>
             <div className="grid items-center gap-6 sm:grid-cols-2">
-              <Radar values={LESSONS.map((l) => ({ label: l.track, v: mastery(l, p).pct / 100 }))} />
+              <Radar values={skills.map((skill) => ({ label: skill.title, v: skill.pct / 100 }))} />
               <ul className="space-y-2.5 text-sm">
-                {LESSONS.map((l) => { const m = mastery(l, p); return (
-                  <li key={l.id} className="flex items-center justify-between"><span>{l.track}</span><span className="text-xs text-muted-foreground">{m.label}{m.pct > 0 && ` · ${m.pct}%`}</span></li>
+                {skills.map((m) => { return (
+                  <li key={m.id} className="flex items-center justify-between"><span>{m.title}</span><span className="text-xs text-muted-foreground">{m.label}{m.pct > 0 && ` · ${m.pct}%`}</span></li>
                 ); })}
               </ul>
             </div>

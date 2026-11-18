@@ -7,6 +7,8 @@ import { Logo } from "@/components/Logo";
 import { Sheet } from "@/components/Sheet";
 import { LandingStory } from "@/components/LandingStory";
 import { Workbook } from "@/lib/formula";
+import { JSON_TRACK_LESSONS } from "@/lib/jsonLessons";
+import { SKILL_TRACKS } from "@/lib/skill-tracks";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -88,7 +90,7 @@ function Landing() {
               <Button asChild size="lg"><Link to="/try-lessons">Try the first lesson <ArrowRight /></Link></Button>
               <Button asChild size="lg" variant="ghost"><Link to="/learn">See all skills</Link></Button>
             </div>
-            <p className="mt-8 text-sm text-muted-foreground">30 exercises · 6 skills · 3–7 minute sessions</p>
+            <p className="mt-8 text-sm text-muted-foreground">{JSON_TRACK_LESSONS.length} lessons · {SKILL_TRACKS.length} {SKILL_TRACKS.length === 1 ? "track" : "tracks"} · 3–7 minute sessions</p>
           </div>
 
           <div className="animate-rise [animation-delay:80ms] w-full">

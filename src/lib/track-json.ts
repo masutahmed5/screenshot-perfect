@@ -22,8 +22,11 @@ export function adaptTrackLesson(raw: unknown, file: string): LessonContent | nu
           choices: options.map((option) => ({ id: option.id, label: option.text })),
           accepted_choice: validation.correct_option_id,
         } : {}),
-        ...(validation.mode === "shortcut" ? { target: validation.target ?? expected?.cell ?? expected?.range ?? "A1" } : {}),
-        ...(validation.mode === "state" ? { expect: validation.expect ?? expected } : {}),
+        ...(step.type === "shortcut" && validation.accepted_sequences ? {
+          mode: "shortcut", start_cell: validation.start_cell ?? "A1",
+          target: validation.target ?? expected?.cell ?? expected?.range ?? (Array.isArray(step.target_cells) ? step.target_cells[0] : undefined) ?? "A1",
+        } : {}),
+        ...(validation.mode === "state" && step.type !== "shortcut" ? { expect: validation.expect ?? expected } : {}),
       },
     };
   }) : item.steps;
@@ -31,7 +34,7 @@ export function adaptTrackLesson(raw: unknown, file: string): LessonContent | nu
     const example = rawExample as Record<string, unknown>;
     const cells = example.cells && typeof example.cells === "object" ? example.cells as Record<string, unknown> : null;
     const addresses = cells ? Object.keys(cells).map(parseRef).filter((ref) => ref !== null) : [];
-    const rows = Math.max(1, ...addresses.map((ref) => ref.row));
+    const rows = Math.max(1, ...addresses.map((ref) => ref.row + 1));
     const cols = Math.max(1, ...addresses.map((ref) => ref.col + 1));
     const data = cells ? Array.from({ length: rows }, (_, row) => Array.from({ length: cols }, (_, col) => cells[`${indexToCol(col)}${row + 1}`] ?? null)) : example.data;
     return { ...example, data: typeof data === "string" ? [[data]] : data };

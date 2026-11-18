@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ContentLessonPlayer } from "./ContentLessonPlayer";
-import { loadContentLesson } from "@/lib/lesson-content";
+import { formulaLesson } from "@/test/fixtures/formula-lessons";
 import type { LessonContent, LessonContentStep } from "@/lib/lesson-schema";
 import { resetProgress } from "@/lib/progress";
 
@@ -47,9 +47,7 @@ describe("full structured lesson flow", () => {
   };
 
   beforeEach(async () => {
-    const { lesson } = await loadContentLesson("L024");
-    if (!lesson) throw new Error("L024 sample lesson did not load");
-    sampleLesson = lesson;
+    sampleLesson = formulaLesson;
     Object.defineProperty(navigator, "platform", { configurable: true, value: "Win32" });
   });
 

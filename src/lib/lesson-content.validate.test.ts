@@ -1,24 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { lessonSchema } from "./lesson-schema";
 import { LESSON_INDEX } from "./lesson-index";
 import { validateLessonStep } from "./lesson-validation";
 import type { CellMap } from "./formula";
 import type { LessonContent } from "./lesson-schema";
 import { JSON_TRACK_LESSONS } from "./jsonLessons";
 
-const files = import.meta.glob("../../content/lessons/track-*.json", {
-  eager: true,
-  import: "default",
-}) as Record<string, unknown>;
-
-const lessons = [...JSON_TRACK_LESSONS, ...Object.entries(files).flatMap(([file, value]) => {
-  if (!Array.isArray(value)) throw new Error(`${file}: expected an array of lessons`);
-  return value.map((raw, index) => {
-    const parsed = lessonSchema.safeParse(raw);
-    if (!parsed.success) throw new Error(`${file}[${index}]: ${parsed.error.message}`);
-    return parsed.data;
-  });
-})];
+const lessons = JSON_TRACK_LESSONS;
 
 function cellsFor(lesson: LessonContent, stepIndex: number): CellMap {
   const step = lesson.steps[stepIndex]!;
