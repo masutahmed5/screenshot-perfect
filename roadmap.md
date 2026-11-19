@@ -1,5 +1,14 @@
 # Tasks
 
+## Lesson-player redesign (phase-by-phase)
+- [x] Phase 0: audit current screens, data, interaction boundaries, tests and requested contrast.
+- [ ] Phase 1: scoped light/dark foundations and reusable accessible controls — awaiting the next phase after the requested audit pause.
+- [ ] Phase 2: practice-only top bar, responsive two-pane shell and accessible persisted divider.
+- [ ] Phase 3: grouped lesson drawer, statuses, search and outside-sheet keyboard shortcut.
+- [ ] Phase 4: Learn goal, existing cheat-sheet data and read-only worksheet examples.
+- [ ] Phase 5: data-derived checklists, platform toggle, hints, capture escape, feedback and action bar; preserve graders and scoring.
+- [ ] Phase 6: desktop/mobile, contrast, dark/reduced-motion and keyboard-only verification.
+
 - [x] Add practice-only grid navigation, range selection, keystroke display, and synchronized live formula references.
 - [x] Connect structured shortcut lessons to the live worksheet; verified live selection, typing 500, undo/redo, formula result 41, mobile row selection, and 70 tests.
 
