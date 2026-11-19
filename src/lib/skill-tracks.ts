@@ -4,7 +4,7 @@ import type { LessonIndexEntry } from "./lesson-schema";
 
 const definitions = [
   { id: "01", title: "Intro to Excel", summary: "Cells, selections, shortcuts and worksheets.", level: "beginner" },
-  { id: "02", title: "Formulas & references", summary: "Arithmetic, cell references and reliable formulas.", level: "beginner" },
+  { id: "02", title: "Formulas & Arithmetic", summary: "Arithmetic, cell references and reliable formulas.", level: "beginner" },
   { id: "03", title: "Summaries that matter", summary: "Totals, averages, counts and rounded results.", level: "beginner" },
   { id: "04", title: "Decisions with IF", summary: "Logical tests and multi-condition decisions.", level: "intermediate" },
   { id: "05", title: "Lookups", summary: "VLOOKUP, XLOOKUP and INDEX/MATCH.", level: "intermediate" },
