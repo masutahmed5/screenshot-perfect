@@ -2,8 +2,8 @@
 
 ## Lesson-player redesign (phase-by-phase)
 - [x] Phase 0: audit current screens, data, interaction boundaries, tests and requested contrast.
-- [ ] Phase 1: scoped light/dark foundations and reusable accessible controls — awaiting the next phase after the requested audit pause.
-- [ ] Phase 2: practice-only top bar, responsive two-pane shell and accessible persisted divider.
+- [x] Phase 1: scoped light/dark foundations and reusable accessible controls — 36 tests passed, live typing/formula/theme checks passed; paused for review.
+- [ ] Phase 2: practice-only top bar, responsive two-pane shell and accessible persisted divider — waiting for approval to proceed.
 - [ ] Phase 3: grouped lesson drawer, statuses, search and outside-sheet keyboard shortcut.
 - [ ] Phase 4: Learn goal, existing cheat-sheet data and read-only worksheet examples.
 - [ ] Phase 5: data-derived checklists, platform toggle, hints, capture escape, feedback and action bar; preserve graders and scoring.

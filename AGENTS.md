@@ -19,3 +19,4 @@
 - Scope compact practice sizing and typography to the structured workspace so landing spreadsheets and other pages remain unchanged.
 - Structured shortcut lessons capture normalized chords from the practice worksheet; practice-only navigation and selection live in the sheet adapter, preserving standard/landing sheets and existing formula graders.
 - Preserve shortcut validation metadata so navigation lessons verify actual worksheet destinations and ranges as well as the accepted chord sequence.
+- Keep lesson-player foundations under `.gw-lesson-player` and reusable presentation primitives in `components/lesson-player`; scoped tokens and explicit keycap platforms prevent changes to landing styles or shortcut grading.

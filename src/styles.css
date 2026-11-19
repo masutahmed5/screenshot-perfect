@@ -287,3 +287,163 @@
   .gw-practice-exercise { display: flex; flex-direction: column; height: calc(100dvh - 80px); min-height: 560px; overflow-y: auto; }
   .gw-practice-grid { flex: 1; min-height: 240px; max-height: 500px; }
 }
+
+/* Phase 1 foundations: inherited only inside the lesson player. */
+.gw-lesson-player {
+  --lp-bg: #FAF9F6;
+  --lp-surface: #FFFFFF;
+  --lp-surface-2: #F4F2EE;
+  --lp-border: #E7E4DE;
+  --lp-border-strong: #D6D2CA;
+  --lp-text: #1B1A17;
+  --lp-text-2: #57534B;
+  --lp-text-3: #6B675F;
+  --lp-accent: #3B5BDB;
+  --lp-accent-soft: rgb(59 91 219 / 8%);
+  --lp-brand: #0B7A55;
+  --lp-brand-hover: #096846;
+  --lp-on-brand: #FFFFFF;
+  --lp-success: #15803D;
+  --lp-success-soft: #E8F5EC;
+  --lp-on-success: #FFFFFF;
+  --lp-danger: #B42318;
+  --lp-danger-soft: #FEF0EE;
+  --lp-warning: #B54708;
+  --lp-warning-soft: #FFF4E5;
+  --lp-shadow-overlay: 0 8px 32px rgb(0 0 0 / 12%);
+  --lp-space-1: 4px;
+  --lp-space-2: 8px;
+  --lp-space-3: 12px;
+  --lp-space-4: 16px;
+  --lp-space-6: 24px;
+  --lp-space-8: 32px;
+  --lp-space-12: 48px;
+  --lp-radius-keycap: 6px;
+  --lp-radius-control: 8px;
+  --lp-radius-card: 12px;
+  --lp-radius-overlay: 16px;
+  --lp-type-caption: 12px;
+  --lp-line-caption: 16px;
+  --lp-type-small: 13px;
+  --lp-line-small: 18px;
+  --lp-type-body: 14px;
+  --lp-line-body: 22px;
+  --lp-type-lead: 16px;
+  --lp-line-lead: 24px;
+  --lp-type-section: 20px;
+  --lp-line-section: 28px;
+  --lp-type-title: 28px;
+  --lp-line-title: 36px;
+  --lp-dur-fast: 120ms;
+  --lp-dur: 180ms;
+  --lp-dur-slow: 260ms;
+  --lp-ease: cubic-bezier(.2,.8,.2,1);
+  /* Map existing semantic utilities without changing their global definitions. */
+  --background: var(--lp-bg);
+  --foreground: var(--lp-text);
+  --card: var(--lp-surface);
+  --card-foreground: var(--lp-text);
+  --muted: var(--lp-surface-2);
+  --muted-foreground: var(--lp-text-2);
+  --border: var(--lp-border);
+  --input: var(--lp-border-strong);
+  --ring: var(--lp-accent);
+  --accent: var(--lp-accent-soft);
+  --accent-foreground: var(--lp-accent);
+  --primary: var(--lp-brand);
+  --primary-foreground: var(--lp-on-brand);
+  --success: var(--lp-success);
+  --success-soft: var(--lp-success-soft);
+  --destructive: var(--lp-danger);
+  --error-soft: var(--lp-danger-soft);
+  --warning: var(--lp-warning);
+  --warning-soft: var(--lp-warning-soft);
+  --cell-header: var(--lp-surface-2);
+  --grid-line: var(--lp-border);
+  background: var(--lp-bg);
+  color: var(--lp-text);
+  font-family: var(--font-sans);
+  font-size: var(--lp-type-body);
+  line-height: var(--lp-line-body);
+  letter-spacing: 0;
+}
+.dark .gw-lesson-player, .gw-lesson-player.dark {
+  --lp-bg: #121210;
+  --lp-surface: #1A1A17;
+  --lp-surface-2: #22221E;
+  --lp-border: #2E2D28;
+  --lp-border-strong: #3D3B35;
+  --lp-text: #F1EFEA;
+  --lp-text-2: #BDB9AF;
+  --lp-text-3: #8F8B82;
+  --lp-accent: #7C9BFF;
+  --lp-accent-soft: rgb(124 155 255 / 12%);
+  --lp-brand: #1FA97A;
+  --lp-brand-hover: #36BD8E;
+  --lp-on-brand: #121210;
+  --lp-success: #4ADE80;
+  --lp-success-soft: #173323;
+  --lp-on-success: #121210;
+  --lp-danger: #F97066;
+  --lp-danger-soft: #391E1C;
+  --lp-warning: #F6AD55;
+  --lp-warning-soft: #332718;
+  --lp-shadow-overlay: 0 8px 32px rgb(0 0 0 / 40%);
+}
+.gw-lesson-player :focus-visible {
+  outline: 2px solid var(--lp-accent);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+:where(.gw-lesson-player) * { border-color: var(--lp-border); }
+.gw-lesson-player, .gw-lesson-player * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--lp-border-strong) transparent;
+}
+.gw-lesson-player :is(.overflow-auto, .overflow-x-auto, .overflow-y-auto) { scrollbar-gutter: stable; }
+.gw-lesson-player ::-webkit-scrollbar { width: 8px; height: 8px; }
+.gw-lesson-player ::-webkit-scrollbar-thumb { background: var(--lp-border-strong); border-radius: var(--lp-radius-control); }
+.gw-lesson-player ::-webkit-scrollbar-track { background: transparent; }
+.gw-lesson-player ::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+.gw-lesson-player :is(.shadow-soft, .shadow-sm, .shadow) { box-shadow: none; }
+.gw-lesson-player .text-xs { font-size: var(--lp-type-caption); line-height: var(--lp-line-caption); }
+.gw-lesson-player .text-sm { font-size: var(--lp-type-body); line-height: var(--lp-line-body); }
+.gw-lesson-player .text-base { font-size: var(--lp-type-lead); line-height: var(--lp-line-lead); }
+.gw-lesson-player :is(.text-lg, .text-xl) { font-size: var(--lp-type-section); line-height: var(--lp-line-section); }
+.gw-lesson-player #lesson-title { font-size: var(--lp-type-title); line-height: var(--lp-line-title); }
+.gw-lesson-player .gw-practice-reference p { max-width: 65ch; }
+.gw-lesson-player button { transition-duration: var(--lp-dur-fast); }
+.gw-lesson-player .bg-primary:hover { background-color: var(--lp-brand-hover); }
+.gw-lesson-player :is(.lp-caption, .lp-eyebrow) { font-size: var(--lp-type-caption); line-height: var(--lp-line-caption); color: var(--lp-text-3); }
+.gw-lesson-player .lp-eyebrow { text-transform: uppercase; font-weight: 500; letter-spacing: 0; }
+.gw-lesson-player .lp-small { font-size: var(--lp-type-small); line-height: var(--lp-line-small); }
+.gw-lesson-player .lp-keycap-combo { display: inline-flex; flex-wrap: wrap; align-items: center; gap: var(--lp-space-1); }
+.gw-lesson-player .lp-keycap {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  height: 24px; min-width: 24px; padding: 0 6px;
+  border: 1px solid var(--lp-border-strong); border-bottom-width: 2px;
+  border-radius: var(--lp-radius-keycap); background: var(--lp-surface); color: var(--lp-text);
+  font-family: var(--font-mono); font-size: var(--lp-type-caption); line-height: var(--lp-line-caption); font-weight: 600;
+}
+.gw-lesson-player .lp-status-glyph { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; flex-shrink: 0; border-radius: 50%; }
+.gw-lesson-player .lp-status-glyph svg { width: 14px; height: 14px; stroke-width: 2; }
+.gw-lesson-player .lp-status-completed { color: var(--lp-on-success); background: var(--lp-success); }
+.gw-lesson-player .lp-status-current { border: 2px solid var(--lp-accent); }
+.gw-lesson-player .lp-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lp-accent); }
+.gw-lesson-player .lp-status-not-started { border: 1.5px solid var(--lp-text-3); }
+.gw-lesson-player .lp-status-locked { color: var(--lp-text-3); }
+.gw-lesson-player .lp-progress-ring { display: inline-flex; width: 20px; height: 20px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.gw-lesson-player .lp-progress-ring-large { width: 32px; height: 32px; }
+.gw-lesson-player .lp-progress-ring svg { width: 100%; height: 100%; fill: none; stroke-width: 2; }
+.gw-lesson-player .lp-ring-track { stroke: var(--lp-border-strong); }
+.gw-lesson-player .lp-ring-value { stroke: var(--lp-accent); transform: rotate(-90deg); transform-origin: center; transition: stroke-dasharray var(--lp-dur) var(--lp-ease); }
+.gw-lesson-player .lp-segmented-control { display: inline-flex; flex-wrap: wrap; gap: var(--lp-space-1); padding: var(--lp-space-1); border-radius: var(--lp-radius-control); background: var(--lp-surface-2); }
+.gw-lesson-player .lp-segment { height: 32px; min-width: 44px; padding: 0 var(--lp-space-3); border-radius: var(--lp-radius-keycap); font-size: var(--lp-type-small); line-height: var(--lp-line-small); color: var(--lp-text-2); transition: background-color var(--lp-dur-fast) var(--lp-ease), color var(--lp-dur-fast) var(--lp-ease); }
+.gw-lesson-player .lp-segment:hover { background: var(--lp-surface); color: var(--lp-text); }
+.gw-lesson-player .lp-segment[data-state="checked"] { background: var(--lp-accent-soft); color: var(--lp-accent); font-weight: 600; }
+.gw-lesson-player .lp-segment:disabled { cursor: not-allowed; opacity: .5; }
+@media (max-width: 767px) { .gw-lesson-player .lp-segment { min-height: 44px; } }
+@media (prefers-reduced-motion: reduce) {
+  .gw-lesson-player { --lp-dur-fast: 0ms; --lp-dur: 0ms; --lp-dur-slow: 0ms; }
+  .gw-lesson-player :is(.lp-keycap, .lp-status-glyph, .lp-segment) { animation: none !important; transform: none !important; transition-property: opacity !important; }
+}

@@ -505,7 +505,7 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
   const versionTooltip = "Needs Excel 2019/2021/Microsoft 365. Older versions: see the fallback in Watch out.";
 
   return (
-    <div className="gw-practice-workspace mx-auto grid max-w-7xl gap-3 px-3 py-3">
+    <div className="gw-lesson-player gw-practice-workspace mx-auto grid max-w-7xl gap-3 px-3 py-3">
       <section className="gw-practice-reference overflow-auto rounded-lg border bg-card p-4 shadow-soft" aria-labelledby="lesson-title">
         <header className="border-b pb-4">
           <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Lesson {String(lesson.number).padStart(2, "0")} · {titleCase(lesson.level)} · ~{lesson.estimated_minutes} min</p>
