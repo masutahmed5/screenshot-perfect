@@ -17,3 +17,4 @@
 - Derive visible skill tracks and their counts/levels from registered lesson content, showing only populated tracks so new JSON tracks appear automatically.
 - Prefer updated content/lessons track files over matching src/lessons files, normalizing both through the strict track adapter to prevent stale duplicates.
 - Scope compact practice sizing and typography to the structured workspace so landing spreadsheets and other pages remain unchanged.
+- Normalize typed tokens and browser-translated keyboard chords only in structured shortcut capture and matching; keep spreadsheet interaction and other graders independent to avoid regressions.

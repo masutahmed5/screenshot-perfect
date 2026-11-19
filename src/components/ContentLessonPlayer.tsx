@@ -43,7 +43,16 @@ function canonicalShortcutKey(value: string) {
 }
 
 function canonicalChord(parts: string[]) {
-  const normalized = parts.map(canonicalShortcutKey);
+  let normalized = parts.map(canonicalShortcutKey);
+  // Fn is translated by Mac keyboards before the browser receives the event.
+  if (normalized.includes("FN")) {
+    const navigation: Record<string, string> = { LEFT: "HOME", RIGHT: "END", UP: "PAGEUP", DOWN: "PAGEDOWN" };
+    normalized = normalized.filter((key) => key !== "FN").map((key) => navigation[key] ?? key);
+  }
+  if (normalized.includes("SHIFT")) {
+    const shifted: Record<string, string> = { "!": "1", "@": "2", "#": "3", "$": "4", "%": "5", "^": "6", "&": "7", "*": "8", "(": "9", ")": "0", ":": ";", "+": "=", "_": "-", "?": "/", '"': "'", "<": ",", ">": ".", "{": "[", "}": "]", "|": "\\", "~": "`" };
+    normalized = normalized.map((key) => shifted[key] ?? key);
+  }
   const order = ["CTRL", "ALT", "SHIFT", "CMD"];
   const modifiers = order.filter((modifier) => normalized.includes(modifier));
   const keys = normalized.filter((key) => !order.includes(key));
@@ -54,6 +63,11 @@ function expectedKeyEvents(sequence: string[]) {
   const events: string[] = [];
   let modifiers: string[] = [];
   for (const token of sequence) {
+    if (/^Type:/i.test(token)) {
+      events.push(...Array.from(token.slice(5), (character) => `TYPE:${character}`));
+      modifiers = [];
+      continue;
+    }
     const parts = token.split("+").filter(Boolean);
     if (parts.length > 1) {
       events.push(canonicalChord(parts));
@@ -80,7 +94,18 @@ function shortcutMatches(actual: string[], accepted: string[][]) {
 }
 
 function displayKey(key: string) {
+  if (key.startsWith("TYPE:")) return key.slice(5);
   return key.split("+").map((part) => ({ CTRL: "Ctrl", CMD: "⌘", ALT: "Alt", SHIFT: "Shift", SPACE: "Space" }[part] ?? part)).join("+");
+}
+
+function displaySequence(sequence: string[]) {
+  return sequence.reduce<string[]>((groups, key, index) => {
+    if (key.startsWith("TYPE:")) {
+      if (sequence[index - 1]?.startsWith("TYPE:")) groups[groups.length - 1] += key.slice(5);
+      else groups.push(key.slice(5));
+    } else groups.push(displayKey(key));
+    return groups;
+  }, []).join(", ");
 }
 
 function isMenuActionStep(step: LessonContentStep): boolean {
@@ -137,21 +162,40 @@ function ShortcutControl({ accepted, onChange }: { accepted: string[][]; onChang
 
   const capture = (event: React.KeyboardEvent<HTMLInputElement>) => {
     event.preventDefault();
+    event.stopPropagation();
     const key = canonicalShortcutKey(event.key);
     if (["CTRL", "ALT", "SHIFT", "CMD"].includes(key)) return;
+    const update = (sequence: string[]) => {
+      setCaptured(sequence);
+      setLastCapture(sequence);
+      onChange(sequence);
+    };
+    if (key === "BACKSPACE" && !event.ctrlKey && !event.metaKey && captured.at(-1)?.startsWith("TYPE:")) {
+      update(captured.slice(0, -1));
+      return;
+    }
+    const expectsText = candidates.some((candidate) => candidate[captured.length]?.startsWith("TYPE:"));
+    const typing = (expectsText || captured.at(-1)?.startsWith("TYPE:")) &&
+      event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey;
+    if (typing) {
+      update([...captured, `TYPE:${event.key}`]);
+      return;
+    }
+    // Physical digit/punctuation keys remain stable when Shift changes event.key.
+    const physicalKey = /^(Digit[0-9]|Semicolon)$/.test(event.code)
+      ? event.code === "Semicolon" ? ";" : event.code.slice(5)
+      : key;
     const chord = canonicalChord([
       ...(event.ctrlKey ? ["CTRL"] : []),
       ...(event.altKey ? ["ALT"] : []),
       ...(event.shiftKey ? ["SHIFT"] : []),
       ...(event.metaKey ? ["CMD"] : []),
-      key,
+      physicalKey,
     ]);
     const next = [...captured, chord];
     const prefixMatches = candidates.some((candidate) => next.every((part, index) => candidate[index] === part));
     const sequence = prefixMatches ? next : [chord];
-    setCaptured(sequence);
-    setLastCapture(sequence);
-    onChange(sequence);
+    update(sequence);
   };
 
   return (
@@ -165,12 +209,12 @@ function ShortcutControl({ accepted, onChange }: { accepted: string[][]; onChang
         autoComplete="off"
         onKeyDown={capture}
         placeholder="Focus here, then press the shortcut"
-        value={lastCapture.map(displayKey).join(", ")}
+        value={displaySequence(lastCapture)}
         onChange={() => undefined}
       />
       <div className="flex items-center justify-between gap-3">
         <p className="text-sm text-muted-foreground" aria-live="polite">
-          {lastCapture.length ? `Captured: ${lastCapture.map(displayKey).join(", ")}` : "Browser or system shortcuts may be intercepted before they reach this practice field."}
+          {lastCapture.length ? `Captured: ${displaySequence(lastCapture)}` : "Browser or system shortcuts may be intercepted before they reach this practice field."}
         </p>
         <Button type="button" size="sm" variant="outline" onClick={() => { setCaptured([]); setLastCapture([]); onChange([]); }}>Reset</Button>
       </div>

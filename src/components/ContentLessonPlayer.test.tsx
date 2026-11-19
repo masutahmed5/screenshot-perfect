@@ -163,6 +163,60 @@ describe("full structured lesson flow", () => {
     expect(await screen.findByText("Correct")).toBeInTheDocument();
   });
 
+  const shortcutLesson = (sequence: string[]) => makeLesson({
+    type: "shortcut",
+    target_cells: [],
+    validation: { mode: "shortcut", start_cell: "A1", target: "A1", accepted_sequences: { windows: [sequence], mac: [sequence] } },
+  });
+
+  it("requires all three digits of Type:500 rather than accepting only 5", async () => {
+    render(<ContentLessonPlayer lesson={shortcutLesson(["Type:500", "Enter"])} />);
+    const capture = screen.getByRole("textbox", { name: "Shortcut key capture" });
+    fireEvent.keyDown(capture, { key: "5" });
+    fireEvent.keyDown(capture, { key: "Enter" });
+    fireEvent.click(screen.getByRole("button", { name: "Check" }));
+    expect(await screen.findByText(/shortcut was not recognized/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+    for (const key of "500") fireEvent.keyDown(capture, { key });
+    expect(capture).toHaveValue("500");
+    fireEvent.keyDown(capture, { key: "Enter" });
+    fireEvent.click(screen.getByRole("button", { name: "Check" }));
+    expect(await screen.findByText("Correct")).toBeInTheDocument();
+  });
+
+  it.each(["Paid", "B2:D9", "1.1", "=B2*(1+H1)"])("captures complete typed text %s after a chord", async (text) => {
+    render(<ContentLessonPlayer lesson={shortcutLesson(["Ctrl+G", `Type:${text}`, "Enter"])} />);
+    const capture = screen.getByRole("textbox", { name: "Shortcut key capture" });
+    fireEvent.keyDown(capture, { key: "g", ctrlKey: true });
+    for (const key of text) fireEvent.keyDown(capture, { key, shiftKey: /[A-Z:*+()]/.test(key) });
+    fireEvent.keyDown(capture, { key: "Enter" });
+    fireEvent.click(screen.getByRole("button", { name: "Check" }));
+    expect(await screen.findByText("Correct")).toBeInTheDocument();
+  });
+
+  it("allows Backspace to correct a mistyped digit without resetting the sequence", async () => {
+    render(<ContentLessonPlayer lesson={shortcutLesson(["Type:500", "Enter"])} />);
+    const capture = screen.getByRole("textbox", { name: "Shortcut key capture" });
+    for (const key of ["5", "9", "Backspace", "0", "0", "Enter"]) fireEvent.keyDown(capture, { key });
+    fireEvent.click(screen.getByRole("button", { name: "Check" }));
+    expect(await screen.findByText("Correct")).toBeInTheDocument();
+  });
+
+  it.each([["!", "1"], ["#", "3"], ["$", "4"], ["%", "5"], [":", ";"]])("recognizes shifted %s as the %s shortcut key", async (key, base) => {
+    render(<ContentLessonPlayer lesson={shortcutLesson([`Ctrl+Shift+${base}`])} />);
+    fireEvent.keyDown(screen.getByRole("textbox", { name: "Shortcut key capture" }), { key, ctrlKey: true, shiftKey: true });
+    fireEvent.click(screen.getByRole("button", { name: "Check" }));
+    expect(await screen.findByText("Correct")).toBeInTheDocument();
+  });
+
+  it.each([["Fn+Left", "Home", false, false], ["Fn+Control+Left", "Home", true, false], ["Fn+Control+Right", "End", true, false], ["Fn+Control+Shift+Right", "End", true, true]])("recognizes Mac %s from browser navigation events", async (sequence, key, ctrlKey, shiftKey) => {
+    Object.defineProperty(navigator, "platform", { configurable: true, value: "MacIntel" });
+    render(<ContentLessonPlayer lesson={shortcutLesson([String(sequence)])} />);
+    fireEvent.keyDown(screen.getByRole("textbox", { name: "Shortcut key capture" }), { key, ctrlKey, shiftKey });
+    fireEvent.click(screen.getByRole("button", { name: "Check" }));
+    expect(await screen.findByText("Correct")).toBeInTheDocument();
+  });
+
   it("checks MCQ selections and progresses to the next step", async () => {
     const original = sampleLesson.steps[0]!;
     const mcq: Partial<LessonContentStep> = {

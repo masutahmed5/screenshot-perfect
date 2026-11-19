@@ -1,5 +1,7 @@
 # Tasks
 
+- [x] Fix shortcut capture for multi-character Type tokens, shifted symbols, and Mac Fn navigation; verified live L009/L012/L006 shortcut grading and all 62 tests without changing spreadsheet controls.
+
 - [x] Remove old lesson content and empty tracks, retain the updated Track 01, and verify automatic track cards, lesson links, and practice navigation; all 47 tests pass.
 
 - [x] Load array-based JSON tracks directly and expose their 13 numbered lessons in the catalog and browser; unnumbered checkpoint retained in source, outside the numbered catalog.
