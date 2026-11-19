@@ -22,6 +22,8 @@ export function AppShell({ children, practiceLessonId }: { children: ReactNode; 
   const p = useProgress();
   const reviewCount = Object.keys(p.mistakes).length;
   const nav = "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-foreground";
+  // Practice owns its full-viewport workspace; overview navigation stays unchanged.
+  if (practiceLessonId) return <>{children}</>;
   return (
     <div className="flex min-h-screen bg-background">
       <aside className={`sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r bg-sidebar px-3 py-5 ${practiceLessonId ? navigationOpen ? "md:flex" : "" : "md:flex"}`}>

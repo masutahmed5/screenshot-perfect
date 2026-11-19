@@ -23,6 +23,9 @@ type Props = {
   onInteraction?: (active: string, range: string) => void;
   onShortcutKey?: (event: React.KeyboardEvent) => void;
   shortcutPractice?: boolean;
+  workspaceCapture?: boolean;
+  allowDoubleEscape?: boolean;
+  onKeys?: (keys: string[]) => void;
 };
 
 type Pos = { c: number; r: number };
@@ -70,7 +73,13 @@ export function cycleReference(formula: string, caret: number) {
   };
 }
 
-export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", highlight = [], flash, onEnterCheck, enterChecks, compact, ghost, scale, editableCells, variant = "standard", onInteraction, onShortcutKey, shortcutPractice }: Props) {
+export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", highlight = [], flash, onEnterCheck, enterChecks, compact, ghost, scale, editableCells, variant = "standard", onInteraction, onShortcutKey, shortcutPractice, workspaceCapture, allowDoubleEscape = true, onKeys }: Props) {
+  const [captureOn, setCaptureOn] = useState(false);
+  const sheetRoot = useRef<HTMLDivElement>(null);
+  const releaseRef = useRef<HTMLButtonElement>(null);
+  const lastEscape = useRef(0);
+  const recentKeys = useRef<string[]>([]);
+  const releaseKeyboard = () => { setCaptureOn(false); releaseRef.current?.focus(); };
   const [sel, setSel] = useState(initialSelected);
   const [selection, setSelection] = useState<Selection>(() => ({ anchor: parseCell(initialSelected), end: parseCell(initialSelected), kind: "cells" }));
   const [selectionDrag, setSelectionDrag] = useState(false);
@@ -304,13 +313,22 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
 
   return (
 <div
+      ref={sheetRoot}
+      data-keyboard-sheet={workspaceCapture && captureOn ? "true" : undefined}
+      onFocusCapture={e => { if(workspaceCapture && !(e.target instanceof HTMLButtonElement && e.target === releaseRef.current)) setCaptureOn(true); }}
+      onBlurCapture={e => { if(workspaceCapture && !e.currentTarget.contains(e.relatedTarget)) setCaptureOn(false); }}
       onKeyDownCapture={(event) => {
+        if (workspaceCapture && (event.ctrlKey || event.metaKey) && ["w", "t", "n"].includes(event.key.toLowerCase())) return;
+        if (workspaceCapture && allowDoubleEscape && event.key === "Escape") { const now=performance.now(); if(lastEscape.current && now-lastEscape.current<600){event.preventDefault();event.stopPropagation();releaseKeyboard();lastEscape.current=0;return;} lastEscape.current=now; }
+        if(workspaceCapture && event.target instanceof HTMLButtonElement && event.target === releaseRef.current) return;
         onShortcutKey?.(event);
+        if(workspaceCapture && !["Control","Shift","Meta","Alt"].includes(event.key)){recentKeys.current=[...recentKeys.current,[event.ctrlKey?"Ctrl":"",event.metaKey?"Cmd":"",event.altKey?"Alt":"",event.shiftKey?"Shift":"",event.key].filter(Boolean).join("+")].slice(-4);onKeys?.(recentKeys.current);}
         if (variant === "practice" && !["Control", "Shift", "Meta", "Alt"].includes(event.key)) setLastKey([event.ctrlKey ? "Ctrl" : "", event.metaKey ? "⌘" : "", event.altKey ? "Alt" : "", event.shiftKey ? "Shift" : "", event.key].filter(Boolean).join(" + "));
       }}
       className={cn("flex h-full flex-col overflow-hidden rounded-xl border bg-card shadow-soft", variant === "practice" && "gw-sheet-practice")}
       style={scale !== undefined ? ({ "--sheet-scale": scale } as CSSProperties) : undefined}
     >
+      {workspaceCapture && <div className="lp-capture-pill"><span>{captureOn ? "Keyboard capture on · Click outside to release" : "Keyboard capture off"}</span><Button ref={releaseRef} variant="ghost" size="sm" onClick={releaseKeyboard}>Release keyboard</Button></div>}
       <div className="flex items-center gap-2 border-b bg-cell-header px-3 py-1.5">
         {variant === "practice" ? <input ref={nameRef} aria-label="Name box" className="w-24 rounded-md border bg-card px-1.5 py-0.5 text-center font-mono text-[11px]" value={goTo ?? range} onFocus={(e) => { if (goTo === null) setGoTo(range); e.currentTarget.select(); }} onChange={(e) => setGoTo(e.target.value)} onKeyDown={(e) => {
           if (e.key === "Enter") { e.preventDefault(); const next = readSelection(goTo ?? range, cols, rows); if (next) { setSelection(next); setSel(addr(next.anchor.c, next.anchor.r)); } setGoTo(null); gridRef.current?.focus(); }

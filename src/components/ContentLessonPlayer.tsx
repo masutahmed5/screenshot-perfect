@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, Lightbulb } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Lightbulb, LoaderCircle, RotateCcw, AlertCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LESSON_INDEX } from "@/lib/lesson-index";
@@ -11,6 +11,10 @@ import { recordComplete, recordLessonAttempt, recordLessonProgress, recordMistak
 import { Sheet } from "./Sheet";
 import type { Lesson } from "@/lib/lessons";
 import { checkStep } from "@/lib/validate";
+import { WorkspaceShell } from "./lesson-player/WorkspaceShell";
+import { LearnPane, ShortcutText } from "./lesson-player/LearnPane";
+import { KeycapCombo, SegmentedControl, type ShortcutPlatform } from "./lesson-player/primitives";
+import { allowsDoubleEscape, shortcutChecklist } from "@/lib/lesson-player-presentation";
 
 type Props = { lesson: LessonContent; legacyLesson?: Lesson };
 type InteractionAnswers = Record<string, unknown>;
@@ -154,12 +158,9 @@ function menuCommands(step: LessonContentStep, expectedType: string) {
   return [...new Set([expectedType, ...fallbackCommands, ...configured])];
 }
 
-function ShortcutControl({ accepted, onChange, cells, onCellsChange, cols, rows, startCell, onInteraction }: { accepted: string[][]; onChange: (value: string[]) => void; cells: CellMap; onCellsChange: (cells: CellMap) => void; cols: number; rows: number; startCell: string; onInteraction: (active: string, range: string) => void }) {
-  const platform = platformShortcutKey();
+function ShortcutControl({ accepted, onChange, cells, onCellsChange, cols, rows, startCell, onInteraction, platform, onKeys, allowEscape, flash }: { accepted: string[][]; onChange: (value: string[]) => void; cells: CellMap; onCellsChange: (cells: CellMap) => void; cols: number; rows: number; startCell: string; onInteraction: (active: string, range: string) => void; platform: ShortcutPlatform; onKeys: (keys: string[]) => void; allowEscape: boolean; flash?: { cell: string; kind: "correct" | "wrong"; key: number } | null }) {
   const [captured, setCaptured] = useState<string[]>([]);
-  const [resetKey, setResetKey] = useState(0);
   const candidates = accepted.map(expectedKeyEvents);
-
   const capture = (event: React.KeyboardEvent) => {
     const key = canonicalShortcutKey(event.key);
     if (["CTRL", "ALT", "SHIFT", "CMD"].includes(key)) return;
@@ -195,16 +196,7 @@ function ShortcutControl({ accepted, onChange, cells, onCellsChange, cols, rows,
     update(sequence);
   };
 
-  return (
-    <div className="flex min-h-0 flex-col">
-      <div className="mb-2 flex items-center justify-between gap-3">
-        <p className="text-sm font-medium">Shortcut practice · {platform === "mac" ? "Mac" : "Windows"}</p>
-        <Button type="button" size="sm" variant="outline" onClick={() => { setCaptured([]); onChange([]); setResetKey((key) => key + 1); }}>Reset</Button>
-      </div>
-      <div className="gw-practice-grid"><Sheet key={resetKey} cells={cells} onChange={onCellsChange} cols={cols} rows={rows} initialSelected={startCell} variant="practice" scale={0.88} shortcutPractice onShortcutKey={capture} onInteraction={onInteraction} /></div>
-      {captured.length > 0 && <p className="mt-2 break-words font-mono text-xs text-muted-foreground" aria-live="polite">{displaySequence(captured)}</p>}
-    </div>
-  );
+  return <Sheet cells={cells} onChange={onCellsChange} cols={cols} rows={rows} initialSelected={startCell} variant="practice" scale={1} shortcutPractice onShortcutKey={capture} onInteraction={onInteraction} workspaceCapture allowDoubleEscape={allowEscape} onKeys={onKeys} flash={flash} />;
 }
 
 function MenuActionControl({
@@ -285,7 +277,7 @@ function toSheetMaps(step: LessonContentStep): Record<string, CellMap> {
 function savedSheetMaps(step: LessonContentStep, savedCells?: CellMap) {
   const maps = toSheetMaps(step);
   if (step.workbook.sheets.length === 1 && savedCells) {
-    maps[step.workbook.sheets[0]!.name] = savedCells;
+    maps[(step.workbook.sheets[0]?.name ?? "")] = savedCells;
   }
   return maps;
 }
@@ -302,8 +294,8 @@ function dimensions(step: LessonContentStep, cells: CellMap) {
   const destinations = step.validation.mode === "shortcut" ? [step.validation.start_cell, step.validation.target, ...Object.values(step.validation.accepted_sequences).flat(2).filter((token) => /^Type:[A-Z]+\d+(?::[A-Z]+\d+)?$/i.test(token)).map((token) => token.slice(5))] : [];
   const positions = [...Object.keys(cells), ...step.target_cells, ...destinations.flatMap((value) => value.split(":"))].map(parseRef).filter((value) => value !== null);
   return {
-    cols: Math.max(8, ...positions.map((position) => position!.col + 1)),
-    rows: Math.max(10, ...positions.map((position) => position!.row + 1)),
+    cols: Math.max(8, ...positions.map((position) => position.col + 1)),
+    rows: Math.max(10, ...positions.map((position) => position.row + 1)),
   };
 }
 
@@ -311,34 +303,33 @@ function titleCase(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
-function examplesFor(lesson: LessonContent) {
-  return lesson.examples.map((example, index) => (
-    <article key={`${example.formula}-${index}`} className="rounded-lg border bg-background p-3">
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse text-left text-xs">
-          <tbody>{example.data.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {row.map((cell, cellIndex) => (
-                <td key={cellIndex} className={`border border-grid-line px-2 py-1 ${rowIndex === 0 ? "bg-cell-header font-medium" : ""}`}>
-                  {typeof cell === "object" && cell !== null ? ("formula" in cell ? cell.formula : cell.date) : formatValue(cell)}
-                </td>
-              ))}
-            </tr>
-          ))}</tbody>
-        </table>
-      </div>
-      <code className="mt-3 block font-mono text-sm">{example.formula}</code>
-      <p className="mt-1 text-sm"><span className="font-medium">Result:</span> {String(example.result)}</p>
-      <p className="mt-1 text-sm text-muted-foreground">{example.why}</p>
-    </article>
-  ));
+function shortcutFeedback(step: LessonContentStep, captured: string[], cells: CellMap, selection: {active:string;range:string}, platform: ShortcutPlatform) {
+  if (step.validation.mode !== "shortcut") return step.prompt;
+  const expected=step.validation.expected;
+  const accepted=step.validation.accepted_sequences[platform];
+  const other=step.validation.accepted_sequences[platform==="mac"?"windows":"mac"];
+  if(shortcutMatches(captured,other) && !shortcutMatches(captured,accepted)) return `On ${platform==="mac"?"Mac":"Windows"}, use ${displaySequence(expectedKeyEvents(accepted[0] ?? []))}. You used the other platform's sequence.`;
+  if(expected?.type==="value" && expected.cells) { const wrong=Object.entries(expected.cells).find(([a,v])=>new Workbook(cells).get(a)!==v); if(wrong)return `${wrong[0]} shows ${formatValue(new Workbook(cells).get(wrong[0])) || "blank"}, expected ${String(wrong[1])}. ${step.prompt}`; }
+  if(expected?.type==="selection" && selection.range!==expected.range) return `Selected ${selection.range}, expected ${expected.range}. ${step.prompt}`;
+  if(expected?.type==="active_cell" && selection.active!==expected.cell)return `Active cell is ${selection.active}, expected ${expected.cell}. ${step.prompt}`;
+  if(!captured.length) return `Click the sheet, then ${step.prompt}`;
+  return `Pressed ${displaySequence(captured)}; expected ${displaySequence(expectedKeyEvents(accepted[0] ?? []))}. ${step.prompt}`;
 }
 
 export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
   const progress = useProgress();
+  const [platform, setPlatform] = useState<ShortcutPlatform>("windows");
+  const [resetKey, setResetKey] = useState(0);
+  const [keys, setKeys] = useState<string[]>([]);
+  const [checking, setChecking] = useState(false);
+  const primary = useRef<HTMLButtonElement>(null);
+  useEffect(() => { try { const saved = localStorage.getItem("gridwise.platform"); setPlatform(saved === "mac" || saved === "windows" ? saved : platformShortcutKey()); } catch { setPlatform(platformShortcutKey()); } }, []);
+  useEffect(() => { return () => { if (checkTimer.current) clearTimeout(checkTimer.current); }; }, []);
+  const checkTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const savedRun = progress.lessonRuns[lesson.id];
   const savedStepIndex = Math.max(0, lesson.steps.findIndex((item) => item.id === savedRun?.current_step));
-  const initialStep = lesson.steps[savedStepIndex]!;
+  const initialStep = lesson.steps[savedStepIndex] ?? lesson.steps[0];
+  if (!initialStep) throw new Error("Lesson has no steps");
   const savedStep = savedRun?.steps[initialStep.id];
   const [stepIndex, setStepIndex] = useState(savedStepIndex);
   const [cellsByStep, setCellsByStep] = useState<Record<string, Record<string, CellMap>>>(() => ({
@@ -354,9 +345,10 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
   const [passed, setPassed] = useState<string[]>(() => lesson.steps.filter((item) => savedRun?.steps[item.id]?.status === "completed").map((item) => item.id));
   const [complete, setComplete] = useState(savedRun?.status === "completed");
   const startedAt = useRef(performance.now());
-  const step = lesson.steps[stepIndex]!;
+  const step = lesson.steps[stepIndex] ?? initialStep;
   const stepSheets = cellsByStep[step.id] ?? savedSheetMaps(step, savedRun?.sheets[step.id]);
-  const activeSheet = step.workbook.sheets.find((sheet) => sheet.name === selectedSheet) ?? step.workbook.sheets[0]!;
+  const activeSheet = step.workbook.sheets.find((sheet) => sheet.name === selectedSheet) ?? step.workbook.sheets[0];
+  if (!activeSheet) throw new Error("Lesson has no workbook sheet");
   const cells = stepSheets[activeSheet.name] ?? {};
   const validationTargets = step.type === "scenario" && "accepted_values" in step.validation
     ? Object.keys(step.validation.accepted_values)
@@ -383,7 +375,9 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
       }
       else {
         const nextStepIndex = stepIndex + 1;
-        const nextStep = lesson.steps[nextStepIndex]!;
+        const nextStep = lesson.steps[nextStepIndex];
+        if (!nextStep) return;
+        setKeys([]);
         setStepIndex(nextStepIndex);
         const nextRun = progress.lessonRuns[lesson.id];
         setSelectedSheet(preferredSheet(nextStep));
@@ -407,7 +401,7 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
     } else if (sheetStep) {
       checked = validateLessonStep(step, submittedCells);
     } else if (step.type === "shortcut" && step.validation.mode === "shortcut") {
-      const accepted = step.validation.accepted_sequences[platformShortcutKey()];
+      const accepted = step.validation.accepted_sequences[platform];
       const captured = Array.isArray(interaction.sequence) ? interaction.sequence as string[] : [];
       const expected = step.validation.expected;
       const destinationMatches = expected?.type === "active_cell" ? sheetInteraction.current.active === expected.cell
@@ -419,7 +413,7 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
       const correct = shortcutMatches(captured, accepted) && destinationMatches;
       checked = correct
         ? { status: "correct", feedbackKey: "correct", message: step.explanation }
-        : { status: "incorrect", feedbackKey: "shortcut-mismatch", message: `That shortcut was not recognized. Try the ${platformShortcutKey() === "mac" ? "Mac" : "Windows"} sequence and check again.` };
+        : { status: "incorrect", feedbackKey: "shortcut-mismatch", message: shortcutFeedback(step, captured, submittedCells, sheetInteraction.current, platform) };
     } else if (step.type === "mcq" && step.validation.mode === "mcq") {
       const correct = interaction.choice === step.validation.accepted_choice;
       checked = correct
@@ -435,8 +429,10 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
       checked = { status: "error", feedbackKey: "unsupported-step", message: "This step cannot be checked with the available lesson controls." };
     }
     setResult(checked);
-    if (targetCells[0] && sheetStep) {
+    if (checked.status === "correct") requestAnimationFrame(() => primary.current?.focus());
+    if (targetCells[0]) {
       setFlash({ cell: targetCells[0], kind: checked.status === "correct" ? "correct" : "wrong", key: Date.now() });
+      setTimeout(() => setFlash(null), checked.status === "correct" ? 600 : 1500);
     }
     setAttemptCount((count) => count + 1);
     const formula = sheetStep
@@ -486,163 +482,43 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
     });
   };
 
-  if (complete) {
-    return (
-      <div className="mx-auto max-w-3xl px-6 py-12">
-        <div className="rounded-2xl border bg-card p-8 shadow-soft">
-          <div className="flex items-center gap-2 text-success"><Check aria-hidden className="size-5" /><span className="font-medium">Lesson complete</span></div>
-          <h1 className="mt-4 font-serif text-4xl">{lesson.title}</h1>
-          <p className="mt-4 leading-relaxed text-muted-foreground">{lesson.recap}</p>
-          <div className="mt-8 flex flex-wrap justify-between gap-3">
-            {previous ? <Button asChild variant="outline"><Link to="/practice/$lessonId" params={{ lessonId: previous.id }}><ArrowLeft aria-hidden />Previous lesson</Link></Button> : <span />}
-            {next ? <Button asChild><Link to="/practice/$lessonId" params={{ lessonId: next.id }}>Next lesson<ArrowRight aria-hidden /></Link></Button> : <Button asChild><Link to="/learn">Back to lessons<ArrowRight aria-hidden /></Link></Button>}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const versionTooltip = "Needs Excel 2019/2021/Microsoft 365. Older versions: see the fallback in Watch out.";
-
-  return (
-    <div className="gw-lesson-player gw-practice-workspace mx-auto grid max-w-7xl gap-3 px-3 py-3">
-      <section className="gw-practice-reference overflow-auto rounded-lg border bg-card p-4 shadow-soft" aria-labelledby="lesson-title">
-        <header className="border-b pb-4">
-          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Lesson {String(lesson.number).padStart(2, "0")} · {titleCase(lesson.level)} · ~{lesson.estimated_minutes} min</p>
-          <div className="mt-2 flex items-center gap-2">
-            <h1 id="lesson-title" className="text-xl font-semibold">{lesson.title}</h1>
-            {lesson.version_badge && <Badge variant="outline" title={versionTooltip}>{lesson.version_badge}</Badge>}
-          </div>
-        </header>
-        <div className="space-y-5 py-5">
-          <div><h2 className="text-sm font-semibold">Goal</h2><p className="mt-1 text-sm leading-relaxed text-muted-foreground">{lesson.objectives[0]}</p></div>
-          <div><h2 className="text-sm font-semibold">About</h2><p className="mt-1 text-sm leading-relaxed text-muted-foreground">{lesson.about}</p></div>
-          {lesson.syntax !== "—" && <div><h2 className="text-sm font-semibold">Syntax</h2><code className="mt-2 block overflow-x-auto rounded bg-muted px-3 py-2 font-mono text-sm">{lesson.syntax}</code></div>}
-          <div><h2 className="text-sm font-semibold">Examples</h2><div className="mt-2 space-y-3">{examplesFor(lesson)}</div></div>
-          <div><h2 className="text-sm font-semibold">Watch out</h2><ul className="mt-1 list-disc space-y-1 pl-5 text-sm leading-relaxed text-muted-foreground">{lesson.watch_out.map((item) => <li key={item}>{item}</li>)}</ul></div>
-        </div>
-      </section>
-
-      <section className="gw-practice-exercise min-w-0" aria-labelledby="step-title">
-        <div className="gw-practice-task mb-2 rounded-lg border bg-card p-3">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Do it yourself · {step.difficulty}</p>
-              <h2 id="step-title" className="mt-1 text-lg font-semibold">Step {stepIndex + 1} of {lesson.steps.length}</h2>
-            </div>
-            <div className="flex gap-1.5" aria-label={`Step ${stepIndex + 1} of ${lesson.steps.length}`}>
-              {lesson.steps.map((item, index) => (
-                <span key={item.id} className={`mt-2 size-2.5 rounded-full ${passed.includes(item.id) ? "bg-success" : index === stepIndex ? "bg-primary" : "bg-muted"}`} />
-              ))}
-            </div>
-          </div>
-          <p className="mt-3 leading-relaxed">{step.prompt}</p>
-          {unavailableFunctions.length > 0 && (
-            <p role="status" className="mt-3 rounded-md border border-warning/30 bg-warning-soft px-3 py-2 text-sm">
-              Preview mode: the engine does not support {unavailableFunctions.join(", ")} yet. Check is disabled.
-            </p>
-          )}
-          {canRevealHint && (
-            <Button className="mt-3" size="sm" variant="outline" onClick={revealHint}>
-              <Lightbulb aria-hidden className="size-4" />Hint {hintsUsed + 1}
-            </Button>
-          )}
-          {hintsUsed > 0 && <p className="mt-2 rounded-md bg-muted px-3 py-2 text-sm"><span className="mr-2 font-medium">Hint {hintsUsed}:</span>{step.hints[hintsUsed - 1]}</p>}
-          {result && (
-            <div role="status" className={`mt-3 rounded-md border px-3 py-2 text-sm ${result.status === "correct" ? "border-success/30 bg-success-soft" : "border-destructive/20 bg-error-soft"}`}>
-              <p className="font-medium">{result.status === "correct" ? "Correct" : result.message}</p>
-              {result.status === "correct" && <p className="mt-1">{result.message}</p>}
-            </div>
-          )}
-        </div>
-
-        {sheetStep ? (
-          <>
-            {step.workbook.sheets.length > 1 && (
-              <div className="mb-2 flex gap-2 border-b" role="tablist" aria-label="Workbook sheets">
-                {step.workbook.sheets.map((sheet) => (
-                  <button
-                    key={sheet.name}
-                    type="button"
-                    role="tab"
-                    aria-selected={activeSheet.name === sheet.name}
-                    className={`border-b-2 px-3 py-2 text-sm ${activeSheet.name === sheet.name ? "border-primary font-medium" : "border-transparent text-muted-foreground"}`}
-                    onClick={() => setSelectedSheet(sheet.name)}
-                  >{sheet.name}</button>
-                ))}
-              </div>
-            )}
-            <div className="gw-practice-grid">
-              <Sheet
-                key={`${step.id}:${activeSheet.name}`}
-                cells={cells}
-                onChange={(nextCells) => {
-                  setCellsByStep((current) => ({
-                    ...current,
-                    [step.id]: { ...(current[step.id] ?? stepSheets), [activeSheet.name]: nextCells },
-                  }));
-                  if (step.workbook.sheets.length === 1) {
-                    recordLessonProgress(lesson.id, { status: "in_progress", current_step: step.id, sheets: { [step.id]: nextCells } });
-                  }
-                  if (result?.status !== "correct") setResult(null);
-                }}
-                cols={size.cols}
-                rows={size.rows}
-                initialSelected={targetCells[0] ?? "A1"}
-                highlight={targetCells}
-                flash={flash}
-                editableCells={targetCells}
-                onEnterCheck={check}
-                enterChecks
-                variant="practice" scale={0.88}
-              />
-            </div>
-          </>
-        ) : step.type === "shortcut" && step.validation.mode === "shortcut" ? (
-          <ShortcutControl
-            key={step.id}
-            cells={cells} cols={size.cols} rows={size.rows} startCell={step.validation.start_cell}
-            onInteraction={(active, range) => { sheetInteraction.current = { active, range }; }}
-            onCellsChange={(nextCells) => { setCellsByStep((current) => ({ ...current, [step.id]: { ...(current[step.id] ?? stepSheets), [activeSheet.name]: nextCells } })); if (result?.status !== "correct") setResult(null); }}
-            accepted={step.validation.accepted_sequences[platformShortcutKey()]}
-            onChange={(sequence) => setInteractionAnswers((current) => ({
-              ...current,
-              [step.id]: { ...(current[step.id] ?? {}), sequence },
-            }))}
-          />
-        ) : step.type === "mcq" && step.validation.mode === "mcq" ? (
-          <fieldset className="space-y-3 rounded-lg border bg-card p-5">
-            <legend className="px-1 text-sm font-medium">Choose one answer</legend>
-            {step.validation.choices.map((choice) => (
-              <label key={choice.id} className="flex cursor-pointer items-start gap-3 rounded-md border p-3 text-sm">
-                <input
-                  type="radio"
-                  name={`choice-${step.id}`}
-                  value={choice.id}
-                  checked={interaction.choice === choice.id}
-                  onChange={() => setInteractionAnswers((current) => ({ ...current, [step.id]: { ...(current[step.id] ?? {}), choice: choice.id } }))}
-                />
-                <span>{choice.label}</span>
-              </label>
-            ))}
-          </fieldset>
-        ) : isMenuActionStep(step) && step.validation.mode === "state" ? (
-          <MenuActionControl
-            key={step.id}
-            step={step}
-            expected={step.validation.expect}
-            answers={interaction}
-            onChange={(key, value) => setInteractionAnswers((current) => ({ ...current, [step.id]: { ...(current[step.id] ?? {}), [key]: value } }))}
-          />
-        ) : null}
-        {!sheetStep && step.type !== "shortcut" && <div className="gw-practice-grid mt-2"><Sheet key={`preview:${step.id}`} cells={cells} onChange={() => undefined} cols={size.cols} rows={size.rows} initialSelected={step.validation.mode === "shortcut" ? step.validation.start_cell : "A1"} editableCells={[]} variant="practice" scale={0.88} /></div>}
-        <div className="mt-3 flex items-center justify-between gap-3">
-          <p className="text-xs text-muted-foreground">{sheetStep ? "Press Enter to check your formula." : "Check your answer when you are ready."}</p>
-          <Button onClick={() => check()} disabled={sheetStep && !supported}>{result?.status === "correct" ? stepIndex === lesson.steps.length - 1 ? "Finish lesson" : "Next step" : "Check"}</Button>
-        </div>
-      </section>
+  const updateCells = (nextCells: CellMap) => {
+    setCellsByStep(current => ({ ...current, [step.id]: { ...(current[step.id] ?? stepSheets), [activeSheet.name]: nextCells } }));
+    if (step.workbook.sheets.length === 1) recordLessonProgress(lesson.id, { status: "in_progress", current_step: step.id, sheets: { [step.id]: nextCells } });
+    if (result?.status !== "correct") setResult(null);
+  };
+  const changed = !deepEqual(cells, toSheetMaps(step)[activeSheet.name]) || Object.keys(interaction).length > 0;
+  const submit = (submitted = cells) => {
+    if (checking) return;
+    if (result?.status === "correct") { check(submitted); return; }
+    setChecking(true);
+    checkTimer.current = setTimeout(() => { check(submitted); setChecking(false); }, 300);
+  };
+  const reset = () => {
+    const maps = toSheetMaps(step);
+    setCellsByStep(current => ({ ...current, [step.id]: maps }));
+    if (step.workbook.sheets.length === 1) recordLessonProgress(lesson.id, { sheets: { [step.id]: maps[activeSheet.name] ?? {} } });
+    setInteractionAnswers(current => ({ ...current, [step.id]: {} })); setKeys([]); setResult(null); setFlash(null); setResetKey(k=>k+1);
+  };
+  const sequence = Array.isArray(interaction.sequence) ? interaction.sequence as string[] : [];
+  const checklist = step.validation.mode === "shortcut" ? shortcutChecklist(expectedKeyEvents(step.validation.accepted_sequences[platform][0] ?? []), sequence) : [{ id: step.id, label: targetCells.length ? `Complete ${targetCells.join(", ")}` : "Complete this task", done: result?.status === "correct" }];
+  const practice = complete ? <div className="lp-complete"><Check aria-hidden/><h2>Lesson complete</h2><p>{lesson.recap}</p>{next ? <Button asChild><Link to="/practice/$lessonId" params={{ lessonId: next.id }}>Next lesson<ArrowRight/></Link></Button> : <Button asChild><Link to="/learn">Back to lessons</Link></Button>}</div> : <>
+    <header className="lp-practice-header"><div><p className="lp-eyebrow">{step.difficulty}</p><h2 id="step-title">Step {stepIndex+1} of {lesson.steps.length}</h2></div><SegmentedControl label="Shortcut platform" value={platform} onValueChange={value=> { if(value!=="mac"&&value!=="windows")return;setPlatform(value);try{localStorage.setItem("gridwise.platform",value);}catch{} setInteractionAnswers(current=>({...current,[step.id]:{}}));setKeys([]);setResetKey(k=>k+1); }} options={[{value:"windows",label:"Windows"},{value:"mac",label:"Mac"}]} /></header>
+    <div className="lp-practice-scroll">
+      <div className="lp-task"><p><ShortcutText text={step.prompt} platform={platform}/></p><ul className="lp-checklist" aria-label="Step checklist">{checklist.map(item=><li key={item.id} data-done={item.done}><span className="lp-check-circle" aria-hidden>{item.done?<Check/>:null}</span><span>{item.label.startsWith("TYPE:")?`Type ${item.label.slice(5)}`:<ShortcutText text={item.label} platform={platform}/>}<span className="sr-only"> · {item.done?"done":"not done"}</span></span></li>)}</ul></div>
+      {hintsUsed>0 && <div className="lp-hints">{hintsUsed>1 && <details><summary>Previous hints</summary>{step.hints.slice(0,hintsUsed-1).map((h,i)=><p key={i}><ShortcutText text={h} platform={platform}/></p>)}</details>}<p><strong>Hint {hintsUsed}:</strong> <ShortcutText text={step.hints[hintsUsed-1] ?? ""} platform={platform}/></p></div>}
+      {!!unavailableFunctions.length && <p className="lp-feedback lp-feedback-error">Preview mode: {unavailableFunctions.join(", ")} is not supported yet.</p>}
+      <p className="lp-keyboard-notice">Shortcut practice works best with a physical keyboard.</p>
+      {step.workbook.sheets.length>1 && <SegmentedControl label="Workbook sheets" value={activeSheet.name} onValueChange={setSelectedSheet} options={step.workbook.sheets.map(s=>({value:s.name,label:s.name}))}/>}
+      {step.type==="mcq" && step.validation.mode==="mcq" && <fieldset className="lp-choice-list"><legend>Choose one answer</legend>{step.validation.choices.map(choice=><label key={choice.id}><input type="radio" name={step.id} checked={interaction.choice===choice.id} onChange={()=>setInteractionAnswers(current=>({...current,[step.id]:{choice:choice.id}}))}/>{choice.label}</label>)}</fieldset>}
+      {isMenuActionStep(step) && step.validation.mode==="state" && <MenuActionControl key={`${step.id}:${resetKey}`} step={step} expected={step.validation.expect} answers={interaction} onChange={(key,value)=>setInteractionAnswers(current=>({...current,[step.id]:{...(current[step.id]??{}),[key]:value}}))}/>}
+      <div className="lp-live-sheet">{step.type==="shortcut" && step.validation.mode==="shortcut" ? <ShortcutControl key={`${step.id}:${platform}:${resetKey}`} accepted={step.validation.accepted_sequences[platform]} onChange={sequence=>setInteractionAnswers(current=>({...current,[step.id]:{...(current[step.id]??{}),sequence}}))} cells={cells} onCellsChange={updateCells} cols={size.cols} rows={size.rows} startCell={step.validation.start_cell} onInteraction={(active,range)=>{sheetInteraction.current={active,range};}} platform={platform} onKeys={setKeys} allowEscape={allowsDoubleEscape(step,platform)} flash={flash}/> : <Sheet key={`${step.id}:${activeSheet.name}:${resetKey}`} cells={cells} onChange={sheetStep?updateCells:()=>undefined} cols={size.cols} rows={size.rows} initialSelected={targetCells[0] ?? "A1"} editableCells={sheetStep?targetCells:[]} highlight={targetCells} flash={flash} variant="practice" scale={1} onEnterCheck={submit} enterChecks workspaceCapture onKeys={setKeys}/> }</div>
+      <div className="lp-keys-strip" role="status" aria-live="polite"><span>Keys pressed</span><div>{keys.slice(-4).map((key,i)=><KeycapCombo key={`${key}-${i}`} keys={key.split("+")} platform={platform}/>)}</div><Button variant="ghost" size="sm" onClick={()=>setKeys([])} disabled={!keys.length}>Clear</Button></div>
+      <div className="lp-feedback-slot" aria-live="polite" aria-atomic="true">{result && <div className={`lp-feedback ${result.status==="correct"?"lp-feedback-success":"lp-feedback-error"}`}>{result.status==="correct"?<Check aria-hidden/>:<AlertCircle aria-hidden/>}<div><strong>{result.status==="correct"?"Correct":null}</strong><p><ShortcutText text={result.message} platform={platform}/></p></div></div>}</div>
     </div>
-  );
+    <footer className="lp-actionbar"><Button variant="ghost" onClick={revealHint} disabled={!canRevealHint || checking || result?.status==="correct"} title={canRevealHint?"Revealing a hint reduces step XP by 3 (minimum 2 XP)":hintsUsed>=maxHints?"No more hints":"Hints unlock after an attempt"}><Lightbulb/><span>{hintsUsed>=maxHints?"No more hints":`Hint ${hintsUsed+1} of ${maxHints}`}</span>{canRevealHint && <small>−3 XP</small>}</Button><Button variant="ghost" onClick={reset} disabled={checking}><RotateCcw/>Reset</Button><Button ref={primary} onClick={()=>submit()} disabled={checking || (result?.status!=="correct" && (!changed || (sheetStep&&!supported)))} title={!changed?"Make a change in the sheet first":undefined}>{checking?<><LoaderCircle className="lp-spinner"/>Checking</>:result?.status==="correct"?stepIndex===lesson.steps.length-1?"Finish lesson":"Next step":"Check"}</Button></footer>
+  </>;
+  return <WorkspaceShell lesson={lesson} stepIndex={stepIndex} passed={passed} learn={<LearnPane lesson={lesson} platform={platform}/>} practice={practice}/>;
 }
 
 export function InvalidContentLesson({ id }: { id: string }) {

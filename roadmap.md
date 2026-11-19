@@ -3,11 +3,11 @@
 ## Lesson-player redesign (phase-by-phase)
 - [x] Phase 0: audit current screens, data, interaction boundaries, tests and requested contrast.
 - [x] Phase 1: scoped light/dark foundations and reusable accessible controls — 36 tests passed, live typing/formula/theme checks passed; paused for review.
-- [ ] Phase 2: practice-only top bar, responsive two-pane shell and accessible persisted divider — waiting for approval to proceed.
-- [ ] Phase 3: grouped lesson drawer, statuses, search and outside-sheet keyboard shortcut.
-- [ ] Phase 4: Learn goal, existing cheat-sheet data and read-only worksheet examples.
-- [ ] Phase 5: data-derived checklists, platform toggle, hints, capture escape, feedback and action bar; preserve graders and scoring.
-- [ ] Phase 6: desktop/mobile, contrast, dark/reduced-motion and keyboard-only verification.
+- [x] Phase 2: practice-only top bar, responsive two-pane shell and accessible persisted divider — keyboard and persistence verified.
+- [x] Phase 3: grouped lesson drawer, statuses, search and outside-sheet keyboard shortcut — focus trap, restore and keyboard navigation verified.
+- [x] Phase 4: Learn goal, existing cheat-sheet data and read-only worksheet examples — uses supplied content with conservative example fallbacks.
+- [x] Phase 5: data-derived checklists, platform toggle, hints, capture escape, feedback and action bar — existing graders/scoring retained; exact-prefix checklist fallback used.
+- [x] Phase 6: desktop/mobile, contrast, dark/reduced-motion and keyboard-only verification — 85 tests passed; live 60/70/500, undo/redo, formula 41, range B3:B6 verified. Remaining spec limitations documented in the final review.
 
 - [x] Add practice-only grid navigation, range selection, keystroke display, and synchronized live formula references.
 - [x] Connect structured shortcut lessons to the live worksheet; verified live selection, typing 500, undo/redo, formula result 41, mobile row selection, and 70 tests.

@@ -3,6 +3,17 @@ import { describe, expect, it, vi } from "vitest";
 import { Sheet } from "./Sheet";
 
 describe("spreadsheet variants", () => {
+  it("releases keyboard capture on two Escapes within 600ms",()=>{
+    render(<Sheet cells={{}} onChange={()=>undefined} cols={8} rows={10} variant="practice" workspaceCapture />);
+    const grid=screen.getByRole("grid"); fireEvent.focus(grid);
+    fireEvent.keyDown(grid,{key:"Escape"}); fireEvent.keyDown(grid,{key:"Escape"});
+    expect(screen.getByRole("button",{name:"Release keyboard"})).toHaveFocus();
+  });
+  it("does not steal reserved browser shortcuts from capture",()=>{
+    const capture=vi.fn(); render(<Sheet cells={{}} onChange={()=>undefined} cols={8} rows={10} variant="practice" workspaceCapture onShortcutKey={capture}/>);
+    for(const key of ["w","t","n"]) fireEvent.keyDown(screen.getByRole("grid"),{key,ctrlKey:true});
+    expect(capture).not.toHaveBeenCalled();
+  });
   it("moves and highlights B3:B6 directly using Shift+Down", () => {
     render(<Sheet cells={{ B3: "1", B4: "2", B5: "3", B6: "4" }} onChange={() => undefined} cols={8} rows={10} initialSelected="B3" variant="practice" />);
     const grid = screen.getByRole("grid");

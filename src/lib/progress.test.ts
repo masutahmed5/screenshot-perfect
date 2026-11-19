@@ -1,7 +1,9 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { recordLessonProgress, resetProgress } from "./progress";
+import { recordLessonProgress, resetProgress, xpFor } from "./progress";
 
 describe("multi-sheet lesson progress", () => {
+  it("preserves the 3 XP hint deduction",()=>{ expect(xpFor(true,1)).toBe(12); });
+  it("preserves the 2 XP floor",()=>{ expect(xpFor(false,3)).toBe(2); });
   const values = new Map<string, string>();
   const storage = {
     clear: () => values.clear(),

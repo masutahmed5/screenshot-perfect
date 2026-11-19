@@ -135,7 +135,7 @@ describe("full structured lesson flow", () => {
     const capture = screen.getByRole("grid", { name: "Spreadsheet" });
     fireEvent.keyDown(capture, { key: "c", ctrlKey: true });
     fireEvent.click(screen.getByRole("button", { name: "Check" }));
-    expect(await screen.findByText(/shortcut was not recognized/i)).toBeInTheDocument();
+    await waitFor(() => expect(document.querySelector(".lp-feedback-error")?.textContent).toMatch(/Pressed .*expected/i));
     fireEvent.click(screen.getByRole("button", { name: "Reset" }));
     fireEvent.keyDown(screen.getByRole("grid", { name: "Spreadsheet" }), { key: "v", ctrlKey: true, shiftKey: true });
     fireEvent.click(screen.getByRole("button", { name: "Check" }));
@@ -157,7 +157,7 @@ describe("full structured lesson flow", () => {
       },
     })} />);
     const capture = screen.getByRole("grid", { name: "Spreadsheet" });
-    expect(screen.getByText(/Shortcut practice · Mac/)).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: "Mac" })).toBeChecked();
     fireEvent.keyDown(capture, { key: "v", metaKey: true, shiftKey: true });
     fireEvent.click(screen.getByRole("button", { name: "Check" }));
     expect(await screen.findByText("Correct")).toBeInTheDocument();
@@ -171,7 +171,7 @@ describe("full structured lesson flow", () => {
     for (let i = 0; i < 3; i++) fireEvent.keyDown(screen.getByRole("grid"), { key: "ArrowDown", shiftKey: true });
     fireEvent.mouseDown(screen.getByRole("gridcell", { name: "A1" }));
     fireEvent.click(screen.getByRole("button", { name: "Check" }));
-    expect(await screen.findByText(/shortcut was not recognized/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Selected A1, expected B3:B6/i)).toBeInTheDocument();
   });
 
   const shortcutLesson = (sequence: string[]) => makeLesson({
@@ -180,13 +180,33 @@ describe("full structured lesson flow", () => {
     validation: { mode: "shortcut", start_cell: "A1", target: "A1", accepted_sequences: { windows: [sequence], mac: [sequence] } },
   });
 
+  it("disables Check until an interaction and resets the worksheet",async()=>{
+    render(<ContentLessonPlayer lesson={shortcutLesson(["Type:500","Enter"])} />);
+    expect(screen.getByRole("button",{name:"Check"})).toBeDisabled();
+    fireEvent.keyDown(screen.getByRole("grid"),{key:"5"});
+    fireEvent.click(screen.getByRole("button",{name:"Reset"}));
+    expect(screen.getByRole("button",{name:"Check"})).toBeDisabled();
+  });
+
+  it("changes accepted modifiers when the platform is switched",async()=>{
+    render(<ContentLessonPlayer lesson={makeLesson({type:"shortcut",target_cells:[],validation:{mode:"shortcut",start_cell:"A1",target:"A1",accepted_sequences:{windows:[["Ctrl+Z"]],mac:[["Cmd+Z"]]}}})}/>);
+    fireEvent.click(screen.getByRole("radio",{name:"Mac"}));
+    fireEvent.keyDown(screen.getByRole("grid"),{key:"z",ctrlKey:true});
+    fireEvent.click(screen.getByRole("button",{name:"Check"}));
+    await waitFor(()=>expect(document.querySelector(".lp-feedback-error")?.textContent).toContain("other platform"));
+    fireEvent.click(screen.getByRole("button",{name:"Reset"}));
+    fireEvent.keyDown(screen.getByRole("grid"),{key:"z",metaKey:true});
+    fireEvent.click(screen.getByRole("button",{name:"Check"}));
+    expect(await screen.findByText("Correct")).toBeInTheDocument();
+  });
+
   it("requires all three digits of Type:500 rather than accepting only 5", async () => {
     render(<ContentLessonPlayer lesson={shortcutLesson(["Type:500", "Enter"])} />);
     const capture = screen.getByRole("grid", { name: "Spreadsheet" });
     fireEvent.keyDown(capture, { key: "5" });
     fireEvent.keyDown(capture, { key: "Enter" });
     fireEvent.click(screen.getByRole("button", { name: "Check" }));
-    expect(await screen.findByText(/shortcut was not recognized/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Pressed .*expected/i)).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Reset" }));
     fireEvent.keyDown(screen.getByRole("grid", { name: "Spreadsheet" }), { key: "5" });
     for (const key of "00") fireEvent.keyDown(screen.getByRole("textbox", { name: "Edit cell A1" }), { key });
@@ -303,9 +323,9 @@ describe("full structured lesson flow", () => {
       },
     };
     render(<ContentLessonPlayer lesson={makeLesson(step)} />);
-    expect(screen.getByRole("tab", { name: "Sales" })).toHaveAttribute("aria-selected", "true");
-    fireEvent.click(screen.getByRole("tab", { name: "Totals" }));
-    expect(screen.getByRole("tab", { name: "Totals" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("radio", { name: "Sales" })).toBeChecked();
+    fireEvent.click(screen.getByRole("radio", { name: "Totals" }));
+    expect(screen.getByRole("radio", { name: "Totals" })).toBeChecked();
     expect(screen.getByRole("gridcell", { name: "A1, read only" })).toHaveTextContent("Result");
   });
 });
