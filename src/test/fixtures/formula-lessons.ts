@@ -15,7 +15,7 @@ export const formulaLesson: LessonContent = {
   steps: [sumStep("SUM1", { B2: 100, B3: 120, B4: 150, B5: 80 }, "B6", 450, "=SUM(B2:B5)"), sumStep("SUM2", { C2: 1, C3: 2, C4: 3, C5: 4, C6: 5, C8: 6 }, "C7", 21, "=SUM(C2:C6,C8)"), sumStep("SUM3", { D2: 10, D4: 20 }, "D6", 30, "=SUM(D2,D4)")],
 };
 export const referenceStep: LessonContentStep = {
-  ...formulaLesson.steps[0], id: "REFERENCES", target_cells: ["C2"],
+  ...formulaLesson.steps[0], id: "REFERENCES", target_cells: ["C2"], reference_solution: "=A2*$F$1",
   workbook: { named_ranges: {}, sheets: [{ name: "Sales", cells: { A2: 2, A3: 3, F1: 10 } }] },
   validation: { mode: "value", accepted_values: { C2: 20 }, accepted_patterns: [], required_functions: [], forbid_hardcoded: true, recalc_variants: [{ change: { A2: 4 }, expect: { C2: 40 } }], fill_test: { range: "C2:C3", direction: "down" } },
 };
