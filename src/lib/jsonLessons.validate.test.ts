@@ -6,9 +6,10 @@ import { LESSONS, getLesson } from "./lessons";
 import { checkStep } from "./validate";
 
 describe("JSON track loading", () => {
-  it("loads all 13 numbered Track 01 lessons from the source array", () => {
-    expect(JSON_TRACK_LESSONS.map((lesson) => lesson.id)).toEqual(Array.from({ length: 13 }, (_, i) => `L${String(i + 1).padStart(3, "0")}`));
-    expect(JSON_TRACK_LESSONS.every((lesson) => lesson.track === "01")).toBe(true);
+  it("loads all 23 numbered Track 01 and 02 lessons from the source arrays", () => {
+    expect(JSON_TRACK_LESSONS.map((lesson) => lesson.id)).toEqual(Array.from({ length: 23 }, (_, i) => `L${String(i + 1).padStart(3, "0")}`));
+    expect(JSON_TRACK_LESSONS.slice(0, 13).every((lesson) => lesson.track === "01")).toBe(true);
+    expect(JSON_TRACK_LESSONS.slice(13).every((lesson) => lesson.track === "02")).toBe(true);
   });
   it("retains MCQ answers and shortcut sequences from the export", async () => {
     const first = await loadContentLesson("L001");

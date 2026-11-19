@@ -13,11 +13,29 @@ export function adaptTrackLesson(raw: unknown, file: string): LessonContent | nu
     const expected = validation.expected as Record<string, unknown> | undefined;
     const options = validation.options as Array<{ id: string; text: string }> | undefined;
     const hints = Array.isArray(step.hints) ? step.hints : [];
+    const fillTest = validation.fill_test as Record<string, unknown> | null | undefined;
+    const normalizedFillTest = (() => {
+      if (!fillTest || typeof fillTest !== "object") return undefined;
+      const from = typeof fillTest.from === "string" ? fillTest.from : undefined;
+      const to = typeof fillTest.to === "string" ? fillTest.to : undefined;
+      const range = typeof fillTest.range === "string" ? fillTest.range : from && to ? `${from}:${to}` : undefined;
+      if (!range) return undefined;
+      const [startRef, endRef] = range.split(":");
+      const start = startRef ? parseRef(startRef) : null;
+      const end = endRef ? parseRef(endRef) : null;
+      if (!start || !end) return undefined;
+      // The fill grader only walks a single axis; a 2D block fill has no
+      // single-axis equivalent, so drop it and let accepted_values grade.
+      if (start.row !== end.row && start.col !== end.col) return undefined;
+      const direction = fillTest.direction === "right" || (fillTest.direction === "both" && start.row === end.row) ? "right" : "down";
+      return { range, direction };
+    })();
     return {
       ...step,
       hints: [hints[0] ?? "", hints[1] ?? "", hints[2] ?? ""],
       validation: {
         ...validation,
+        fill_test: normalizedFillTest,
         ...(validation.mode === "mcq" && options ? {
           choices: options.map((option) => ({ id: option.id, label: option.text })),
           accepted_choice: validation.correct_option_id,

@@ -67,8 +67,9 @@ describe("formula lesson validation", () => {
     expect(validateLessonStep(multiCellStep, cells).status).toBe("correct");
   });
 
-  it("publishes only the updated Track 01", () => {
-    expect(LESSON_INDEX.filter((entry) => entry.track !== "01").map((entry) => entry.id)).toEqual([]);
+  it("publishes only the updated Tracks 01 and 02", () => {
+    expect(LESSON_INDEX.filter((entry) => entry.track !== "01" && entry.track !== "02").map((entry) => entry.id)).toEqual([]);
     expect(LESSON_INDEX.filter((entry) => entry.track === "01")).toHaveLength(13);
+    expect(LESSON_INDEX.filter((entry) => entry.track === "02").map((entry) => entry.id)).toEqual(Array.from({ length: 10 }, (_, i) => `L${String(i + 14).padStart(3, "0")}`));
   });
 });

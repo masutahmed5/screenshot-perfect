@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { buildSkillTracks, firstTrackLessons, getSkillTrack, SKILL_TRACKS } from "./skill-tracks";
 
 describe("skill track browsing", () => {
-  it("shows only the updated Track 01 while other tracks have no content", () => {
-    expect(SKILL_TRACKS.map((track) => track.id)).toEqual(["01"]);
+  it("shows only the populated Tracks 01 and 02 while other tracks have no content", () => {
+    expect(SKILL_TRACKS.map((track) => track.id)).toEqual(["01", "02"]);
   });
   it("keeps all thirteen beginner lessons in Track 01", () => {
     const track = getSkillTrack("01");
@@ -13,9 +13,10 @@ describe("skill track browsing", () => {
   it("offers only the first available lesson of each populated track", () => {
     const first = firstTrackLessons();
     expect(first.find((item) => item.track.id === "01")?.lesson.id).toBe("L001");
+    expect(first.find((item) => item.track.id === "02")?.lesson.id).toBe("L014");
     expect(first.map((item) => item.track.id)).toEqual(SKILL_TRACKS.filter((track) => track.lessons.length > 0).map((track) => track.id));
     expect(first.every(({ track, lesson }) => lesson.id === track.lessons[0]?.id)).toBe(true);
-    expect(first.map((item) => item.track.level)).toEqual(["beginner"]);
+    expect(first.map((item) => item.track.level)).toEqual(["beginner", "beginner"]);
   });
   it("adds future tracks with their actual counts and lesson level", () => {
     const tracks = buildSkillTracks([
