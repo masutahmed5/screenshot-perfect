@@ -1,0 +1,5756 @@
+[
+  {
+    "id": "L014",
+    "number": 14,
+    "track": "02-formulas-and-arithmetic",
+    "level": "beginner",
+    "title": "Operators & order of operations",
+    "version_badge": null,
+    "legacy_number": null,
+    "estimated_minutes": 6,
+    "objectives": [
+      "By the end you can write formulas with the main operators and predict the order Excel works them out."
+    ],
+    "about": "An operator is a symbol that tells Excel what to do with two values. Every formula starts with an equals sign. Use + to add, - to subtract, * to multiply, / to divide, and ^ for powers. The & symbol joins text, and % turns a number into a percentage. Comparison symbols such as > and = give TRUE or FALSE. When a formula has several operators, Excel does not simply read left to right. It follows an order, and brackets let you change it. Use cell addresses instead of typed numbers, so the answer updates when your data changes.",
+    "syntax": "Order of work: ( ) then % then ^ then * and / then + and - then & then = < > <= >= <>",
+    "examples": [
+      {
+        "scenario": "A shop owner works out an order total.",
+        "cells": {
+          "A1": "Item",
+          "B1": "Qty",
+          "C1": "Price",
+          "D1": "Shipping",
+          "A2": "Pens",
+          "B2": 3,
+          "C2": 12,
+          "D2": 5
+        },
+        "start_cell": "E2",
+        "formula": "=B2*C2+D2",
+        "result": "41",
+        "why": "Multiplication comes before addition, so 3 times 12 is worked out first, then 5 is added."
+      },
+      {
+        "scenario": "A baker adds two weights and doubles them.",
+        "cells": {
+          "A1": "Flour",
+          "B1": "Sugar",
+          "A2": 500,
+          "B2": 200
+        },
+        "start_cell": "C2",
+        "formula": "=(A2+B2)*2",
+        "result": "1400",
+        "why": "Brackets run first. Without them, =A2+B2*2 would give 900."
+      },
+      {
+        "scenario": "A shop checks whether an order gets free delivery.",
+        "cells": {
+          "A1": "Order",
+          "A2": 64
+        },
+        "start_cell": "B2",
+        "formula": "=A2>=50",
+        "result": "TRUE",
+        "why": "A comparison returns TRUE or FALSE instead of a number."
+      },
+      {
+        "scenario": "A clerk builds a mailing label.",
+        "cells": {
+          "A1": "Customer",
+          "B1": "City",
+          "A2": "Nova Ltd",
+          "B2": "Leeds"
+        },
+        "start_cell": "C2",
+        "formula": "=A2&\" - \"&B2",
+        "result": "Nova Ltd - Leeds",
+        "why": "The & symbol joins text. Quotation marks hold the fixed pieces."
+      }
+    ],
+    "watch_out": [
+      "Excel multiplies and divides before it adds and subtracts. If an answer looks wrong, add brackets.",
+      "Brackets always come in pairs. A missing closing bracket stops Excel from accepting the formula.",
+      "Dividing by an empty cell or by zero shows #DIV/0!."
+    ],
+    "recap": "You can now build formulas with every main operator and control their order. Next, you will copy and paste cells.",
+    "steps": [
+      {
+        "id": "L014-S1",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "You sell pens online. Work out the order total in E2: quantity times price, plus shipping.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Qty",
+                "C1": "Price",
+                "D1": "Shipping",
+                "E1": "Total",
+                "A2": "Pens",
+                "B2": 3,
+                "C2": 12,
+                "D2": 5
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "E2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "E2",
+          "target_cells": [
+            "E2"
+          ],
+          "accepted_values": {
+            "E2": 41
+          },
+          "reference_solutions": [
+            "=B2*C2+D2",
+            "=D2+B2*C2",
+            "=(B2*C2)+D2"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 4
+              },
+              "expect": {
+                "E2": 53.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Which happens first in a formula: the multiplying or the adding? Excel follows a fixed order.",
+          "Excel multiplies before it adds, so quantity*price+shipping needs no brackets. Start with =, and use cell addresses instead of typing the numbers.",
+          "Type =B2*C2+D2 in E2 and press Enter. Excel multiplies B2 by C2 first, then adds the shipping in D2. The total is 41."
+        ],
+        "explanation": "Multiplication happens before addition, so 3 times 12 is worked out first, and then 5 is added.",
+        "common_mistakes": [
+          {
+            "pattern": "=B2*(C2+D2)",
+            "message": "Brackets made Excel add the price and the shipping first. Multiply quantity by price, then add shipping.",
+            "example_formula": "=B2*(C2+D2)"
+          },
+          {
+            "pattern": "=B2+C2*D2",
+            "message": "Excel multiplied the price by the shipping first. Quantity and price belong together.",
+            "example_formula": "=B2+C2*D2"
+          },
+          {
+            "pattern": "=B2*C2",
+            "message": "Shipping is missing. Add D2 to the cost of the pens.",
+            "example_formula": "=B2*C2"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L014-S2",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A shop gives free delivery on orders of 50 or more. The order total is in B2. In C2, show TRUE when the order qualifies and FALSE when it does not.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Order",
+                "B1": "Total",
+                "C1": "Free delivery",
+                "A2": "ORD-101",
+                "B2": 64
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": true
+          },
+          "reference_solutions": [
+            "=B2>=50"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 50
+              },
+              "expect": {
+                "C2": true
+              }
+            },
+            {
+              "change": {
+                "B2": 40
+              },
+              "expect": {
+                "C2": false
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "The answer will be TRUE or FALSE, not a number. Which symbol means 'at least'?",
+          "Comparison symbols such as >, < and >= test two values and return TRUE or FALSE. 'At least 50' means 50 or more, which is >= in Excel. Use the cell address, not 64.",
+          "Type =B2>=50 and press Enter. Excel compares 64 with 50 and shows TRUE. If B2 changes to 40, the answer becomes FALSE."
+        ],
+        "explanation": "The operator >= asks whether B2 is 50 or more. The answer is a logical value, TRUE or FALSE.",
+        "common_mistakes": [
+          {
+            "pattern": "=B2>50",
+            "message": "Exactly 50 also qualifies, so use >= instead of >.",
+            "example_formula": "=B2>50"
+          },
+          {
+            "pattern": "=B2=50",
+            "message": "= tests for exactly 50. Use >= for 50 or more.",
+            "example_formula": "=B2=50"
+          },
+          {
+            "pattern": "=B2<=50",
+            "message": "<= asks whether the total is 50 or less, which is the opposite question.",
+            "example_formula": "=B2<=50"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L014-S3",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A lounge floor is a square with sides of 4 metres. The side length is in B2. In C2, work out the floor area in square metres.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Room",
+                "B1": "Side (m)",
+                "C1": "Area",
+                "A2": "Lounge",
+                "B2": 4
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 16
+          },
+          "reference_solutions": [
+            "=B2^2",
+            "=B2*B2"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 5
+              },
+              "expect": {
+                "C2": 25.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Area of a square is the side multiplied by itself. Which symbol raises a number to a power?",
+          "The ^ symbol raises a number to a power. B2^2 means B2 multiplied by itself. Use the cell address so the answer follows the side length when it changes.",
+          "Type =B2^2 in C2 and press Enter. 4 squared is 16 square metres. B2*B2 gives the same result."
+        ],
+        "explanation": "A power such as ^2 multiplies a number by itself, so 4^2 is 16.",
+        "common_mistakes": [
+          {
+            "pattern": "=B2*2",
+            "message": "That doubles the side. Area needs the side multiplied by itself.",
+            "example_formula": "=B2*2"
+          },
+          {
+            "pattern": "=B2^3",
+            "message": "^3 cubes the side. For the area of a square, use ^2.",
+            "example_formula": "=B2^3"
+          },
+          {
+            "pattern": "=B2+B2",
+            "message": "Adding the side to itself doubles it. Area is side times side.",
+            "example_formula": "=B2+B2"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L014-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A mailing list needs one label per customer in C2: the name, a space, a dash, a space, then the city. The name is in A2 and the city is in B2.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Customer",
+                "B1": "City",
+                "C1": "Label",
+                "A2": "Nova Ltd",
+                "B2": "Leeds"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": "Nova Ltd - Leeds"
+          },
+          "reference_solutions": [
+            "=A2&\" - \"&B2"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "A2": "Atlas Co"
+              },
+              "expect": {
+                "C2": "Atlas Co - Leeds"
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Joining text uses its own symbol, not +. Which symbol links pieces of text together?",
+          "The & symbol joins text. Put fixed text, such as a dash with spaces, inside quotation marks, and link each piece with &.",
+          "Type =A2&\" - \"&B2 and press Enter. The result is Nova Ltd - Leeds. The quotation marks hold the spaces and the dash between the two cells."
+        ],
+        "explanation": "The & operator joins text pieces. The text inside quotation marks is added exactly as typed.",
+        "common_mistakes": [
+          {
+            "pattern": "=A2+B2",
+            "message": "+ is for numbers and shows #VALUE! with text. Join text with &.",
+            "example_formula": "=A2+B2"
+          },
+          {
+            "pattern": "=A2&B2",
+            "message": "The pieces ran together. Add a space, a dash and a space between them inside quotation marks.",
+            "example_formula": "=A2&B2"
+          },
+          {
+            "pattern": "=A2&\"\"&B2",
+            "message": "The dash is missing. The label needs a space, a dash, then a space.",
+            "example_formula": "=A2&\" \"&B2"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L014-S5",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "A jacket costs 80 (B2) with a 10% discount (C2). Delivery adds 4 (D2). Work out the final price in E2.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Price",
+                "C1": "Discount",
+                "D1": "Delivery",
+                "E1": "Final",
+                "A2": "Jacket",
+                "B2": 80,
+                "C2": 0.1,
+                "D2": 4
+              },
+              "formats": {
+                "C2": {
+                  "num_format": "percent"
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "E2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "E2",
+          "target_cells": [
+            "E2"
+          ],
+          "accepted_values": {
+            "E2": 76
+          },
+          "reference_solutions": [
+            "=B2*(1-C2)+D2",
+            "=B2-B2*C2+D2"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "C2": 0.25
+              },
+              "expect": {
+                "E2": 64.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "The discount comes off first, then delivery is added. How can brackets control that order?",
+          "Brackets run first. 1-C2 gives the share you still pay, which is 90%. Multiply the price by that share, then add delivery.",
+          "Type =B2*(1-C2)+D2 and press Enter. Brackets make Excel work out 1-C2 first (0.9), multiply by 80 to get 72, then add 4. The answer is 76."
+        ],
+        "explanation": "Brackets force 1-C2 to be worked out first. The discounted price is 72, and delivery of 4 brings it to 76.",
+        "common_mistakes": [
+          {
+            "pattern": "=B2*1-C2+D2",
+            "message": "Without brackets, only the 1 was multiplied. Wrap 1-C2 in brackets so the discount applies to the price.",
+            "example_formula": "=B2*1-C2+D2"
+          },
+          {
+            "pattern": "=B2*(1-C2)",
+            "message": "Delivery is missing. Add D2 after the discounted price.",
+            "example_formula": "=B2*(1-C2)"
+          },
+          {
+            "pattern": "=B2*(1-C2+D2)",
+            "message": "Delivery was put inside the brackets and multiplied by the price. Add D2 outside the brackets.",
+            "example_formula": "=B2*(1-C2+D2)"
+          }
+        ],
+        "engine_support": "supported"
+      }
+    ]
+  },
+  {
+    "id": "L015",
+    "number": 15,
+    "track": "02-formulas-and-arithmetic",
+    "level": "beginner",
+    "title": "Cut, Copy, Paste",
+    "version_badge": null,
+    "legacy_number": 50,
+    "estimated_minutes": 6,
+    "objectives": [
+      "By the end you can copy, cut and paste cells, blocks and formulas, and explain how each treats formulas."
+    ],
+    "about": "Copy, cut, and paste move information around a sheet without retyping it. Copy leaves the original in place and makes a duplicate. Cut lifts the original out so you can drop it somewhere else. Paste puts what you copied or cut into the cell you have selected. Use them to repeat headings, move a misplaced value, or reuse a formula. To use them, select the cells, press Ctrl+C or Ctrl+X, move to the destination, and press Ctrl+V. A moving dotted outline shows what is ready to paste. Press Esc to clear it. On a Mac, use Cmd instead of Ctrl.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Copy",
+        "windows": "Ctrl+C",
+        "mac": "Cmd+C"
+      },
+      {
+        "action": "Cut",
+        "windows": "Ctrl+X",
+        "mac": "Cmd+X"
+      },
+      {
+        "action": "Paste",
+        "windows": "Ctrl+V",
+        "mac": "Cmd+V"
+      },
+      {
+        "action": "Paste once and clear the outline",
+        "windows": "Enter",
+        "mac": "Return"
+      },
+      {
+        "action": "Clear the copy outline",
+        "windows": "Esc",
+        "mac": "Esc"
+      },
+      {
+        "action": "Open Paste Special (next lesson)",
+        "windows": "Ctrl+Alt+V",
+        "mac": "Control+Cmd+V"
+      },
+      {
+        "action": "Undo a paste",
+        "windows": "Ctrl+Z",
+        "mac": "Cmd+Z"
+      }
+    ],
+    "examples": [
+      {
+        "scenario": "A clerk repeats headings above a second table.",
+        "cells": {
+          "A1": "Item",
+          "B1": "Qty",
+          "C1": "Price",
+          "A2": "Pens",
+          "B2": 3,
+          "C2": 12
+        },
+        "start_cell": "A1",
+        "formula": "Shift+Right twice, Ctrl+C, go to A6, Ctrl+V",
+        "result": "The headings also appear in A6:C6",
+        "why": "Copy leaves the originals in row 1."
+      },
+      {
+        "scenario": "A manager moves a note to the right column.",
+        "cells": {
+          "A1": "Item",
+          "B1": "Note",
+          "C1": "Status",
+          "A2": "Pens",
+          "B2": "Call back"
+        },
+        "start_cell": "B2",
+        "formula": "Ctrl+X, Right, Ctrl+V",
+        "result": "The note moves to C2 and B2 is empty",
+        "why": "Cut moves the cell instead of duplicating it."
+      },
+      {
+        "scenario": "A shop owner copies a total formula down a row.",
+        "cells": {
+          "A1": "Qty",
+          "B1": "Price",
+          "C1": "Total",
+          "A2": 3,
+          "B2": 12,
+          "C2": "=A2*B2",
+          "A3": 2,
+          "B3": 5
+        },
+        "start_cell": "C2",
+        "formula": "Ctrl+C, Down, Ctrl+V",
+        "result": "C3 becomes =A3*B3 and shows 10",
+        "why": "A copied formula adjusts its references to the new row."
+      },
+      {
+        "scenario": "A bookkeeper fills a status into several rows.",
+        "cells": {
+          "A1": "Invoice",
+          "B1": "Status",
+          "A2": "INV-1",
+          "B2": "Paid",
+          "A3": "INV-2",
+          "A4": "INV-3"
+        },
+        "start_cell": "B2",
+        "formula": "Ctrl+C, Down, Shift+Down, Ctrl+V",
+        "result": "B3 and B4 both show Paid",
+        "why": "One copied cell fills a whole selected block."
+      }
+    ],
+    "watch_out": [
+      "Cut keeps a formula's references unchanged. Copy shifts them to suit the new position.",
+      "Pasting over cells replaces what was in them. If that was a mistake, undo with Ctrl+Z.",
+      "The dotted copy outline stays until you press Esc or Enter, so you can paste many times in a row."
+    ],
+    "recap": "You can now copy, cut and paste with confidence and you know how formulas behave. Next, Paste Special lets you choose exactly what to paste.",
+    "steps": [
+      {
+        "id": "L015-S1",
+        "type": "shortcut",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "Your sales table has headings in A1:C1. A second table below needs the same headings in A6:C6. Copy the headings and paste them there, leaving the originals in place.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Qty",
+                "C1": "Price",
+                "A2": "Pens",
+                "B2": 3,
+                "C2": 12,
+                "A3": "Paper",
+                "B3": 2,
+                "C3": 5,
+                "A4": "Tape",
+                "B4": 4,
+                "C4": 3
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A6:C6"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "A1",
+          "expected": {
+            "type": "value",
+            "cells": {
+              "A6": "Item",
+              "B6": "Qty",
+              "C6": "Price",
+              "A1": "Item",
+              "C1": "Price"
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Right",
+                "Shift+Right",
+                "Ctrl+C",
+                "Ctrl+G",
+                "Type:A6",
+                "Enter",
+                "Ctrl+V"
+              ],
+              [
+                "Shift+Right",
+                "Shift+Right",
+                "Ctrl+C",
+                "Ctrl+G",
+                "Type:A6",
+                "Enter",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Right",
+                "Shift+Right",
+                "Cmd+C",
+                "Control+G",
+                "Type:A6",
+                "Enter",
+                "Cmd+V"
+              ],
+              [
+                "Shift+Right",
+                "Shift+Right",
+                "Cmd+C",
+                "Control+G",
+                "Type:A6",
+                "Enter",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Select the headings first. Which shortcut copies, and which one pastes?",
+          "Select A1:C1 with Shift+Right, then press Ctrl+C to copy (Cmd+C on a Mac). Move to A6 and press Ctrl+V to paste. The dotted outline stays until you press Esc.",
+          "Press Shift+Right twice, then Ctrl+C. Press Ctrl+G, type A6 and press Enter. Press Ctrl+V. The headings appear in A6:C6 and stay in row 1."
+        ],
+        "explanation": "Copy leaves the originals in place and puts a duplicate on the clipboard. Paste writes that duplicate at the selected cell.",
+        "common_mistakes": [
+          {
+            "pattern": "state:A6=",
+            "message": "Nothing was pasted yet. Move to A6 and press Ctrl+V.",
+            "example_keys": [
+              "Shift+Right",
+              "Shift+Right",
+              "Ctrl+C"
+            ]
+          },
+          {
+            "pattern": "state:A1=",
+            "message": "Ctrl+X moved the headings away from row 1. Use Ctrl+C to copy and keep the originals.",
+            "example_keys": [
+              "Shift+Right",
+              "Shift+Right",
+              "Ctrl+X",
+              "Ctrl+G",
+              "Type:A6",
+              "Enter",
+              "Ctrl+V"
+            ]
+          },
+          {
+            "pattern": "state:C6=",
+            "message": "Only two headings were copied. Select A1:C1 with two Shift+Right presses.",
+            "example_keys": [
+              "Shift+Right",
+              "Ctrl+C",
+              "Ctrl+G",
+              "Type:A6",
+              "Enter",
+              "Ctrl+V"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L015-S2",
+        "type": "shortcut",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A note in D2 sits in the wrong column. Move it to F2, under the Status heading, so that D2 ends up empty.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Qty",
+                "C1": "Price",
+                "D1": "Note",
+                "F1": "Status",
+                "A2": "Pens",
+                "B2": 3,
+                "C2": 12,
+                "D2": "Call back"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "F2"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "D2",
+          "expected": {
+            "type": "all",
+            "of": [
+              {
+                "type": "value",
+                "cells": {
+                  "F2": "Call back"
+                }
+              },
+              {
+                "type": "empty",
+                "cells": [
+                  "D2"
+                ]
+              }
+            ]
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+X",
+                "Right",
+                "Right",
+                "Ctrl+V"
+              ],
+              [
+                "Ctrl+X",
+                "Right",
+                "Right",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+X",
+                "Right",
+                "Right",
+                "Cmd+V"
+              ],
+              [
+                "Cmd+X",
+                "Right",
+                "Right",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "You want to move the note, not duplicate it. Which shortcut lifts the original out?",
+          "Ctrl+X cuts the cell (Cmd+X on a Mac). Move to the new cell, then press Ctrl+V or Enter to drop it there. The original cell empties.",
+          "Press Ctrl+X on D2, then Right twice to reach F2, then Ctrl+V or Enter. The note now sits in F2 and D2 is empty."
+        ],
+        "explanation": "Cut lifts the cell out and paste drops it in the new place, so only one copy remains.",
+        "common_mistakes": [
+          {
+            "pattern": "state:D2=Call back",
+            "message": "The note is still in D2 because you copied. Use Ctrl+X to move it.",
+            "example_keys": [
+              "Ctrl+C",
+              "Right",
+              "Right",
+              "Ctrl+V"
+            ]
+          },
+          {
+            "pattern": "state:F2=",
+            "message": "The note was cut but not pasted. Move to F2 and press Ctrl+V.",
+            "example_keys": [
+              "Ctrl+X",
+              "Right",
+              "Right"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L015-S3",
+        "type": "shortcut",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "The Total for Pens in D2 is a formula, =B2*C2. Give Paper in row 3 its own total by copying that formula into D3.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Qty",
+                "C1": "Price",
+                "D1": "Total",
+                "A2": "Pens",
+                "B2": 3,
+                "C2": 12,
+                "D2": "=B2*C2",
+                "A3": "Paper",
+                "B3": 2,
+                "C3": 5,
+                "A4": "Tape",
+                "B4": 4,
+                "C4": 3
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D3"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "D2",
+          "expected": {
+            "type": "all",
+            "of": [
+              {
+                "type": "value",
+                "cells": {
+                  "D3": 10
+                }
+              },
+              {
+                "type": "formulas",
+                "cells": [
+                  "D3"
+                ]
+              }
+            ]
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+C",
+                "Down",
+                "Ctrl+V"
+              ],
+              [
+                "Ctrl+C",
+                "Down",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+C",
+                "Down",
+                "Cmd+V"
+              ],
+              [
+                "Cmd+C",
+                "Down",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "A copied formula adjusts itself to its new row. Which shortcuts copy it and paste it one row down?",
+          "Press Ctrl+C on the formula cell, move down one row, then press Ctrl+V. Excel rewrites the cell addresses to suit the new row, so row 3 uses B3 and C3.",
+          "Press Ctrl+C on D2, press Down to reach D3, then press Ctrl+V. D3 becomes =B3*C3 and shows 10, Paper's total."
+        ],
+        "explanation": "When a formula is copied one row down, its relative references move down one row too. D3 becomes =B3*C3.",
+        "common_mistakes": [
+          {
+            "pattern": "state:D3=",
+            "message": "Nothing was pasted yet. Move to D3 and press Ctrl+V.",
+            "example_keys": [
+              "Ctrl+C"
+            ]
+          },
+          {
+            "pattern": "state:D2=",
+            "message": "Ctrl+X moved the total instead of copying it. Use Ctrl+C so D2 keeps its total.",
+            "example_keys": [
+              "Ctrl+X",
+              "Down",
+              "Ctrl+V"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L015-S4",
+        "type": "shortcut",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "Five invoices need the status Paid. Paid is already typed in E2. Copy it and paste it into E3:E6 in one go.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Invoice",
+                "B1": "Client",
+                "C1": "Amount",
+                "D1": "Date",
+                "E1": "Status",
+                "A2": "INV-1",
+                "B2": "Nova Ltd",
+                "C2": 300,
+                "D2": "03-Nov",
+                "E2": "Paid",
+                "A3": "INV-2",
+                "B3": "Atlas Co",
+                "C3": 450,
+                "D3": "04-Nov",
+                "A4": "INV-3",
+                "B4": "Brightway",
+                "C4": 120,
+                "D4": "05-Nov",
+                "A5": "INV-4",
+                "B5": "Cedar",
+                "C5": 560,
+                "D5": "06-Nov",
+                "A6": "INV-5",
+                "B6": "Delta",
+                "C6": 240,
+                "D6": "07-Nov"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "E3:E6"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "E2",
+          "expected": {
+            "type": "value",
+            "cells": {
+              "E3": "Paid",
+              "E4": "Paid",
+              "E5": "Paid",
+              "E6": "Paid"
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+C",
+                "Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Ctrl+V"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+C",
+                "Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Cmd+V"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "One copied cell can fill many cells. What must you do to the destination before pasting?",
+          "Copy E2, then select the whole destination, E3:E6, and paste once. When you paste one cell into a selected block, Excel fills every cell of the block.",
+          "Press Ctrl+C on E2, press Down, then Shift+Down three times to select E3:E6. Press Ctrl+V. All four cells show Paid."
+        ],
+        "explanation": "Pasting a single copied cell into a selected block fills the whole block.",
+        "common_mistakes": [
+          {
+            "pattern": "state:E4=",
+            "message": "Only E3 was filled. Select E3:E6 first, then paste.",
+            "example_keys": [
+              "Ctrl+C",
+              "Down",
+              "Ctrl+V"
+            ]
+          },
+          {
+            "pattern": "state:E6=",
+            "message": "The block stopped one cell short. E3 to E6 needs three Shift+Down presses.",
+            "example_keys": [
+              "Ctrl+C",
+              "Down",
+              "Shift+Down",
+              "Shift+Down",
+              "Ctrl+V"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L015-S5",
+        "type": "shortcut",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "The Total formula in D2 is =B2*C2 and shows 36. Move it to F2 under Report total, so that F2 still shows 36 and D2 is empty.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Qty",
+                "C1": "Price",
+                "D1": "Total",
+                "F1": "Report total",
+                "A2": "Pens",
+                "B2": 3,
+                "C2": 12,
+                "D2": "=B2*C2"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "F2"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "D2",
+          "expected": {
+            "type": "all",
+            "of": [
+              {
+                "type": "value",
+                "cells": {
+                  "F2": 36
+                }
+              },
+              {
+                "type": "empty",
+                "cells": [
+                  "D2"
+                ]
+              }
+            ]
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Ctrl+X",
+                "Right",
+                "Right",
+                "Ctrl+V"
+              ],
+              [
+                "Ctrl+X",
+                "Right",
+                "Right",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "Cmd+X",
+                "Right",
+                "Right",
+                "Cmd+V"
+              ],
+              [
+                "Cmd+X",
+                "Right",
+                "Right",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "A copy rewrites the cell addresses inside a formula. What keeps them exactly as they are?",
+          "Cut and paste moves a formula without changing its references, so F2 still points at B2 and C2. Copy and paste shifts the references to suit the new position.",
+          "Press Ctrl+X on D2, move right twice to F2, and press Ctrl+V. F2 keeps =B2*C2 and shows 36, and D2 is empty."
+        ],
+        "explanation": "Cut keeps a formula's references unchanged, so the moved formula still multiplies B2 by C2.",
+        "common_mistakes": [
+          {
+            "pattern": "state:F2=0",
+            "message": "Copying shifts the references, so F2 now multiplies the empty D2 and E2 and shows 0. Cut keeps =B2*C2.",
+            "example_keys": [
+              "Ctrl+C",
+              "Right",
+              "Right",
+              "Ctrl+V"
+            ]
+          },
+          {
+            "pattern": "state:D2=36",
+            "message": "The original is still in D2. Cut with Ctrl+X to move it.",
+            "example_keys": [
+              "Ctrl+C",
+              "Right",
+              "Right",
+              "Ctrl+V"
+            ]
+          },
+          {
+            "pattern": "state:F2=",
+            "message": "The formula was cut but not pasted. Move to F2 and press Ctrl+V.",
+            "example_keys": [
+              "Ctrl+X",
+              "Right",
+              "Right"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L016",
+    "number": 16,
+    "track": "02-formulas-and-arithmetic",
+    "level": "beginner",
+    "title": "Paste Special",
+    "version_badge": null,
+    "legacy_number": null,
+    "estimated_minutes": 6,
+    "objectives": [
+      "By the end you can paste only values, formats, or transposed data, and use Paste Special to do arithmetic and skip blanks."
+    ],
+    "about": "Paste Special lets you choose exactly what to paste instead of pasting everything. A normal paste copies values, formulas, and formatting together. Paste Special can copy only the values, only the formulas, or only the formatting. It can also flip rows into columns. It can add, subtract, multiply, or divide the pasted numbers into the cells you paste over. Use it to freeze results, copy a style, raise prices, or update from a partial list. Each job takes a few seconds. To use it, copy first, then press Ctrl+Alt+V, choose an option, and press Enter.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Open Paste Special",
+        "windows": "Ctrl+Alt+V",
+        "mac": "Control+Cmd+V"
+      },
+      {
+        "action": "Values only",
+        "windows": "V",
+        "mac": "V (verify)"
+      },
+      {
+        "action": "Formats only",
+        "windows": "T",
+        "mac": "T (verify)"
+      },
+      {
+        "action": "Formulas only",
+        "windows": "F",
+        "mac": "F (verify)"
+      },
+      {
+        "action": "Column widths",
+        "windows": "W",
+        "mac": "W (verify)"
+      },
+      {
+        "action": "Transpose",
+        "windows": "E",
+        "mac": "E (verify)"
+      },
+      {
+        "action": "Add / Subtract / Multiply / Divide",
+        "windows": "D / S / M / I",
+        "mac": "D / S / M / I (verify)"
+      },
+      {
+        "action": "Skip blanks",
+        "windows": "B",
+        "mac": "B (verify)"
+      },
+      {
+        "action": "Confirm",
+        "windows": "Enter",
+        "mac": "Return"
+      }
+    ],
+    "examples": [
+      {
+        "scenario": "A manager freezes formula results into fixed numbers.",
+        "cells": {
+          "A1": "Qty",
+          "B1": "Price",
+          "C1": "Total",
+          "A2": 3,
+          "B2": 12,
+          "C2": "=A2*B2",
+          "A3": 2,
+          "B3": 5,
+          "C3": "=A3*B3"
+        },
+        "start_cell": "C2",
+        "formula": "Copy C2:C3, then Ctrl+Alt+V, V, Enter",
+        "result": "The totals paste as plain numbers, 36 and 10",
+        "why": "Values removes the formulas so the numbers cannot change."
+      },
+      {
+        "scenario": "An analyst turns a column into a row.",
+        "cells": {
+          "A1": "Quarter",
+          "A2": "Q1",
+          "A3": "Q2",
+          "A4": "Q3"
+        },
+        "start_cell": "A2",
+        "formula": "Copy A2:A4, then Ctrl+Alt+V, E, Enter",
+        "result": "Q1, Q2 and Q3 run across a row",
+        "why": "Transpose swaps rows and columns."
+      },
+      {
+        "scenario": "A shop owner raises all prices by 10%.",
+        "cells": {
+          "A1": "Item",
+          "B1": "Price",
+          "A2": "Desk",
+          "B2": 100,
+          "A3": "Chair",
+          "B3": 200
+        },
+        "start_cell": "D1",
+        "formula": "Type 1.1 in D1, copy it, select B2:B3, then Ctrl+Alt+V, M, Enter",
+        "result": "Prices become 110 and 220",
+        "why": "Multiply scales every selected number by the copied value."
+      },
+      {
+        "scenario": "A buyer updates prices from a partial list.",
+        "cells": {
+          "A1": "Old",
+          "B1": "New",
+          "A2": 100,
+          "B2": 110,
+          "A3": 200,
+          "A4": 50,
+          "B4": 55
+        },
+        "start_cell": "B2",
+        "formula": "Copy B2:B4, select A2, then Ctrl+Alt+V, B, Enter",
+        "result": "Old prices become 110, 200 and 55",
+        "why": "Skip blanks leaves the old price where the new cell is empty."
+      }
+    ],
+    "watch_out": [
+      "Paste Special only appears after you copy. It needs something on the clipboard.",
+      "Paste Values removes formulas for good. Keep the original if you may need them again.",
+      "Multiply, add, subtract and divide change the cells you paste over, so check the results straight away."
+    ],
+    "recap": "You can now control exactly what a paste does. Next, you will fill cells down and across to repeat formulas and patterns.",
+    "steps": [
+      {
+        "id": "L016-S1",
+        "type": "menu_action",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "Your totals in D2:D4 are formulas, but your manager wants fixed numbers in F2:F4 that never change. Copy D2:D4 and paste them as values into F2:F4.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Qty",
+                "C1": "Price",
+                "D1": "Total",
+                "F1": "Fixed total",
+                "A2": "Pens",
+                "B2": 3,
+                "C2": 12,
+                "D2": "=B2*C2",
+                "A3": "Paper",
+                "B3": 2,
+                "C3": 5,
+                "D3": "=B3*C3",
+                "A4": "Tape",
+                "B4": 4,
+                "C4": 3,
+                "D4": "=B4*C4"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "F2:F4"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "D2",
+          "expected": {
+            "type": "constants",
+            "cells": {
+              "F2": 36,
+              "F3": 10,
+              "F4": 12
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Ctrl+C",
+                "NameBox:F2",
+                "Ctrl+Alt+V",
+                "V",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Cmd+C",
+                "NameBox:F2",
+                "Control+Cmd+V",
+                "V",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "You want the results, not the formulas behind them. Which paste option does that?",
+          "Copy the cells, then open Paste Special with Ctrl+Alt+V (Control+Cmd+V on a Mac). Choose Values, then confirm with Enter. The numbers arrive without their formulas.",
+          "Select D2:D4 and press Ctrl+C. Go to F2, press Ctrl+Alt+V, then V, then Enter. F2:F4 hold 36, 10 and 12 as plain values."
+        ],
+        "explanation": "Paste Values writes the results of the formulas, not the formulas, so the numbers stay fixed.",
+        "common_mistakes": [
+          {
+            "pattern": "formula:F2",
+            "message": "F2 is still a formula, so it will change when the data changes. Paste as values.",
+            "example_keys": [
+              "Shift+Down",
+              "Shift+Down",
+              "Ctrl+C",
+              "NameBox:F2",
+              "Ctrl+V"
+            ]
+          },
+          {
+            "pattern": "state:F4=",
+            "message": "Only part of the block was copied. Select D2:D4 with two Shift+Down presses.",
+            "example_keys": [
+              "Shift+Down",
+              "Ctrl+C",
+              "NameBox:F2",
+              "Ctrl+Alt+V",
+              "V",
+              "Enter"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L016-S2",
+        "type": "menu_action",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "Four quarter names run down A2:A5, but a report needs them across a row. Copy them and paste them across starting at C1, swapping rows for columns.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Quarter",
+                "A2": "Q1",
+                "A3": "Q2",
+                "A4": "Q3",
+                "A5": "Q4"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C1:F1"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "A1",
+          "expected": {
+            "type": "constants",
+            "cells": {
+              "C1": "Q1",
+              "D1": "Q2",
+              "E1": "Q3",
+              "F1": "Q4"
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "NameBox:A2:A5",
+                "Ctrl+C",
+                "NameBox:C1",
+                "Ctrl+Alt+V",
+                "E",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "NameBox:A2:A5",
+                "Cmd+C",
+                "NameBox:C1",
+                "Control+Cmd+V",
+                "E",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "A list that runs down must run across instead. Which paste option flips rows and columns?",
+          "Transpose swaps rows and columns when you paste. Copy the list, go to the first target cell, open Paste Special, choose Transpose, and confirm.",
+          "Select A2:A5 and press Ctrl+C. Go to C1, press Ctrl+Alt+V, then E for Transpose, then Enter. Q1 to Q4 now run across row 1."
+        ],
+        "explanation": "Transpose turns a vertical list into a horizontal one, and the other way round.",
+        "common_mistakes": [
+          {
+            "pattern": "state:D1=",
+            "message": "A plain paste kept the list vertical. Choose Transpose in Paste Special.",
+            "example_keys": [
+              "NameBox:A2:A5",
+              "Ctrl+C",
+              "NameBox:C1",
+              "Ctrl+V"
+            ]
+          },
+          {
+            "pattern": "state:C2=Q2",
+            "message": "The list still runs down column C. Choose Transpose to make it run across.",
+            "example_keys": [
+              "NameBox:A2:A5",
+              "Ctrl+C",
+              "NameBox:C1",
+              "Ctrl+V"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L016-S3",
+        "type": "menu_action",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "The Total heading in B1 is bold and italic. Make the Average heading in D1 look the same, without changing its text.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "B1": "Total",
+                "D1": "Average"
+              },
+              "formats": {
+                "B1": {
+                  "bold": true,
+                  "italic": true
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D1"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "A1",
+          "expected": {
+            "type": "all",
+            "of": [
+              {
+                "type": "value",
+                "cells": {
+                  "D1": "Average"
+                }
+              },
+              {
+                "type": "format",
+                "cells": {
+                  "D1": {
+                    "bold": true,
+                    "italic": true
+                  }
+                }
+              }
+            ]
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Click:B1",
+                "Ctrl+C",
+                "Click:D1",
+                "Ctrl+Alt+V",
+                "T",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "Click:B1",
+                "Cmd+C",
+                "Click:D1",
+                "Control+Cmd+V",
+                "T",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "You want the look of one cell but not its contents. Which paste option copies only the look?",
+          "Paste Special has a Formats option that copies only the formatting, such as bold, colour and number format. Copy B1, select D1, open Paste Special, choose Formats.",
+          "Click B1 and press Ctrl+C. Click D1, press Ctrl+Alt+V, then T for Formats, then Enter. D1 turns bold and italic but still says Average."
+        ],
+        "explanation": "Paste Formats copies the appearance only. The text in D1 stays Average.",
+        "common_mistakes": [
+          {
+            "pattern": "state:D1=Total",
+            "message": "A plain paste copied the word Total as well. Paste only the formats.",
+            "example_keys": [
+              "Click:B1",
+              "Ctrl+C",
+              "Click:D1",
+              "Ctrl+V"
+            ]
+          },
+          {
+            "pattern": "state:D1.bold=false",
+            "message": "Values only pasted the word, not the look. Choose Formats.",
+            "example_keys": [
+              "Click:B1",
+              "Ctrl+C",
+              "Click:D1",
+              "Ctrl+Alt+V",
+              "V",
+              "Enter"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L016-S4",
+        "type": "menu_action",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "Supplier prices rise by 10%. The prices are in B2:B5. Type 1.1 in D1, copy it, and use Paste Special to multiply every price by it.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Price",
+                "A2": "Desk",
+                "B2": 100,
+                "A3": "Chair",
+                "B3": 200,
+                "A4": "Lamp",
+                "B4": 50,
+                "A5": "Shelf",
+                "B5": 80
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B2:B5"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "A1",
+          "expected": {
+            "type": "constants",
+            "cells": {
+              "B2": 110,
+              "B3": 220,
+              "B4": 55,
+              "B5": 88
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "NameBox:D1",
+                "Type:1.1",
+                "Enter",
+                "NameBox:D1",
+                "Ctrl+C",
+                "NameBox:B2:B5",
+                "Ctrl+Alt+V",
+                "M",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "NameBox:D1",
+                "Type:1.1",
+                "Enter",
+                "NameBox:D1",
+                "Cmd+C",
+                "NameBox:B2:B5",
+                "Control+Cmd+V",
+                "M",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "You want to change many numbers by the same amount without a formula. Which paste option does maths?",
+          "Paste Special can add, subtract, multiply or divide. Copy the 1.1, select all the prices, open Paste Special, choose Multiply, and confirm.",
+          "Type 1.1 in D1 and copy it. Select B2:B5, press Ctrl+Alt+V, then M for Multiply, then Enter. The prices become 110, 220, 55 and 88."
+        ],
+        "explanation": "The Multiply operation multiplies each selected price by the copied 1.1, which raises prices by 10%.",
+        "common_mistakes": [
+          {
+            "pattern": "state:B2=1.1",
+            "message": "A plain paste replaced the prices with 1.1. Use the Multiply operation instead.",
+            "example_keys": [
+              "NameBox:D1",
+              "Type:1.1",
+              "Enter",
+              "NameBox:D1",
+              "Ctrl+C",
+              "NameBox:B2:B5",
+              "Ctrl+V"
+            ]
+          },
+          {
+            "pattern": "state:B2=100",
+            "message": "The prices have not changed yet. Copy D1, select B2:B5 and use Multiply.",
+            "example_keys": [
+              "NameBox:D1",
+              "Type:1.1",
+              "Enter"
+            ]
+          },
+          {
+            "pattern": "state:B2=101.1",
+            "message": "That added 1.1 to each price. Choose Multiply, not Add.",
+            "example_keys": [
+              "NameBox:D1",
+              "Type:1.1",
+              "Enter",
+              "NameBox:D1",
+              "Ctrl+C",
+              "NameBox:B2:B5",
+              "Ctrl+Alt+V",
+              "D",
+              "Enter"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L016-S5",
+        "type": "menu_action",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "A new price list in D2:D5 only has changes. A blank means no change. Update the old prices in B2:B5 from it without erasing any price where the new list is blank.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Old price",
+                "D1": "New price",
+                "A2": "Desk",
+                "B2": 100,
+                "D2": 110,
+                "A3": "Chair",
+                "B3": 200,
+                "A4": "Lamp",
+                "B4": 50,
+                "D4": 55,
+                "A5": "Shelf",
+                "B5": 80
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B2:B5"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "A1",
+          "expected": {
+            "type": "constants",
+            "cells": {
+              "B2": 110,
+              "B3": 200,
+              "B4": 55,
+              "B5": 80
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "NameBox:D2:D5",
+                "Ctrl+C",
+                "NameBox:B2",
+                "Ctrl+Alt+V",
+                "B",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "NameBox:D2:D5",
+                "Cmd+C",
+                "NameBox:B2",
+                "Control+Cmd+V",
+                "B",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "A normal paste copies blanks too. Which Paste Special option leaves existing cells alone?",
+          "Skip blanks pastes only the cells that have something in them, and leaves the destination alone where the copied cell is empty.",
+          "Copy D2:D5, go to B2, press Ctrl+Alt+V, then B for Skip blanks, then Enter. B2 and B4 update, and B3 and B5 keep their old prices."
+        ],
+        "explanation": "Skip blanks stops empty copied cells from overwriting existing prices.",
+        "common_mistakes": [
+          {
+            "pattern": "state:B3=",
+            "message": "A plain paste replaced B3 with a blank. Choose Skip blanks.",
+            "example_keys": [
+              "NameBox:D2:D5",
+              "Ctrl+C",
+              "NameBox:B2",
+              "Ctrl+V"
+            ]
+          },
+          {
+            "pattern": "state:B2=100",
+            "message": "The prices have not been updated yet. Paste with Skip blanks.",
+            "example_keys": [
+              "NameBox:D2:D5",
+              "Ctrl+C"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L017",
+    "number": 17,
+    "track": "02-formulas-and-arithmetic",
+    "level": "beginner",
+    "title": "Fill Right & Fill Down",
+    "version_badge": null,
+    "legacy_number": 9,
+    "estimated_minutes": 6,
+    "objectives": [
+      "By the end you can fill cells down and across with shortcuts and the fill handle, and continue series and formulas."
+    ],
+    "about": "Filling copies a cell or a pattern into neighbouring cells, so you do not retype anything. Ctrl+D fills down and Ctrl+R fills right. The fill handle is the small square at the bottom-right corner of a selected cell. Drag it to fill, or double-click it to fill down as far as the neighbouring data goes. Excel continues patterns such as 1, 2, 3, or Monday, Tuesday, or Item 1, Item 2. Formulas adjust their references as they fill. Use filling for totals, numbering, dates, and repeated labels. Select the cells first, then fill.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Fill down",
+        "windows": "Ctrl+D",
+        "mac": "Cmd+D"
+      },
+      {
+        "action": "Fill right",
+        "windows": "Ctrl+R",
+        "mac": "Cmd+R"
+      },
+      {
+        "action": "Continue a pattern",
+        "windows": "Drag the fill handle",
+        "mac": "Drag the fill handle"
+      },
+      {
+        "action": "Fill to the end of the data",
+        "windows": "Double-click the fill handle",
+        "mac": "Double-click the fill handle"
+      },
+      {
+        "action": "Switch between copy and series",
+        "windows": "Hold Ctrl while dragging",
+        "mac": "Control+drag (verify)"
+      },
+      {
+        "action": "Choose copy, series or formats only",
+        "windows": "Auto Fill Options button",
+        "mac": "Auto Fill Options button"
+      }
+    ],
+    "examples": [
+      {
+        "scenario": "A shop owner gives every product the same discount.",
+        "cells": {
+          "A1": "Item",
+          "B1": "Discount",
+          "A2": "Desk",
+          "B2": "10%",
+          "A3": "Chair",
+          "A4": "Lamp"
+        },
+        "start_cell": "B2",
+        "formula": "Select B2:B4, then Ctrl+D",
+        "result": "B3 and B4 show 10%",
+        "why": "Fill down copies the top cell into every cell below it."
+      },
+      {
+        "scenario": "An analyst copies a growth formula across three months.",
+        "cells": {
+          "A1": "Month",
+          "B1": "Jan",
+          "C1": "Feb",
+          "D1": "Mar",
+          "A2": "Sales",
+          "B2": 100,
+          "C2": 120,
+          "D2": 140,
+          "A3": "Growth",
+          "B3": "=B2*1.05"
+        },
+        "start_cell": "B3",
+        "formula": "Select B3:D3, then Ctrl+R",
+        "result": "C3 becomes =C2*1.05 and D3 becomes =D2*1.05",
+        "why": "Fill right shifts the references one column at a time."
+      },
+      {
+        "scenario": "A clerk numbers a checklist.",
+        "cells": {
+          "A1": "No.",
+          "A2": 1,
+          "A3": 2
+        },
+        "start_cell": "A2",
+        "formula": "Select A2:A3, drag the fill handle to A8",
+        "result": "The numbers continue 3, 4, 5, 6, 7",
+        "why": "Two numbers set the step, and Excel continues it."
+      },
+      {
+        "scenario": "A manager lists the days of a week.",
+        "cells": {
+          "A1": "Day",
+          "A2": "Mon"
+        },
+        "start_cell": "A2",
+        "formula": "Drag the fill handle from A2 down to A8",
+        "result": "Mon, Tue, Wed, Thu, Fri, Sat, Sun",
+        "why": "Excel knows the days and the months, so one cell is enough to start."
+      }
+    ],
+    "watch_out": [
+      "With one cell selected, Ctrl+D copies the cell above and Ctrl+R copies the cell on the left. Select the whole range first.",
+      "Dragging one number copies it. Use Auto Fill Options or Ctrl to count up instead.",
+      "Formulas shift their references as they fill. Lock fixed cells with $ (two lessons ahead)."
+    ],
+    "recap": "You can now fill formulas, numbers and patterns quickly. Next, you will learn how to stop a reference from moving when you fill.",
+    "steps": [
+      {
+        "id": "L017-S1",
+        "type": "shortcut",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "Every product gets the same 10% discount, already typed in C2. Fill it down to C6 so all five products show it.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Price",
+                "C1": "Discount",
+                "A2": "Desk",
+                "B2": 100,
+                "C2": 0.1,
+                "A3": "Chair",
+                "B3": 200,
+                "A4": "Lamp",
+                "B4": 50,
+                "A5": "Shelf",
+                "B5": 80,
+                "A6": "Mat",
+                "B6": 30
+              },
+              "formats": {
+                "C2": {
+                  "num_format": "percent"
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2:C6"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "C2",
+          "expected": {
+            "type": "value",
+            "cells": {
+              "C2": 0.1,
+              "C3": 0.1,
+              "C4": 0.1,
+              "C5": 0.1,
+              "C6": 0.1
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Ctrl+D"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Shift+Down",
+                "Cmd+D"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Select the whole block first, from the cell that has the value to the last cell. Which shortcut fills down?",
+          "Select C2:C6 with Shift+Down, then press Ctrl+D (Cmd+D on a Mac). Fill down copies the top cell of the selection into every cell below it.",
+          "Press Shift+Down four times to select C2:C6, then press Ctrl+D. C3 to C6 now show the same 10% as C2."
+        ],
+        "explanation": "Fill down copies the first cell of the selection into every other cell of the selection.",
+        "common_mistakes": [
+          {
+            "pattern": "state:C2=Discount",
+            "message": "With one cell selected, Ctrl+D copies the cell above, which is the heading. Select C2:C6 first.",
+            "example_keys": [
+              "Ctrl+D"
+            ]
+          },
+          {
+            "pattern": "state:C6=",
+            "message": "The block stopped short. C2 to C6 needs four Shift+Down presses.",
+            "example_keys": [
+              "Shift+Down",
+              "Shift+Down",
+              "Shift+Down",
+              "Ctrl+D"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L017-S2",
+        "type": "shortcut",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "The forecast formula in B3 is =B2*1.05, five percent above Leeds's sales. Copy it right across to D3 so Derby and Truro get forecasts too.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Branch",
+                "B1": "Leeds",
+                "C1": "Derby",
+                "D1": "Truro",
+                "A2": "Sales",
+                "B2": 400,
+                "C2": 300,
+                "D2": 250,
+                "A3": "Forecast",
+                "B3": "=B2*1.05"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B3:D3"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "B3",
+          "expected": {
+            "type": "all",
+            "of": [
+              {
+                "type": "value",
+                "cells": {
+                  "B3": 420,
+                  "C3": 315,
+                  "D3": 262.5
+                }
+              },
+              {
+                "type": "formulas",
+                "cells": [
+                  "C3",
+                  "D3"
+                ]
+              }
+            ]
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Right",
+                "Shift+Right",
+                "Ctrl+R"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Right",
+                "Shift+Right",
+                "Cmd+R"
+              ]
+            ]
+          },
+          "mouse_allowed": false
+        },
+        "hints": [
+          "Select the row of cells from the formula to the last cell, then fill. Which shortcut fills right?",
+          "Select B3:D3 with Shift+Right, then press Ctrl+R (Cmd+R on a Mac). Fill right copies the first cell into the others, adjusting its references to each column.",
+          "Press Shift+Right twice to select B3:D3, then press Ctrl+R. C3 becomes =C2*1.05 and D3 becomes =D2*1.05."
+        ],
+        "explanation": "Fill right copies the formula across and shifts its references one column at a time.",
+        "common_mistakes": [
+          {
+            "pattern": "state:B3=Forecast",
+            "message": "With one cell selected, Ctrl+R copies the cell on its left, the label. Select B3:D3 first.",
+            "example_keys": [
+              "Ctrl+R"
+            ]
+          },
+          {
+            "pattern": "state:D3=",
+            "message": "The block stopped short. B3 to D3 needs two Shift+Right presses.",
+            "example_keys": [
+              "Shift+Right",
+              "Ctrl+R"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L017-S3",
+        "type": "menu_action",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A checklist needs its rows numbered 1 to 8. The numbers 1 and 2 are typed in A2 and A3. Use the fill handle to continue the numbering down to A9.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "No.",
+                "B1": "Task",
+                "A2": 1,
+                "B2": "Open",
+                "A3": 2,
+                "B3": "Check",
+                "B4": "Count",
+                "B5": "Sort",
+                "B6": "Sign",
+                "B7": "File",
+                "B8": "Scan",
+                "B9": "Close"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A2:A9"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "A2",
+          "expected": {
+            "type": "constants",
+            "cells": {
+              "A2": 1,
+              "A3": 2,
+              "A4": 3,
+              "A5": 4,
+              "A6": 5,
+              "A7": 6,
+              "A8": 7,
+              "A9": 8
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "Shift+Down",
+                "DragFill:A9"
+              ]
+            ],
+            "mac": [
+              [
+                "Shift+Down",
+                "DragFill:A9"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "Excel can continue a pattern from two numbers. Which small square lets you drag to fill?",
+          "Select A2:A3, then drag the fill handle, the small square at the bottom-right corner of the selection, down to A9. Excel sees the step of 1 and continues it.",
+          "Select A2:A3 and drag the fill handle down to A9. The numbers continue 3, 4, 5, 6, 7, 8 without typing them."
+        ],
+        "explanation": "With two numbers selected, the fill handle continues the series using the same step.",
+        "common_mistakes": [
+          {
+            "pattern": "state:A9=2",
+            "message": "Holding Ctrl while dragging two numbers copies them instead of continuing the series. Drag without Ctrl.",
+            "example_keys": [
+              "Shift+Down",
+              "CtrlDragFill:A9"
+            ]
+          },
+          {
+            "pattern": "state:A6=",
+            "message": "The drag stopped early. Drag the handle all the way to A9.",
+            "example_keys": [
+              "Shift+Down",
+              "DragFill:A5"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L017-S4",
+        "type": "menu_action",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "The Total formula in D2 is =B2*C2 and the list runs down to row 8. Fill the formula to the end of the data with a single double-click, without dragging.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Qty",
+                "C1": "Price",
+                "D1": "Total",
+                "A2": "Pens",
+                "B2": 3,
+                "C2": 12,
+                "D2": "=B2*C2",
+                "A3": "Paper",
+                "B3": 2,
+                "C3": 5,
+                "A4": "Tape",
+                "B4": 4,
+                "C4": 3,
+                "A5": "Glue",
+                "B5": 6,
+                "C5": 2,
+                "A6": "Ink",
+                "B6": 1,
+                "C6": 9,
+                "A7": "Clips",
+                "B7": 10,
+                "C7": 1,
+                "A8": "Stamps",
+                "B8": 5,
+                "C8": 4
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D2:D8"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "D2",
+          "expected": {
+            "type": "value",
+            "cells": {
+              "D2": 36,
+              "D3": 10,
+              "D4": 12,
+              "D5": 12,
+              "D6": 9,
+              "D7": 10,
+              "D8": 20
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "DblFill"
+              ]
+            ],
+            "mac": [
+              [
+                "DblFill"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "There is a quicker way than dragging a long way. What does a double-click on the fill handle do?",
+          "Double-clicking the fill handle fills down as far as the data next to it goes. Select D2, then double-click the small square in its bottom-right corner.",
+          "Select D2 and double-click the fill handle. The formula fills down to row 8, because the Price column next to it ends there."
+        ],
+        "explanation": "A double-click on the fill handle fills down to the last row of the neighbouring data.",
+        "common_mistakes": [
+          {
+            "pattern": "state:D3=",
+            "message": "D3 is still empty. Double-click the fill handle at the corner of D2.",
+            "example_keys": []
+          },
+          {
+            "pattern": "state:D2=Total",
+            "message": "With one cell selected, Ctrl+D copies the cell above, the heading. Use the fill handle instead.",
+            "example_keys": [
+              "Ctrl+D"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L017-S5",
+        "type": "menu_action",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "Invoice numbers must run 1001 to 1005 down A2:A6, but only 1001 is typed. Drag the fill handle down to A6 and make sure the numbers count up.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Invoice",
+                "B1": "Client",
+                "A2": 1001,
+                "B2": "Nova Ltd",
+                "B3": "Atlas Co",
+                "B4": "Brightway",
+                "B5": "Cedar",
+                "B6": "Delta"
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "A2:A6"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "A2",
+          "expected": {
+            "type": "constants",
+            "cells": {
+              "A2": 1001,
+              "A3": 1002,
+              "A4": 1003,
+              "A5": 1004,
+              "A6": 1005
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "DragFill:A6",
+                "AutoFillOption:Series"
+              ],
+              [
+                "CtrlDragFill:A6"
+              ]
+            ],
+            "mac": [
+              [
+                "DragFill:A6",
+                "AutoFillOption:Series"
+              ],
+              [
+                "CtrlDragFill:A6"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "Dragging a single number copies it. How can you change what the drag does?",
+          "After you drag, a small Auto Fill Options button appears. Click it and choose Fill Series. Holding Ctrl while you drag a single number also makes a series.",
+          "Drag the fill handle of A2 down to A6, click Auto Fill Options, and choose Fill Series. A2:A6 then read 1001 to 1005."
+        ],
+        "explanation": "A single number is copied by default. Fill Series, chosen from Auto Fill Options, makes it count up instead.",
+        "common_mistakes": [
+          {
+            "pattern": "state:A6=1001",
+            "message": "Dragging one number copies it. Open Auto Fill Options and choose Fill Series, or hold Ctrl while dragging.",
+            "example_keys": [
+              "DragFill:A6"
+            ]
+          },
+          {
+            "pattern": "state:A3=1001",
+            "message": "The numbers did not count up. Choose Fill Series in Auto Fill Options.",
+            "example_keys": [
+              "DragFill:A6"
+            ]
+          },
+          {
+            "pattern": "state:A6=",
+            "message": "The drag stopped early. Drag the handle all the way down to A6.",
+            "example_keys": [
+              "DragFill:A4"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L018",
+    "number": 18,
+    "track": "02-formulas-and-arithmetic",
+    "level": "beginner",
+    "title": "Relative vs absolute references ($)",
+    "version_badge": null,
+    "legacy_number": null,
+    "estimated_minutes": 7,
+    "objectives": [
+      "By the end you can choose between relative, absolute and mixed references so formulas stay correct when filled or copied."
+    ],
+    "about": "A cell reference tells a formula where to find a value. A normal reference such as B2 is relative. When you copy or fill the formula, the reference moves with it, so B2 becomes B3 one row down. An absolute reference such as $H$1 never moves, because the dollar signs lock the column and the row. A mixed reference such as $A2 or B$1 locks only one half. Use absolute references for a fixed rate or total that every row must use. To make one, type the dollar signs or press F4 while the cursor is in the reference. Press F4 again to cycle the four forms.",
+    "syntax": "A1 moves both ways · $A$1 never moves · A$1 locks the row · $A1 locks the column · F4 cycles the four",
+    "shortcut_table": [
+      {
+        "action": "Cycle reference types",
+        "windows": "F4",
+        "mac": "Cmd+T (verify)"
+      },
+      {
+        "action": "Fill down",
+        "windows": "Ctrl+D",
+        "mac": "Cmd+D"
+      },
+      {
+        "action": "Fill right",
+        "windows": "Ctrl+R",
+        "mac": "Cmd+R"
+      }
+    ],
+    "examples": [
+      {
+        "scenario": "A shop adds VAT to every price using one rate cell.",
+        "cells": {
+          "A1": "VAT",
+          "B1": 0.15,
+          "A3": "Price",
+          "B3": "With VAT",
+          "A4": 100,
+          "A5": 200
+        },
+        "start_cell": "B4",
+        "formula": "=A4*(1+$B$1), filled down",
+        "result": "115 then 230",
+        "why": "$B$1 stays on the rate while A4 moves to A5."
+      },
+      {
+        "scenario": "An analyst finds each region's share of the total.",
+        "cells": {
+          "A1": "Region",
+          "B1": "Sales",
+          "A2": "East",
+          "B2": 120,
+          "A3": "West",
+          "B3": 80,
+          "A4": "Total",
+          "B4": 200
+        },
+        "start_cell": "C2",
+        "formula": "=B2/$B$4, filled down",
+        "result": "60% then 40%",
+        "why": "Locking B4 keeps the divisor the same in every row."
+      },
+      {
+        "scenario": "A buyer builds a price and quantity grid.",
+        "cells": {
+          "A1": "Price",
+          "B1": 10,
+          "C1": 20,
+          "A2": 2,
+          "A3": 3
+        },
+        "start_cell": "B2",
+        "formula": "=$A2*B$1, filled across and down",
+        "result": "20, 40 in row 2 and 30, 60 in row 3",
+        "why": "A mixed reference locks only the half that must stay put."
+      },
+      {
+        "scenario": "A clerk locks a reference without typing dollar signs.",
+        "cells": {
+          "A1": "Rate",
+          "B1": 0.15,
+          "A2": 100
+        },
+        "start_cell": "B2",
+        "formula": "In B2 type =A2*B1, then press F4",
+        "result": "The formula becomes =A2*$B$1",
+        "why": "F4 cycles B1, $B$1, B$1 and $B1."
+      }
+    ],
+    "watch_out": [
+      "A formula that works in the first row but breaks when filled usually needs a $.",
+      "$ locks whatever follows it: in $A2 the column is locked, and in A$2 the row is locked.",
+      "On a Mac, F4 may be Cmd+T, and function keys may need the Fn key."
+    ],
+    "recap": "You can now lock the right part of any reference. Next, you will give cells and ranges names so formulas read like sentences.",
+    "steps": [
+      {
+        "id": "L018-S1",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "Add VAT to each price in column B using the rate in H1. Type the formula in C2 so it still works after you fill it down to C6.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Price",
+                "C1": "Price with VAT",
+                "A2": "Desk",
+                "B2": 100,
+                "A3": "Chair",
+                "B3": 200,
+                "A4": "Lamp",
+                "B4": 50,
+                "A5": "Shelf",
+                "B5": 80,
+                "A6": "Mat",
+                "B6": 30,
+                "G1": "VAT",
+                "H1": 0.15
+              },
+              "formats": {
+                "H1": {
+                  "num_format": "percent"
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "multi_cell",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 115
+          },
+          "reference_solutions": [
+            "=B2*(1+$H$1)",
+            "=B2+B2*$H$1"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "H1": 0.2
+              },
+              "expect": {
+                "C2": 120.0
+              }
+            }
+          ],
+          "fill_test": {
+            "from": "C2",
+            "to": "C6",
+            "direction": "down",
+            "expect": {
+              "C3": 229.99999999999997,
+              "C4": 57.49999999999999,
+              "C5": 92.0,
+              "C6": 34.5
+            }
+          },
+          "accepted_keys": {
+            "windows": [
+              [
+                "Type:=B2*(1+H1",
+                "F4",
+                "Type:)",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "Type:=B2*(1+H1",
+                "Cmd+T",
+                "Type:)",
+                "Enter"
+              ]
+            ]
+          }
+        },
+        "hints": [
+          "The VAT rate must stay in H1 for every row. What marks a cell address as fixed?",
+          "A dollar sign locks part of an address. $H$1 locks both the column and the row, so filling down always reads H1. Press F4 after typing H1 to add the dollars (Cmd+T on a Mac).",
+          "Type =B2*(1+$H$1) in C2 and press Enter, then fill it down. Each row uses its own price but the same rate in H1."
+        ],
+        "explanation": "$H$1 is an absolute reference. It stays on H1 when the formula is filled down, while B2 moves to B3, B4 and so on.",
+        "common_mistakes": [
+          {
+            "pattern": "=B2*(1+H1)",
+            "message": "H1 moved to H2 when the formula was filled. Lock it with $ so it stays on H1.",
+            "example_formula": "=B2*(1+H1)"
+          },
+          {
+            "pattern": "=B2*1.15",
+            "message": "That typed number will not follow the VAT cell. Refer to H1 and lock it.",
+            "example_formula": "=B2*1.15"
+          },
+          {
+            "pattern": "=B2*(1+$H1)",
+            "message": "The $ before H locks the column only. Lock the row too: $H$1.",
+            "example_formula": "=B2*(1+$H1)"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L018-S2",
+        "type": "fix_formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "The commission in D2 is right for the first row but goes wrong when filled down. Fix D2 so it works for every row. The commission rate is in H1.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Rep",
+                "B1": "Region",
+                "C1": "Sales",
+                "D1": "Commission",
+                "A2": "Amina",
+                "B2": "East",
+                "C2": 1000,
+                "D2": "=C2*H1",
+                "A3": "Daniel",
+                "B3": "West",
+                "C3": 1400,
+                "A4": "Priya",
+                "B4": "North",
+                "C4": 900,
+                "A5": "Tomas",
+                "B5": "South",
+                "C5": 1200,
+                "A6": "Leila",
+                "B6": "East",
+                "C6": 1600,
+                "G1": "Rate",
+                "H1": 0.05
+              },
+              "formats": {
+                "H1": {
+                  "num_format": "percent"
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D2"
+        ],
+        "validation": {
+          "mode": "multi_cell",
+          "start_cell": "D2",
+          "target_cells": [
+            "D2"
+          ],
+          "accepted_values": {
+            "D2": 50
+          },
+          "reference_solutions": [
+            "=C2*$H$1",
+            "=C2*H$1"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "H1": 0.1
+              },
+              "expect": {
+                "D2": 100.0
+              }
+            }
+          ],
+          "fill_test": {
+            "from": "D2",
+            "to": "D6",
+            "direction": "down",
+            "expect": {
+              "D3": 70.0,
+              "D4": 45.0,
+              "D5": 60.0,
+              "D6": 80.0
+            }
+          }
+        },
+        "hints": [
+          "The sales cell should move down each row, but the rate should not. Which part needs a dollar sign?",
+          "The rate address H1 is relative, so it slides to H2, H3 and so on when filled down. Lock it with $ so every row reads H1. Press F4 with the cursor in H1.",
+          "Change D2 to =C2*$H$1 and press Enter, then fill it down. Every row now multiplies its own sales by the rate in H1."
+        ],
+        "explanation": "Without $, the rate address slid down with the formula. With $H$1 it stays put.",
+        "common_mistakes": [
+          {
+            "pattern": "=C2*H1",
+            "message": "That is the original formula. H1 slides to H2 when filled. Lock it with $.",
+            "example_formula": "=C2*H1"
+          },
+          {
+            "pattern": "=C2*$H1",
+            "message": "The $ before H locks the column only. The row still slides. Use $H$1.",
+            "example_formula": "=C2*$H1"
+          },
+          {
+            "pattern": "=C2*0.05",
+            "message": "That typed number will not follow the rate cell. Refer to H1 and lock it.",
+            "example_formula": "=C2*0.05"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L018-S3",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A price grid has unit prices down A2:A5 and quantities across B1:E1. Build the total cost in B2 so that one formula, filled across and down, completes the whole grid.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Price",
+                "B1": 10,
+                "C1": 20,
+                "D1": 50,
+                "E1": 100,
+                "A2": 2,
+                "A3": 3,
+                "A4": 5,
+                "A5": 8
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B2"
+        ],
+        "validation": {
+          "mode": "multi_cell",
+          "start_cell": "B2",
+          "target_cells": [
+            "B2"
+          ],
+          "accepted_values": {
+            "B2": 20
+          },
+          "reference_solutions": [
+            "=$A2*B$1"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "A2": 4
+              },
+              "expect": {
+                "B2": 40.0
+              }
+            }
+          ],
+          "fill_test": {
+            "from": "B2",
+            "to": "E5",
+            "direction": "both",
+            "expect": {
+              "C2": 40.0,
+              "D2": 100.0,
+              "E2": 200.0,
+              "B3": 30.0,
+              "C3": 60.0,
+              "D3": 150.0,
+              "E3": 300.0,
+              "B4": 50.0,
+              "C4": 100.0,
+              "D4": 250.0,
+              "E4": 500.0,
+              "B5": 80.0,
+              "C5": 160.0,
+              "D5": 400.0,
+              "E5": 800.0
+            }
+          }
+        },
+        "hints": [
+          "Prices stay in column A and quantities stay in row 1. Which part of each address must be locked?",
+          "Lock the column of the price with $A, and the row of the quantity with B$1. A mixed reference locks only one half, so the formula can still move the other half.",
+          "Type =$A2*B$1 in B2, press Enter, then fill right to E2 and down to row 5. $A2 locks column A and B$1 locks row 1."
+        ],
+        "explanation": "$A2 keeps the price column fixed while the row moves. B$1 keeps the quantity row fixed while the column moves.",
+        "common_mistakes": [
+          {
+            "pattern": "=A2*B1",
+            "message": "Both addresses slide when filled. Lock column A for the price and row 1 for the quantity.",
+            "example_formula": "=A2*B1"
+          },
+          {
+            "pattern": "=$A$2*$B$1",
+            "message": "Both are fully locked, so every cell repeats 20. Lock only one half of each address.",
+            "example_formula": "=$A$2*$B$1"
+          },
+          {
+            "pattern": "=$A2*B1",
+            "message": "The quantity row slides down when filled. Lock row 1 with B$1.",
+            "example_formula": "=$A2*B1"
+          },
+          {
+            "pattern": "=A2*B$1",
+            "message": "The price column slides right when filled. Lock column A with $A2.",
+            "example_formula": "=A2*B$1"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L018-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "Regional sales are in B2:B6 and the total is in B7. In C2, show each region's share of the total so the formula can be filled down to C6.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Region",
+                "B1": "Sales",
+                "C1": "Share",
+                "A2": "East",
+                "B2": 120,
+                "A3": "West",
+                "B3": 80,
+                "A4": "North",
+                "B4": 50,
+                "A5": "South",
+                "B5": 30,
+                "A6": "Islands",
+                "B6": 20,
+                "A7": "Total",
+                "B7": "=SUM(B2:B6)"
+              },
+              "formats": {
+                "C2": {
+                  "num_format": "percent"
+                },
+                "C3": {
+                  "num_format": "percent"
+                },
+                "C4": {
+                  "num_format": "percent"
+                },
+                "C5": {
+                  "num_format": "percent"
+                },
+                "C6": {
+                  "num_format": "percent"
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "multi_cell",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 0.4
+          },
+          "reference_solutions": [
+            "=B2/$B$7",
+            "=B2/B$7"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 150
+              },
+              "expect": {
+                "C2": 0.45454545454545453
+              }
+            }
+          ],
+          "fill_test": {
+            "from": "C2",
+            "to": "C6",
+            "direction": "down",
+            "expect": {
+              "C3": 0.26666666666666666,
+              "C4": 0.16666666666666666,
+              "C5": 0.1,
+              "C6": 0.06666666666666667
+            }
+          }
+        },
+        "hints": [
+          "Each region is divided by the same total. Which address must stay put while filling down?",
+          "The total in B7 must not move, so lock it with $. The sales address B2 should move to B3, B4 and so on. Press F4 with the cursor in B7.",
+          "Type =B2/$B$7 in C2, press Enter, then fill down to C6. Every region is divided by the same total in B7."
+        ],
+        "explanation": "Locking B7 keeps the divisor fixed. Each row divides its own sales by the same total.",
+        "common_mistakes": [
+          {
+            "pattern": "=B2/B7",
+            "message": "B7 slides down to B8 when filled and the share breaks. Lock the total with $.",
+            "example_formula": "=B2/B7"
+          },
+          {
+            "pattern": "=B2/300",
+            "message": "That typed total will not update. Refer to B7 and lock it.",
+            "example_formula": "=B2/300"
+          },
+          {
+            "pattern": "=B2/$B7",
+            "message": "The $ before B locks the column only. The row still slides. Use $B$7.",
+            "example_formula": "=B2/$B7"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L018-S5",
+        "type": "fix_formula",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "Euro prices in column B use the rate in B1, but filling the formula in B4 down shows wrong answers. Fix B4 so it works for every row down to B8.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Rate",
+                "B1": 0.92,
+                "A3": "USD",
+                "B3": "EUR",
+                "A4": 10,
+                "B4": "=A4*$B1",
+                "A5": 20,
+                "A6": 35,
+                "A7": 50,
+                "A8": 80
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B4"
+        ],
+        "validation": {
+          "mode": "multi_cell",
+          "start_cell": "B4",
+          "target_cells": [
+            "B4"
+          ],
+          "accepted_values": {
+            "B4": 9.2
+          },
+          "reference_solutions": [
+            "=A4*$B$1",
+            "=A4*B$1"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B1": 0.9
+              },
+              "expect": {
+                "B4": 9.0
+              }
+            }
+          ],
+          "fill_test": {
+            "from": "B4",
+            "to": "B8",
+            "direction": "down",
+            "expect": {
+              "B5": 18.400000000000002,
+              "B6": 32.2,
+              "B7": 46.0,
+              "B8": 73.60000000000001
+            }
+          }
+        },
+        "hints": [
+          "The rate address is only half locked. Which half is still free to move?",
+          "In $B1 the dollar locks the column but not the row, so the row slides down when you fill. Lock the row too, so the address reads $B$1.",
+          "Change B4 to =A4*$B$1, press Enter, then fill down to B8. Every row converts its own price with the rate in B1."
+        ],
+        "explanation": "A half-locked reference still slides in one direction. $B$1 locks both column and row.",
+        "common_mistakes": [
+          {
+            "pattern": "=A4*$B1",
+            "message": "The row of the rate still slides down. Lock it too: $B$1.",
+            "example_formula": "=A4*$B1"
+          },
+          {
+            "pattern": "=A4*B1",
+            "message": "Both parts slide. Lock the rate with $B$1.",
+            "example_formula": "=A4*B1"
+          },
+          {
+            "pattern": "=A4*0.92",
+            "message": "That typed rate will not follow B1. Refer to B1 and lock it.",
+            "example_formula": "=A4*0.92"
+          }
+        ],
+        "engine_support": "supported"
+      }
+    ]
+  },
+  {
+    "id": "L019",
+    "number": 19,
+    "track": "02-formulas-and-arithmetic",
+    "level": "beginner",
+    "title": "Named ranges",
+    "version_badge": null,
+    "legacy_number": null,
+    "estimated_minutes": 6,
+    "objectives": [
+      "By the end you can name cells and ranges, create names from headings, and use names in formulas."
+    ],
+    "about": "A named range gives a cell or a block of cells a short name, such as VAT or Sales. Instead of writing B2:B7 or $H$1, you write the name in your formulas. Formulas become easier to read. A name also never shifts when you fill or copy, because it always points to the same cells. Use names for fixed rates, lists, and ranges you total often. To create one, select the cells, click the Name Box, type the name, and press Enter. Names cannot contain spaces or look like a cell address. Open the Name Manager to edit or delete them.",
+    "syntax": null,
+    "shortcut_table": [
+      {
+        "action": "Define a name",
+        "windows": "Select cells, click the Name Box, type, Enter",
+        "mac": "Same"
+      },
+      {
+        "action": "Create names from headings",
+        "windows": "Ctrl+Shift+F3",
+        "mac": "Cmd+Shift+F3 (verify)"
+      },
+      {
+        "action": "Open the Name Manager",
+        "windows": "Ctrl+F3",
+        "mac": "Formulas tab > Name Manager"
+      },
+      {
+        "action": "Paste a name into a formula",
+        "windows": "F3",
+        "mac": "Formulas tab > Use in Formula"
+      },
+      {
+        "action": "Jump to a name",
+        "windows": "Pick it from the Name Box list",
+        "mac": "Same"
+      }
+    ],
+    "examples": [
+      {
+        "scenario": "A shop owner names the VAT rate and uses it.",
+        "cells": {
+          "A1": "VAT",
+          "B1": 0.15,
+          "A3": "Price",
+          "A4": 100
+        },
+        "start_cell": "B1",
+        "formula": "Name B1 as VAT, then in B4 type =A4*(1+VAT)",
+        "result": "115",
+        "why": "The name VAT always points at B1, so it can be filled down safely."
+      },
+      {
+        "scenario": "An analyst names a block and totals it.",
+        "cells": {
+          "A1": "Month",
+          "B1": "Sales",
+          "A2": "Jan",
+          "B2": 4200,
+          "A3": "Feb",
+          "B3": 4650
+        },
+        "start_cell": "B2",
+        "formula": "Name B2:B3 as Sales, then type =SUM(Sales)",
+        "result": "8850",
+        "why": "The name stands for the whole block."
+      },
+      {
+        "scenario": "A manager creates names from column headings.",
+        "cells": {
+          "A1": "Jan",
+          "B1": "Feb",
+          "A2": 400,
+          "B2": 420,
+          "A3": 300,
+          "B3": 310
+        },
+        "start_cell": "A1",
+        "formula": "Select A1:B3, press Ctrl+Shift+F3, then Enter",
+        "result": "Jan names A2:A3 and Feb names B2:B3",
+        "why": "The top row becomes the names of the columns below it."
+      },
+      {
+        "scenario": "A clerk jumps to a named block.",
+        "cells": {
+          "A1": "Month",
+          "B1": "Sales",
+          "A2": "Jan",
+          "B2": 4200,
+          "A3": "Feb",
+          "B3": 4650
+        },
+        "start_cell": "A1",
+        "formula": "Choose Sales from the Name Box list",
+        "result": "B2:B3 is selected",
+        "why": "A name also works as a bookmark."
+      }
+    ],
+    "watch_out": [
+      "Names cannot contain spaces. Use an underscore, such as Tax_Rate.",
+      "A name must not look like a cell address, so VAT1 is not allowed.",
+      "Names follow their cells when you insert rows or columns. After big changes, open the Name Manager to check where they point."
+    ],
+    "recap": "You can now use names instead of addresses. Next, you will use formulas to work with percentages and discounts.",
+    "steps": [
+      {
+        "id": "L019-S1",
+        "type": "menu_action",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "Your VAT rate sits in H1. Give that cell the name VAT so formulas can refer to it by name.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Price",
+                "C1": "Price with VAT",
+                "A2": "Desk",
+                "B2": 100,
+                "A3": "Chair",
+                "B3": 200,
+                "A4": "Lamp",
+                "B4": 50,
+                "G1": "VAT",
+                "H1": 0.15
+              },
+              "formats": {
+                "H1": {
+                  "num_format": "percent"
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "H1"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "A1",
+          "expected": {
+            "type": "names",
+            "names": {
+              "VAT": "H1"
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "NameBox:H1",
+                "DefineName:VAT"
+              ]
+            ],
+            "mac": [
+              [
+                "NameBox:H1",
+                "DefineName:VAT"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "A name is typed into the box left of the formula bar. Which cell should you select first?",
+          "Select the cell, click the Name Box, type the name, and press Enter. A name cannot contain spaces and must not look like a cell address, such as VAT1.",
+          "Select H1, click the Name Box, type VAT, and press Enter. The Name Box now shows VAT whenever H1 is selected."
+        ],
+        "explanation": "A name is a label for a cell. Once H1 is named VAT, formulas can use VAT instead of the address.",
+        "common_mistakes": [
+          {
+            "pattern": "name:VAT=H2",
+            "message": "VAT points at H2, which is empty. Select H1 first.",
+            "example_keys": [
+              "NameBox:H2",
+              "DefineName:VAT"
+            ]
+          },
+          {
+            "pattern": "name:VAT=G1",
+            "message": "VAT points at the label, not the rate. Select H1, the cell with 15%.",
+            "example_keys": [
+              "NameBox:G1",
+              "DefineName:VAT"
+            ]
+          },
+          {
+            "pattern": "name:VAT=",
+            "message": "No name exists yet. Select H1, type VAT in the Name Box, and press Enter.",
+            "example_keys": []
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L019-S2",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "VAT is already named for H1. In C2, add VAT to the price in B2 using the name, so the formula can be filled down to C4.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Price",
+                "C1": "Price with VAT",
+                "A2": "Desk",
+                "B2": 100,
+                "A3": "Chair",
+                "B3": 200,
+                "A4": "Lamp",
+                "B4": 50,
+                "G1": "VAT",
+                "H1": 0.15
+              },
+              "formats": {
+                "H1": {
+                  "num_format": "percent"
+                }
+              }
+            }
+          ],
+          "names": {
+            "VAT": "H1"
+          }
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "multi_cell",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 115
+          },
+          "reference_solutions": [
+            "=B2*(1+VAT)",
+            "=B2*(1+vat)",
+            "=B2+B2*VAT"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "H1": 0.2
+              },
+              "expect": {
+                "C2": 120.0
+              }
+            }
+          ],
+          "fill_test": {
+            "from": "C2",
+            "to": "C4",
+            "direction": "down",
+            "expect": {
+              "C3": 229.99999999999997,
+              "C4": 57.49999999999999
+            }
+          }
+        },
+        "hints": [
+          "A name works like a locked reference. How would you write it inside the brackets?",
+          "Type the name where the cell address would go, for example =B2*(1+VAT). A name always points at the same cell, so filling down never moves it.",
+          "Type =B2*(1+VAT) in C2, press Enter, and fill down. Each row uses its own price and the same VAT rate."
+        ],
+        "explanation": "A name never slides when you fill. VAT always means H1, while B2 moves down to B3 and B4.",
+        "common_mistakes": [
+          {
+            "pattern": "=B2*(1+H1)",
+            "message": "H1 slides down to H2 when filled. A name never slides, so type VAT instead.",
+            "example_formula": "=B2*(1+H1)"
+          },
+          {
+            "pattern": "=B2*1.15",
+            "message": "That typed number will not follow the VAT cell. Use the name VAT.",
+            "example_formula": "=B2*1.15"
+          },
+          {
+            "pattern": "=B2*(1+RATE)",
+            "message": "RATE is not a name in this workbook. The name you created is VAT.",
+            "example_formula": "=B2*(1+RATE)"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L019-S3",
+        "type": "menu_action",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "Monthly sales are in B2:B7. Give that block of cells the name Sales.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Month",
+                "B1": "Sales",
+                "A2": "Jan",
+                "B2": 4200,
+                "A3": "Feb",
+                "B3": 4650,
+                "A4": "Mar",
+                "B4": 5100,
+                "A5": "Apr",
+                "B5": 4900,
+                "A6": "May",
+                "B6": 5400,
+                "A7": "Jun",
+                "B7": 5800
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B2:B7"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "A1",
+          "expected": {
+            "type": "names",
+            "names": {
+              "Sales": "B2:B7"
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "NameBox:B2:B7",
+                "DefineName:Sales"
+              ]
+            ],
+            "mac": [
+              [
+                "NameBox:B2:B7",
+                "DefineName:Sales"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "Select the whole block first, not one cell. Then give it a name.",
+          "Select B2:B7, not the heading. Click the Name Box, type Sales and press Enter. The name now stands for all six figures.",
+          "Select B2:B7, click the Name Box, type Sales, and press Enter. Choosing Sales from the Name Box list later reselects the block."
+        ],
+        "explanation": "A name can stand for a whole block. Sales now means B2:B7.",
+        "common_mistakes": [
+          {
+            "pattern": "name:Sales=B2:B6",
+            "message": "The block stopped one cell short. Select B2:B7, down to June.",
+            "example_keys": [
+              "NameBox:B2:B6",
+              "DefineName:Sales"
+            ]
+          },
+          {
+            "pattern": "name:Sales=A2:A7",
+            "message": "That is the Month column. Sales figures are in column B.",
+            "example_keys": [
+              "NameBox:A2:A7",
+              "DefineName:Sales"
+            ]
+          },
+          {
+            "pattern": "name:Sales=",
+            "message": "No name exists yet. Select B2:B7, type Sales in the Name Box, and press Enter.",
+            "example_keys": []
+          }
+        ],
+        "engine_support": "menu_only"
+      },
+      {
+        "id": "L019-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "The block B2:B7 is named Sales. In D2, add up all the sales using the name, not the cell addresses.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Month",
+                "B1": "Sales",
+                "A2": "Jan",
+                "B2": 4200,
+                "A3": "Feb",
+                "B3": 4650,
+                "A4": "Mar",
+                "B4": 5100,
+                "A5": "Apr",
+                "B5": 4900,
+                "A6": "May",
+                "B6": 5400,
+                "A7": "Jun",
+                "B7": 5800
+              }
+            }
+          ],
+          "names": {
+            "Sales": "B2:B7"
+          }
+        },
+        "target_cells": [
+          "D2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "D2",
+          "target_cells": [
+            "D2"
+          ],
+          "accepted_values": {
+            "D2": 30050
+          },
+          "reference_solutions": [
+            "=SUM(Sales)"
+          ],
+          "required_functions": [],
+          "required_text": [
+            "SALES"
+          ],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 5000
+              },
+              "expect": {
+                "D2": 30850.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Use the name wherever you would write the range. Which function adds numbers?",
+          "A name can sit inside a function in place of a range, for example =SUM(name). Type the name exactly as you created it. Excel offers to finish it for you.",
+          "Type =SUM(Sales) in D2 and press Enter. Excel adds every cell in the Sales block. The answer is 30050."
+        ],
+        "explanation": "SUM(Sales) adds the whole named block, and it keeps working if the block grows.",
+        "common_mistakes": [
+          {
+            "pattern": "=SUM(B2:B7)",
+            "message": "That works but does not use the name. Put Sales inside SUM.",
+            "example_formula": "=SUM(B2:B7)"
+          },
+          {
+            "pattern": "=SALES",
+            "message": "Sales alone points at the block, not its total. Wrap it in SUM to add it up.",
+            "example_formula": "=Sales"
+          },
+          {
+            "pattern": "=SUM(SALE)",
+            "message": "Sale is not a name. Check the spelling: Sales.",
+            "example_formula": "=SUM(Sale)"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L019-S5",
+        "type": "menu_action",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "A table has the headings Jan, Feb and Mar in row 1 with figures below. Create a name for each column in one step, using the headings as the names.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Branch",
+                "B1": "Jan",
+                "C1": "Feb",
+                "D1": "Mar",
+                "A2": "Leeds",
+                "B2": 400,
+                "C2": 420,
+                "D2": 450,
+                "A3": "Derby",
+                "B3": 300,
+                "C3": 310,
+                "D3": 330,
+                "A4": "Truro",
+                "B4": 250,
+                "C4": 260,
+                "D4": 280,
+                "A5": "Exeter",
+                "B5": 200,
+                "C5": 210,
+                "D5": 220
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "B1:D5"
+        ],
+        "validation": {
+          "mode": "state",
+          "start_cell": "A1",
+          "expected": {
+            "type": "names",
+            "names": {
+              "Jan": "B2:B5",
+              "Feb": "C2:C5",
+              "Mar": "D2:D5"
+            }
+          },
+          "accepted_sequences": {
+            "windows": [
+              [
+                "NameBox:B1:D5",
+                "Ctrl+Shift+F3",
+                "Enter"
+              ]
+            ],
+            "mac": [
+              [
+                "NameBox:B1:D5",
+                "Cmd+Shift+F3",
+                "Enter"
+              ]
+            ]
+          },
+          "mouse_allowed": true
+        },
+        "hints": [
+          "The headings become the names, so they must be part of your selection.",
+          "Select the block including the heading row, B1:D5. Press Ctrl+Shift+F3 (Cmd+Shift+F3 on a Mac), keep Top row ticked, and press Enter.",
+          "Select B1:D5, press Ctrl+Shift+F3, leave Top row ticked and press Enter. Jan, Feb and Mar now name B2:B5, C2:C5 and D2:D5."
+        ],
+        "explanation": "Create from Selection uses the top row as names for each column below it, so three names appear at once.",
+        "common_mistakes": [
+          {
+            "pattern": "name:Jan=",
+            "message": "The headings were not part of the selection. Select B1:D5, headings included.",
+            "example_keys": [
+              "NameBox:B2:D5",
+              "Ctrl+Shift+F3",
+              "Enter"
+            ]
+          },
+          {
+            "pattern": "name:Feb=",
+            "message": "Nothing was created yet. Press Ctrl+Shift+F3 and then Enter.",
+            "example_keys": [
+              "NameBox:B1:D5"
+            ]
+          }
+        ],
+        "engine_support": "menu_only"
+      }
+    ]
+  },
+  {
+    "id": "L020",
+    "number": 20,
+    "track": "02-formulas-and-arithmetic",
+    "level": "beginner",
+    "title": "Percentages & discounts",
+    "version_badge": null,
+    "legacy_number": null,
+    "estimated_minutes": 7,
+    "objectives": [
+      "By the end you can calculate percentages, discounts, increases, changes and VAT with formulas."
+    ],
+    "about": "A percentage is a number out of 100, so 15% means 15 per 100, or 0.15. Excel stores a percentage as a decimal and shows a percent sign when the cell has percentage format. You can type 15% straight into a cell. Use percentages for discounts, taxes, pay rises, targets, and growth. To find a percentage of a number, multiply by the rate. To reduce by a percentage, multiply by one minus the rate. To increase, multiply by one plus the rate. To find a change, divide the difference by the old figure.",
+    "syntax": "Part of: =amount*rate · Reduce: =price*(1-rate) · Increase: =price*(1+rate) · Change: =(new-old)/old · Share: =part/total",
+    "examples": [
+      {
+        "scenario": "A shopper works out a sale price.",
+        "cells": {
+          "A1": "Price",
+          "B1": "Discount",
+          "A2": 80,
+          "B2": 0.15
+        },
+        "start_cell": "C2",
+        "formula": "=A2*(1-B2)",
+        "result": "68",
+        "why": "Multiplying by 1 minus the rate takes that percentage off."
+      },
+      {
+        "scenario": "A manager gives a pay rise.",
+        "cells": {
+          "A1": "Salary",
+          "B1": "Rise",
+          "A2": 2000,
+          "B2": 0.04
+        },
+        "start_cell": "C2",
+        "formula": "=A2*(1+B2)",
+        "result": "2080",
+        "why": "Multiplying by 1 plus the rate adds that percentage."
+      },
+      {
+        "scenario": "An analyst measures growth.",
+        "cells": {
+          "A1": "Old",
+          "B1": "New",
+          "A2": 400,
+          "B2": 460
+        },
+        "start_cell": "C2",
+        "formula": "=(B2-A2)/A2",
+        "result": "15%",
+        "why": "A change is the difference divided by the old figure."
+      },
+      {
+        "scenario": "An accountant removes VAT from a receipt total.",
+        "cells": {
+          "A1": "Total",
+          "B1": "VAT rate",
+          "A2": 120,
+          "B2": 0.2
+        },
+        "start_cell": "C2",
+        "formula": "=A2/(1+B2)",
+        "result": "100",
+        "why": "To undo a percentage increase, divide by 1 plus the rate."
+      }
+    ],
+    "watch_out": [
+      "Type 15% with the percent sign, or format the cell first with Ctrl+Shift+5. Typing 0.15 and formatting also works.",
+      "Divide by the old figure for a change, not by the new one.",
+      "To remove VAT, divide by 1 plus the rate. Subtracting the rate takes off too little."
+    ],
+    "recap": "You can now handle the percentage calculations that appear in almost every business sheet. Next, you will round the results.",
+    "steps": [
+      {
+        "id": "L020-S1",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A jacket costs 80 (B2) and has a 15% discount (C2). Work out the amount of the discount in D2.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Price",
+                "C1": "Discount rate",
+                "D1": "Discount",
+                "A2": "Jacket",
+                "B2": 80,
+                "C2": 0.15
+              },
+              "formats": {
+                "C2": {
+                  "num_format": "percent"
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "D2",
+          "target_cells": [
+            "D2"
+          ],
+          "accepted_values": {
+            "D2": 12
+          },
+          "reference_solutions": [
+            "=B2*C2",
+            "=C2*B2"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "C2": 0.2
+              },
+              "expect": {
+                "D2": 16.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "A percentage of a number means multiplying the number by the rate. Which cells hold each?",
+          "Excel stores 15% as 0.15, so multiplying the price by the rate cell gives the amount taken off. Use both cell addresses, not typed numbers.",
+          "Type =B2*C2 in D2 and press Enter. 80 times 15% is 12, the amount of the discount."
+        ],
+        "explanation": "A percentage of an amount is the amount multiplied by the rate. 80 times 0.15 is 12.",
+        "common_mistakes": [
+          {
+            "pattern": "=B2+C2",
+            "message": "Adding a rate to a price makes no sense. Multiply the price by the rate.",
+            "example_formula": "=B2+C2"
+          },
+          {
+            "pattern": "=B2/C2",
+            "message": "Dividing shows how many 15% fit into 80. Multiply the price by the rate.",
+            "example_formula": "=B2/C2"
+          },
+          {
+            "pattern": "=B2*15",
+            "message": "That typed number will not follow the rate cell, and 15 is not 15%. Use C2.",
+            "example_formula": "=B2*15"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L020-S2",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "The same jacket costs 80 (B2) with a 15% discount (C2). Work out the sale price you pay in D2.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Price",
+                "C1": "Discount rate",
+                "D1": "Sale price",
+                "A2": "Jacket",
+                "B2": 80,
+                "C2": 0.15
+              },
+              "formats": {
+                "C2": {
+                  "num_format": "percent"
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "D2",
+          "target_cells": [
+            "D2"
+          ],
+          "accepted_values": {
+            "D2": 68
+          },
+          "reference_solutions": [
+            "=B2*(1-C2)",
+            "=B2-B2*C2",
+            "=B2-(B2*C2)"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "C2": 0.25
+              },
+              "expect": {
+                "D2": 60.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "You pay what is left after the discount. What share of the price do you still pay?",
+          "If the discount is 15%, you still pay 100% minus 15%, which is 85%. In a formula, that is the price times (1 minus the rate).",
+          "Type =B2*(1-C2) in D2 and press Enter. 1-C2 is 0.85, and 80 times 0.85 is 68, the sale price."
+        ],
+        "explanation": "Multiplying by 1 minus the rate reduces a price by that percentage.",
+        "common_mistakes": [
+          {
+            "pattern": "=B2*C2",
+            "message": "That is the amount of the discount, 12. The sale price is what is left.",
+            "example_formula": "=B2*C2"
+          },
+          {
+            "pattern": "=B2*(1+C2)",
+            "message": "1+ raises the price by 15%. Use 1- to lower it.",
+            "example_formula": "=B2*(1+C2)"
+          },
+          {
+            "pattern": "=B2-C2",
+            "message": "That subtracts 0.15 from 80. Subtract 15% of the price instead.",
+            "example_formula": "=B2-C2"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L020-S3",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "Sales were 400 last month (B2) and 460 this month (C2). Show the percentage change in D2.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Last month",
+                "C1": "This month",
+                "D1": "Change",
+                "A2": "Sales",
+                "B2": 400,
+                "C2": 460
+              },
+              "formats": {
+                "D2": {
+                  "num_format": "percent"
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "D2",
+          "target_cells": [
+            "D2"
+          ],
+          "accepted_values": {
+            "D2": 0.15
+          },
+          "reference_solutions": [
+            "=(C2-B2)/B2",
+            "=C2/B2-1"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "C2": 500
+              },
+              "expect": {
+                "D2": 0.25
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "A change is the difference between new and old, compared with the old figure.",
+          "First find the difference, this month minus last month. Then divide it by last month's figure, the starting point. Put brackets around the subtraction.",
+          "Type =(C2-B2)/B2 in D2 and press Enter. The difference is 60, and 60 divided by 400 is 0.15, shown as 15%."
+        ],
+        "explanation": "Percentage change is the difference divided by the starting value. Here, 60 divided by 400 is 0.15.",
+        "common_mistakes": [
+          {
+            "pattern": "=C2-B2",
+            "message": "That is the change in units, 60. Divide it by last month's figure to get a percentage.",
+            "example_formula": "=C2-B2"
+          },
+          {
+            "pattern": "=(C2-B2)/C2",
+            "message": "Divide by the old figure, B2, not the new one.",
+            "example_formula": "=(C2-B2)/C2"
+          },
+          {
+            "pattern": "=B2/C2-1",
+            "message": "That compares in the wrong direction and gives a negative answer. Put this month first.",
+            "example_formula": "=B2/C2-1"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L020-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "Amina sold 850 (B2) against a target of 1000 (C2). In D2, show how much of her target she achieved.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Rep",
+                "B1": "Sales",
+                "C1": "Target",
+                "D1": "Achieved",
+                "A2": "Amina",
+                "B2": 850,
+                "C2": 1000
+              },
+              "formats": {
+                "D2": {
+                  "num_format": "percent"
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "D2",
+          "target_cells": [
+            "D2"
+          ],
+          "accepted_values": {
+            "D2": 0.85
+          },
+          "reference_solutions": [
+            "=B2/C2"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 1200
+              },
+              "expect": {
+                "D2": 1.2
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Achievement compares what was sold with what was aimed for. Which figure goes on top?",
+          "A percentage of a target is the actual figure divided by the target. Divide sales by target, so that reaching the target exactly gives 100%.",
+          "Type =B2/C2 in D2 and press Enter. 850 divided by 1000 is 0.85, which shows as 85% when the cell is formatted as a percentage."
+        ],
+        "explanation": "Dividing sales by the target gives the share achieved. Reaching the target exactly would give 100%.",
+        "common_mistakes": [
+          {
+            "pattern": "=C2/B2",
+            "message": "That divides the wrong way round. Divide sales by the target.",
+            "example_formula": "=C2/B2"
+          },
+          {
+            "pattern": "=B2-C2",
+            "message": "That is the shortfall in units, -150. Divide sales by the target for a percentage.",
+            "example_formula": "=B2-C2"
+          },
+          {
+            "pattern": "=B2*C2",
+            "message": "Multiplying gives a meaningless 850000. Divide sales by the target.",
+            "example_formula": "=B2*C2"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L020-S5",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "A receipt shows 120 including 20% VAT (B2). The VAT rate is in C2. Work out the price before VAT in D2.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Price with VAT",
+                "C1": "VAT rate",
+                "D1": "Price before VAT",
+                "A2": "Receipt",
+                "B2": 120,
+                "C2": 0.2
+              },
+              "formats": {
+                "C2": {
+                  "num_format": "percent"
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "D2",
+          "target_cells": [
+            "D2"
+          ],
+          "accepted_values": {
+            "D2": 100
+          },
+          "reference_solutions": [
+            "=B2/(1+C2)",
+            "=B2/(C2+1)"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 240
+              },
+              "expect": {
+                "D2": 200.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "VAT was added to the original price, not taken from the total. How do you undo an increase?",
+          "The total is the price times (1 plus the rate). To go back, divide the total by (1 plus the rate). Taking the rate off instead removes too much.",
+          "Type =B2/(1+C2) in D2 and press Enter. 1+C2 is 1.2, and 120 divided by 1.2 is 100, the price before VAT."
+        ],
+        "explanation": "To undo a percentage increase, divide by 1 plus the rate. Taking 20% off 120 would give 96, which is wrong.",
+        "common_mistakes": [
+          {
+            "pattern": "=B2*(1-C2)",
+            "message": "That takes 20% off the total and gives 96. VAT was added to a smaller price, so divide by 1 plus the rate.",
+            "example_formula": "=B2*(1-C2)"
+          },
+          {
+            "pattern": "=B2-B2*C2",
+            "message": "That also takes 20% off the total. Divide by 1 plus the rate instead.",
+            "example_formula": "=B2-B2*C2"
+          },
+          {
+            "pattern": "=B2/C2",
+            "message": "Dividing by the rate gives 600. Divide by 1 plus the rate.",
+            "example_formula": "=B2/C2"
+          }
+        ],
+        "engine_support": "supported"
+      }
+    ]
+  },
+  {
+    "id": "L021",
+    "number": 21,
+    "track": "02-formulas-and-arithmetic",
+    "level": "beginner",
+    "title": "ROUND, ROUNDUP, ROUNDDOWN",
+    "version_badge": null,
+    "legacy_number": null,
+    "estimated_minutes": 7,
+    "objectives": [
+      "By the end you can round to decimals, whole numbers, tens and thousands, and choose the right rounding function."
+    ],
+    "about": "Rounding shortens a number to a set number of decimal places. The ROUND function rounds to the nearest value, and a half rounds away from zero. ROUNDUP always rounds away from zero, and ROUNDDOWN always cuts toward zero. You tell each function the number and how many digits to keep. Positive digits count decimals, zero gives a whole number, and negative digits round to tens, hundreds, or thousands. Use them for prices, packs, hours, and reports. Unlike formatting, rounding really changes the value, so totals add up to what readers see.",
+    "syntax": "ROUND(number, digits) · ROUNDUP(number, digits) · ROUNDDOWN(number, digits) · INT(number)",
+    "examples": [
+      {
+        "scenario": "A shop owner rounds a converted price.",
+        "cells": {
+          "A1": "Converted",
+          "A2": 12.3456
+        },
+        "start_cell": "B2",
+        "formula": "=ROUND(A2,2)",
+        "result": "12.35",
+        "why": "Two digits keeps pennies. The 5 in the third decimal rounds the second up."
+      },
+      {
+        "scenario": "A car park charges for started hours.",
+        "cells": {
+          "A1": "Hours",
+          "A2": 2.1
+        },
+        "start_cell": "B2",
+        "formula": "=ROUNDUP(A2,0)",
+        "result": "3",
+        "why": "ROUNDUP rounds up whenever there is any remainder."
+      },
+      {
+        "scenario": "A bakery counts complete trays.",
+        "cells": {
+          "A1": "Trays",
+          "A2": 7.8
+        },
+        "start_cell": "B2",
+        "formula": "=ROUNDDOWN(A2,0)",
+        "result": "7",
+        "why": "ROUNDDOWN drops the extra part, so only complete trays count."
+      },
+      {
+        "scenario": "A finance clerk rounds a budget for a summary.",
+        "cells": {
+          "A1": "Budget",
+          "A2": 123756
+        },
+        "start_cell": "B2",
+        "formula": "=ROUND(A2,-3)",
+        "result": "124000",
+        "why": "-3 rounds to the nearest thousand."
+      }
+    ],
+    "watch_out": [
+      "Formatting only changes how a number looks. ROUND changes the number itself.",
+      "Negative digits count places left of the decimal point: -2 rounds to the nearest hundred.",
+      "ROUNDUP and ROUNDDOWN move away from or toward zero, so negative numbers behave the opposite way from positives."
+    ],
+    "recap": "You can now round with the right tool for each job. Next, you will round to multiples, such as packs and 15-minute blocks.",
+    "steps": [
+      {
+        "id": "L021-S1",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A currency conversion gives 12.3456 in B2. In C2, show a price rounded to the nearest 2 decimal places.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Converted",
+                "C1": "Price",
+                "A2": "Lamp",
+                "B2": 12.3456
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 12.35
+          },
+          "reference_solutions": [
+            "=ROUND(B2,2)"
+          ],
+          "required_functions": [
+            "ROUND"
+          ],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 12.341
+              },
+              "expect": {
+                "C2": 12.34
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Rounding needs two things: the number and how many decimals to keep. Which function rounds to the nearest?",
+          "ROUND(number, digits) rounds to the nearest value. Digits is how many decimals to keep, so 2 keeps pennies. A half or more rounds up.",
+          "Type =ROUND(B2,2) in C2 and press Enter. 12.3456 rounds to 12.35 because the third decimal, 5, rounds the second up."
+        ],
+        "explanation": "ROUND(B2,2) keeps two decimals and rounds the rest to the nearest value.",
+        "common_mistakes": [
+          {
+            "pattern": "=ROUNDDOWN(B2,2)",
+            "message": "ROUNDDOWN cuts to 12.34. ROUND goes to the nearest value, 12.35.",
+            "example_formula": "=ROUNDDOWN(B2,2)"
+          },
+          {
+            "pattern": "=ROUND(B2,1)",
+            "message": "That keeps one decimal, 12.3. Use 2 to keep pennies.",
+            "example_formula": "=ROUND(B2,1)"
+          },
+          {
+            "pattern": "=ROUND(B2)",
+            "message": "ROUND needs the number of decimals as a second part, after a comma.",
+            "example_formula": "=ROUND(B2)"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L021-S2",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A car park charges for every started hour. The van stayed 2.1 hours (B2). In C2, work out the hours to charge.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Vehicle",
+                "B1": "Hours",
+                "C1": "Hours to charge",
+                "A2": "Van",
+                "B2": 2.1
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 3
+          },
+          "reference_solutions": [
+            "=ROUNDUP(B2,0)"
+          ],
+          "required_functions": [
+            "ROUNDUP"
+          ],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 4
+              },
+              "expect": {
+                "C2": 4.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Any part of an hour is charged as a full hour. Which function always rounds up?",
+          "ROUNDUP always rounds away from zero, even for a small remainder. With digits set to 0 it gives a whole number. ROUND would go down for 2.1.",
+          "Type =ROUNDUP(B2,0) in C2 and press Enter. 2.1 rounds up to 3, so the van is charged for 3 hours."
+        ],
+        "explanation": "ROUNDUP rounds up whenever there is any remainder, so 2.1 hours becomes 3.",
+        "common_mistakes": [
+          {
+            "pattern": "=ROUND(B2,0)",
+            "message": "ROUND goes to the nearest whole number, 2. A started hour must be charged.",
+            "example_formula": "=ROUND(B2,0)"
+          },
+          {
+            "pattern": "=INT(B2)",
+            "message": "INT cuts the decimals and gives 2. Round up instead.",
+            "example_formula": "=INT(B2)"
+          },
+          {
+            "pattern": "=INT(B2)+1",
+            "message": "Adding 1 overcharges when the time is already whole hours. ROUNDUP only rounds up when needed.",
+            "example_formula": "=INT(B2)+1"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L021-S3",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A bakery has baked 7.8 trays' worth of rolls (B2), and only complete trays can be sold. In C2, work out the full trays.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Product",
+                "B1": "Trays baked",
+                "C1": "Full trays",
+                "A2": "Rolls",
+                "B2": 7.8
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 7
+          },
+          "reference_solutions": [
+            "=ROUNDDOWN(B2,0)",
+            "=INT(B2)"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 3.9
+              },
+              "expect": {
+                "C2": 3.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Only complete trays can be sold. Which rounding function always cuts the decimals off?",
+          "ROUNDDOWN always rounds toward zero, so it simply drops the extra part. Set digits to 0 for a whole number. INT does the same for positive numbers.",
+          "Type =ROUNDDOWN(B2,0) in C2 and press Enter. 7.8 rounds down to 7, the number of complete trays."
+        ],
+        "explanation": "ROUNDDOWN never rounds up, so a partial tray is not counted.",
+        "common_mistakes": [
+          {
+            "pattern": "=ROUND(B2,0)",
+            "message": "ROUND goes to the nearest whole number, 8. Only complete trays count.",
+            "example_formula": "=ROUND(B2,0)"
+          },
+          {
+            "pattern": "=ROUNDUP(B2,0)",
+            "message": "ROUNDUP gives 8, which counts a tray that is not complete.",
+            "example_formula": "=ROUNDUP(B2,0)"
+          },
+          {
+            "pattern": "=B2-0.8",
+            "message": "That typed number only works for 7.8. Use a rounding function.",
+            "example_formula": "=B2-0.8"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L021-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "The Q4 budget is 123756 (B2). In C2, round it to the nearest thousand for a summary report.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Report",
+                "B1": "Budget",
+                "C1": "Rounded",
+                "A2": "Q4",
+                "B2": 123756
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 124000
+          },
+          "reference_solutions": [
+            "=ROUND(B2,-3)"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 98600
+              },
+              "expect": {
+                "C2": 99000.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Rounding to thousands means rounding to the left of the decimal point. Which number of digits does that?",
+          "A negative digits value counts places left of the decimal point: -1 rounds to tens, -2 to hundreds, -3 to thousands. Use ROUND for the nearest thousand.",
+          "Type =ROUND(B2,-3) in C2 and press Enter. 123,756 rounds to the nearest thousand, 124,000."
+        ],
+        "explanation": "Negative digits round to the left of the decimal point. -3 means the nearest thousand.",
+        "common_mistakes": [
+          {
+            "pattern": "=ROUNDDOWN(B2,-3)",
+            "message": "ROUNDDOWN cuts to 123000. ROUND gives the nearest thousand, 124000.",
+            "example_formula": "=ROUNDDOWN(B2,-3)"
+          },
+          {
+            "pattern": "=ROUND(B2,3)",
+            "message": "Positive digits count decimals, so this changes nothing. Use -3 for thousands.",
+            "example_formula": "=ROUND(B2,3)"
+          },
+          {
+            "pattern": "=ROUND(B2,-2)",
+            "message": "-2 rounds to hundreds, 123800. Use -3 for thousands.",
+            "example_formula": "=ROUND(B2,-2)"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L021-S5",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "The prices in B2:B4 are formatted to show 2 decimals, but each really holds 2.334. In C2, create a price that is truly rounded to 2 decimals, ready to fill down to C4.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Price",
+                "C1": "Rounded price",
+                "A2": "Mug",
+                "B2": 2.334,
+                "A3": "Cup",
+                "B3": 2.334,
+                "A4": "Bowl",
+                "B4": 2.334
+              },
+              "formats": {
+                "B2": {
+                  "num_format": "decimal_2"
+                },
+                "B3": {
+                  "num_format": "decimal_2"
+                },
+                "B4": {
+                  "num_format": "decimal_2"
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "multi_cell",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 2.33
+          },
+          "reference_solutions": [
+            "=ROUND(B2,2)"
+          ],
+          "required_functions": [
+            "ROUND"
+          ],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 2.346
+              },
+              "expect": {
+                "C2": 2.35
+              }
+            }
+          ],
+          "fill_test": {
+            "from": "C2",
+            "to": "C4",
+            "direction": "down",
+            "expect": {
+              "C3": 2.33,
+              "C4": 2.33
+            }
+          }
+        },
+        "hints": [
+          "The prices only look rounded. How can you make the stored number match what you see?",
+          "Number formats change only the display, so three hidden 2.334 values add up to 7.002. ROUND changes the stored number itself. Round to 2 decimals.",
+          "Type =ROUND(B2,2) in C2, press Enter, and fill down. Each price really becomes 2.33, so three of them add up to 6.99."
+        ],
+        "explanation": "Formatting hides decimals but keeps them. ROUND removes them, so totals match what readers see.",
+        "common_mistakes": [
+          {
+            "pattern": "=B2",
+            "message": "B2 still holds 2.334. Formatting hides the extra decimals but does not remove them.",
+            "example_formula": "=B2"
+          },
+          {
+            "pattern": "=ROUND(B2,1)",
+            "message": "That keeps one decimal, 2.3. Round to 2 decimals.",
+            "example_formula": "=ROUND(B2,1)"
+          },
+          {
+            "pattern": "=ROUNDDOWN(B2,2)",
+            "message": "ROUNDDOWN cuts 2.346 to 2.34. ROUND goes to the nearest, 2.35.",
+            "example_formula": "=ROUNDDOWN(B2,2)"
+          }
+        ],
+        "engine_support": "supported"
+      }
+    ]
+  },
+  {
+    "id": "L022",
+    "number": 22,
+    "track": "02-formulas-and-arithmetic",
+    "level": "beginner",
+    "title": "FLOOR & CEILING Functions",
+    "version_badge": null,
+    "legacy_number": 55,
+    "estimated_minutes": 7,
+    "objectives": [
+      "By the end you can round up, down and to the nearest multiple with CEILING, FLOOR and MROUND."
+    ],
+    "about": "FLOOR and CEILING round a number to a multiple of any step you choose, not just to decimal places. CEILING rounds up to the next multiple. FLOOR rounds down to the previous multiple. MROUND rounds to the nearest multiple. Each takes the number first and the step second. Use them for pack sizes, 15-minute time blocks, price points such as 0.05, and shipping weights. If the number is already a multiple, it stays the same. With a positive number, keep the step positive too. Choose the function that matches the rule your business uses.",
+    "syntax": "CEILING(number, step) · FLOOR(number, step) · MROUND(number, step)",
+    "examples": [
+      {
+        "scenario": "A school rounds chairs up to full packs.",
+        "cells": {
+          "A1": "Needed",
+          "B1": "Pack",
+          "A2": 23,
+          "B2": 4
+        },
+        "start_cell": "C2",
+        "formula": "=CEILING(A2,B2)",
+        "result": "24",
+        "why": "CEILING jumps to the next multiple of 4 above 23."
+      },
+      {
+        "scenario": "A payroll clerk pays complete blocks only.",
+        "cells": {
+          "A1": "Minutes",
+          "B1": "Block",
+          "A2": 527,
+          "B2": 15
+        },
+        "start_cell": "C2",
+        "formula": "=FLOOR(A2,B2)",
+        "result": "525",
+        "why": "FLOOR drops to the previous multiple of 15."
+      },
+      {
+        "scenario": "A café sets prices on 5p steps.",
+        "cells": {
+          "A1": "Price",
+          "B1": "Step",
+          "A2": 3.47,
+          "B2": 0.05
+        },
+        "start_cell": "C2",
+        "formula": "=MROUND(A2,B2)",
+        "result": "3.45",
+        "why": "MROUND picks the nearest multiple, 3.45 here."
+      },
+      {
+        "scenario": "A courier charges per half kilo.",
+        "cells": {
+          "A1": "Weight",
+          "B1": "Step",
+          "A2": 2.3,
+          "B2": 0.5
+        },
+        "start_cell": "C2",
+        "formula": "=CEILING(A2,B2)",
+        "result": "2.5",
+        "why": "The step can be a decimal."
+      }
+    ],
+    "watch_out": [
+      "The number comes first and the step second. Swapping them gives a different answer.",
+      "Keep the step positive for positive numbers, or Excel shows #NUM!.",
+      "ROUND counts decimal places. These functions count multiples, so use them when the step is not 10, 100 or 0.1."
+    ],
+    "recap": "You can now round to any multiple you need. Next, ODD and EVEN round to the nearest odd or even whole number.",
+    "steps": [
+      {
+        "id": "L022-S1",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A school needs 23 chairs (B2). Chairs are sold in packs of 4 (C2). In D2, work out how many chairs you must buy, rounded up to full packs.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Needed",
+                "C1": "Pack size",
+                "D1": "Units to buy",
+                "A2": "Chairs",
+                "B2": 23,
+                "C2": 4
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "D2",
+          "target_cells": [
+            "D2"
+          ],
+          "accepted_values": {
+            "D2": 24
+          },
+          "reference_solutions": [
+            "=CEILING(B2,C2)",
+            "=C2*ROUNDUP(B2/C2,0)"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 24
+              },
+              "expect": {
+                "D2": 24.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "You must buy whole packs, so never fewer chairs than needed. Which function rounds up to a multiple?",
+          "CEILING(number, step) rounds up to the next multiple of the step. With a step of 4, it jumps to 24, the next multiple of 4 above 23.",
+          "Type =CEILING(B2,C2) in D2 and press Enter. 23 chairs rounds up to 24, which is six full packs of 4."
+        ],
+        "explanation": "CEILING rounds up to the next multiple of the pack size. If you already have an exact multiple, it stays the same.",
+        "common_mistakes": [
+          {
+            "pattern": "=FLOOR(B2,C2)",
+            "message": "FLOOR rounds down to 20, which leaves you 3 chairs short.",
+            "example_formula": "=FLOOR(B2,C2)"
+          },
+          {
+            "pattern": "=ROUNDUP(B2/C2,0)",
+            "message": "That counts packs, 6. Chairs are packs times pack size. Use CEILING.",
+            "example_formula": "=ROUNDUP(B2/C2,0)"
+          },
+          {
+            "pattern": "=B2+C2",
+            "message": "That adds a whole pack even when it is not needed. Use CEILING.",
+            "example_formula": "=B2+C2"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L022-S2",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "Amina worked 527 minutes (B2). Pay counts only complete 15-minute blocks (C2). In D2, work out the paid minutes.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Worker",
+                "B1": "Minutes worked",
+                "C1": "Block",
+                "D1": "Paid minutes",
+                "A2": "Amina",
+                "B2": 527,
+                "C2": 15
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "D2",
+          "target_cells": [
+            "D2"
+          ],
+          "accepted_values": {
+            "D2": 525
+          },
+          "reference_solutions": [
+            "=FLOOR(B2,C2)",
+            "=C2*ROUNDDOWN(B2/C2,0)"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 538
+              },
+              "expect": {
+                "D2": 525.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Only complete blocks are paid. Which function rounds down to a multiple of the block size?",
+          "FLOOR(number, step) rounds down to the previous multiple of the step. With 15-minute blocks, 527 minutes drops to 525, the last full block.",
+          "Type =FLOOR(B2,C2) in D2 and press Enter. 527 minutes rounds down to 525, which is 35 full blocks of 15."
+        ],
+        "explanation": "FLOOR rounds down to the previous multiple of the block, so a partly finished block is not paid.",
+        "common_mistakes": [
+          {
+            "pattern": "=CEILING(B2,C2)",
+            "message": "CEILING rounds up to 540, which pays for a block that was not completed.",
+            "example_formula": "=CEILING(B2,C2)"
+          },
+          {
+            "pattern": "=MROUND(B2,C2)",
+            "message": "MROUND rounds to the nearest block, so 538 goes up to 540. Only complete blocks are paid.",
+            "example_formula": "=MROUND(B2,C2)"
+          },
+          {
+            "pattern": "=ROUNDDOWN(B2/C2,0)",
+            "message": "That counts blocks, 35, not minutes. Use FLOOR.",
+            "example_formula": "=ROUNDDOWN(B2/C2,0)"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L022-S3",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A café sells everything at the nearest 5p. The cost-plus price is 3.47 (B2) and the step is 0.05 (C2). In D2, work out the shelf price.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Cost-plus price",
+                "C1": "Step",
+                "D1": "Shelf price",
+                "A2": "Mug",
+                "B2": 3.47,
+                "C2": 0.05
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "D2",
+          "target_cells": [
+            "D2"
+          ],
+          "accepted_values": {
+            "D2": 3.45
+          },
+          "reference_solutions": [
+            "=MROUND(B2,C2)"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 3.48
+              },
+              "expect": {
+                "D2": 3.5
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "The price must land on the closest 5p step, up or down. Which function rounds to the nearest multiple?",
+          "MROUND(number, step) rounds to the nearest multiple of the step, up or down. With a step of 0.05, 3.47 is closer to 3.45 than to 3.50.",
+          "Type =MROUND(B2,C2) in D2 and press Enter. 3.47 rounds to the nearest 5p step, 3.45. A price of 3.48 would round to 3.50."
+        ],
+        "explanation": "MROUND picks the nearest multiple of the step, whichever direction that is.",
+        "common_mistakes": [
+          {
+            "pattern": "=CEILING(B2,C2)",
+            "message": "CEILING always rounds up, to 3.50. MROUND picks the nearest, 3.45.",
+            "example_formula": "=CEILING(B2,C2)"
+          },
+          {
+            "pattern": "=FLOOR(B2,C2)",
+            "message": "FLOOR always rounds down. A price such as 3.48 should go up to 3.50, so use MROUND.",
+            "example_formula": "=FLOOR(B2,C2)"
+          },
+          {
+            "pattern": "=ROUND(B2,2)",
+            "message": "That keeps 2 decimals, 3.47. The price must land on a 5p step.",
+            "example_formula": "=ROUND(B2,2)"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L022-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A courier charges for every started half kilo. The parcel weighs 2.3 kg (B2) and the step is 0.5 (C2). In D2, work out the charged weight.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Parcel",
+                "B1": "Weight (kg)",
+                "C1": "Step",
+                "D1": "Charged kg",
+                "A2": "Box",
+                "B2": 2.3,
+                "C2": 0.5
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "D2",
+          "target_cells": [
+            "D2"
+          ],
+          "accepted_values": {
+            "D2": 2.5
+          },
+          "reference_solutions": [
+            "=CEILING(B2,C2)"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 2.1
+              },
+              "expect": {
+                "D2": 2.5
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Charging per started half kilo means always rounding up to a multiple of 0.5.",
+          "CEILING works with any step, including decimals. A step of 0.5 rounds up to the next half kilo, so 2.3 goes up to 2.5.",
+          "Type =CEILING(B2,C2) in D2 and press Enter. 2.3 kg rounds up to 2.5 kg, the next half kilo above."
+        ],
+        "explanation": "CEILING rounds up to a multiple of any step, including 0.5.",
+        "common_mistakes": [
+          {
+            "pattern": "=ROUNDUP(B2,0)",
+            "message": "That rounds to whole kilos, 3. The courier charges per half kilo.",
+            "example_formula": "=ROUNDUP(B2,0)"
+          },
+          {
+            "pattern": "=FLOOR(B2,C2)",
+            "message": "FLOOR rounds down to 2. A started half kilo is charged.",
+            "example_formula": "=FLOOR(B2,C2)"
+          },
+          {
+            "pattern": "=MROUND(B2,C2)",
+            "message": "MROUND rounds to the nearest half kilo, so 2.1 kg would go down to 2.0. Started halves are charged.",
+            "example_formula": "=MROUND(B2,C2)"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L022-S5",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "A supplier ships only complete pallets. The pallet size is in A2 and the units you have are in B2. In C2, work out how many units can ship in full pallets.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Pallet size",
+                "B1": "Units",
+                "C1": "Shippable units",
+                "A2": 48,
+                "B2": 500
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 480
+          },
+          "reference_solutions": [
+            "=FLOOR(B2,A2)",
+            "=A2*ROUNDDOWN(B2/A2,0)"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 530
+              },
+              "expect": {
+                "C2": 528.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Check which cell holds the number and which holds the step. The number always comes first.",
+          "FLOOR(number, step) rounds down to a multiple of the step. Here the number is your units in B2 and the step is the pallet size in A2, the reverse of the column order.",
+          "Type =FLOOR(B2,A2) in C2 and press Enter. 500 units rounds down to 480, which is 10 full pallets of 48."
+        ],
+        "explanation": "The number comes first and the step second, even when the sheet lists them the other way round.",
+        "common_mistakes": [
+          {
+            "pattern": "=FLOOR(A2,B2)",
+            "message": "The arguments are the wrong way round. The number is first and the step second.",
+            "example_formula": "=FLOOR(A2,B2)"
+          },
+          {
+            "pattern": "=CEILING(B2,A2)",
+            "message": "CEILING rounds up to 528, which is more units than you have in full pallets.",
+            "example_formula": "=CEILING(B2,A2)"
+          },
+          {
+            "pattern": "=ROUNDDOWN(B2/A2,0)",
+            "message": "That counts pallets, 10, not units. Use FLOOR.",
+            "example_formula": "=ROUNDDOWN(B2/A2,0)"
+          }
+        ],
+        "engine_support": "needs_engine"
+      }
+    ]
+  },
+  {
+    "id": "L023",
+    "number": 23,
+    "track": "02-formulas-and-arithmetic",
+    "level": "beginner",
+    "title": "ODD and EVEN Functions",
+    "version_badge": null,
+    "legacy_number": 69,
+    "estimated_minutes": 6,
+    "objectives": [
+      "By the end you can round to the nearest odd or even number and test whether a number is odd or even."
+    ],
+    "about": "ODD and EVEN round a number to the nearest odd or even whole number, always moving away from zero. EVEN returns the next even integer, so 7 becomes 8 and 8 stays 8. ODD returns the next odd integer, so 12 becomes 13. ISEVEN and ISODD test a number and answer TRUE or FALSE. MOD with 2 gives the remainder, 0 for even and 1 for odd. Use them for pairs, seating, alternating teams, and checking numbers. A decimal is rounded up first, so 1.5 becomes 2 for EVEN and 3 for ODD.",
+    "syntax": "EVEN(number) · ODD(number) · ISEVEN(number) · ISODD(number) · MOD(number, 2)",
+    "examples": [
+      {
+        "scenario": "A florist sells roses in pairs only.",
+        "cells": {
+          "A1": "Wanted",
+          "A2": 7
+        },
+        "start_cell": "B2",
+        "formula": "=EVEN(A2)",
+        "result": "8",
+        "why": "EVEN rounds up to the next even number."
+      },
+      {
+        "scenario": "A theatre plans an odd number of seats per row.",
+        "cells": {
+          "A1": "Seats",
+          "A2": 12
+        },
+        "start_cell": "B2",
+        "formula": "=ODD(A2)",
+        "result": "13",
+        "why": "ODD rounds up to the next odd number."
+      },
+      {
+        "scenario": "A manager checks whether a team can pair up.",
+        "cells": {
+          "A1": "Members",
+          "A2": 9
+        },
+        "start_cell": "B2",
+        "formula": "=ISEVEN(A2)",
+        "result": "FALSE",
+        "why": "ISEVEN answers TRUE or FALSE."
+      },
+      {
+        "scenario": "A clerk flags odd invoice numbers.",
+        "cells": {
+          "A1": "Number",
+          "A2": 10457
+        },
+        "start_cell": "B2",
+        "formula": "=MOD(A2,2)",
+        "result": "1",
+        "why": "MOD with 2 leaves 1 for odd and 0 for even numbers."
+      }
+    ],
+    "watch_out": [
+      "Both functions move away from zero, so -5 becomes -6 for EVEN.",
+      "ODD(0) is 1, because zero is even and ODD must return an odd number.",
+      "ISEVEN and ISODD ignore decimals, so ISEVEN(2.9) is TRUE."
+    ],
+    "recap": "You can now round to odd and even numbers and test for them. Next, Track 03 turns to summary functions such as SUM, COUNT and AVERAGE.",
+    "steps": [
+      {
+        "id": "L023-S1",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A florist sells roses only in pairs. Maria wants 7 roses (B2). In C2, work out how many to sell, rounded up to a whole number of pairs.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Customer",
+                "B1": "Roses wanted",
+                "C1": "Roses to sell",
+                "A2": "Maria",
+                "B2": 7
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 8
+          },
+          "reference_solutions": [
+            "=EVEN(B2)"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 8
+              },
+              "expect": {
+                "C2": 8.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Roses are sold in pairs, so the number must be even. Which function rounds up to an even number?",
+          "EVEN rounds a number up to the next even whole number, and leaves even numbers alone. 7 becomes 8, and 8 stays 8.",
+          "Type =EVEN(B2) in C2 and press Enter. 7 rounds up to 8, which is four pairs of roses."
+        ],
+        "explanation": "EVEN rounds up to the next even whole number, so a pair is never broken.",
+        "common_mistakes": [
+          {
+            "pattern": "=ODD(B2)",
+            "message": "ODD gives 7, which is not a whole number of pairs. Use EVEN.",
+            "example_formula": "=ODD(B2)"
+          },
+          {
+            "pattern": "=ROUNDUP(B2/2,0)",
+            "message": "That counts pairs, 4. The task wants roses, 8. Use EVEN.",
+            "example_formula": "=ROUNDUP(B2/2,0)"
+          },
+          {
+            "pattern": "=B2+1",
+            "message": "Adding 1 breaks when the number is already even. EVEN only rounds up when needed.",
+            "example_formula": "=B2+1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L023-S2",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A theatre wants an odd number of seats in each row so there is a centre seat. Row A plans 12 seats (B2). In C2, round it up to the next odd number.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Row",
+                "B1": "Planned seats",
+                "C1": "Seats with a centre",
+                "A2": "A",
+                "B2": 12
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 13
+          },
+          "reference_solutions": [
+            "=ODD(B2)"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 13
+              },
+              "expect": {
+                "C2": 13.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "A row with a centre seat needs an odd number. Which function rounds up to an odd number?",
+          "ODD rounds a number up to the next odd whole number, and leaves odd numbers alone. 12 becomes 13, and 13 stays 13.",
+          "Type =ODD(B2) in C2 and press Enter. 12 rounds up to 13, so the row has a centre seat."
+        ],
+        "explanation": "ODD rounds up to the next odd whole number, so 12 becomes 13.",
+        "common_mistakes": [
+          {
+            "pattern": "=EVEN(B2)",
+            "message": "EVEN keeps 12, which has no centre seat. Use ODD.",
+            "example_formula": "=EVEN(B2)"
+          },
+          {
+            "pattern": "=B2+1",
+            "message": "Adding 1 breaks when the number is already odd. ODD only rounds up when needed.",
+            "example_formula": "=B2+1"
+          },
+          {
+            "pattern": "=ODD(B2)-2",
+            "message": "That goes below the plan. Rounding must go up, not down.",
+            "example_formula": "=ODD(B2)-2"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L023-S3",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "Staff are paired up for training. The sales team has 9 members (B2). In C2, show TRUE if the team can pair up exactly, and FALSE if not.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Team",
+                "B1": "Members",
+                "C1": "Can pair up?",
+                "A2": "Sales",
+                "B2": 9
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": false
+          },
+          "reference_solutions": [
+            "=ISEVEN(B2)",
+            "=MOD(B2,2)=0",
+            "=EVEN(B2)=B2"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 10
+              },
+              "expect": {
+                "C2": true
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "You need a yes or no answer, TRUE or FALSE. Which function tests whether a number is even?",
+          "ISEVEN returns TRUE for even numbers and FALSE for odd ones. ISODD does the opposite. Alternatively, MOD(B2,2)=0 tests the remainder after dividing by 2.",
+          "Type =ISEVEN(B2) in C2 and press Enter. 9 is odd, so the answer is FALSE. If the team grows to 10, it becomes TRUE."
+        ],
+        "explanation": "ISEVEN answers TRUE or FALSE, so it works well as a yes or no test.",
+        "common_mistakes": [
+          {
+            "pattern": "=ISODD(B2)",
+            "message": "ISODD asks the opposite question and returns TRUE for 9.",
+            "example_formula": "=ISODD(B2)"
+          },
+          {
+            "pattern": "=EVEN(B2)",
+            "message": "That returns a number, 10. Compare it with B2, or use ISEVEN, to get TRUE or FALSE.",
+            "example_formula": "=EVEN(B2)"
+          },
+          {
+            "pattern": "=B2/2",
+            "message": "That returns 4.5. Use ISEVEN for a TRUE or FALSE answer.",
+            "example_formula": "=B2/2"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L023-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "Odd invoice numbers go to the South team and even ones to the North team. The number is in B2. In C2, show 1 for an odd number and 0 for an even one.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Invoice",
+                "B1": "Number",
+                "C1": "1 odd, 0 even",
+                "A2": "INV",
+                "B2": 10457
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 1
+          },
+          "reference_solutions": [
+            "=MOD(B2,2)",
+            "=ISODD(B2)*1"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 10458
+              },
+              "expect": {
+                "C2": 0.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Dividing by 2 leaves a remainder of 0 or 1. Which function returns a remainder?",
+          "MOD(number, divisor) returns what is left after dividing. MOD(n,2) is 0 for even numbers and 1 for odd numbers, so it flags the odd ones.",
+          "Type =MOD(B2,2) in C2 and press Enter. 10457 divided by 2 leaves a remainder of 1, so the invoice is odd."
+        ],
+        "explanation": "MOD with 2 returns the remainder, which is 1 for every odd number and 0 for every even one.",
+        "common_mistakes": [
+          {
+            "pattern": "=MOD(B2,10)",
+            "message": "That returns the last digit, 7. Use 2 as the divisor.",
+            "example_formula": "=MOD(B2,10)"
+          },
+          {
+            "pattern": "=B2/2",
+            "message": "Dividing by 2 gives 5228.5. MOD gives the remainder, 1 for odd and 0 for even.",
+            "example_formula": "=B2/2"
+          },
+          {
+            "pattern": "=ISEVEN(B2)*1",
+            "message": "That flags even numbers, giving 0 here. The task wants 1 for odd.",
+            "example_formula": "=ISEVEN(B2)*1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L023-S5",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "Gloves are counted in pairs. A stock adjustment of -5 units is in B2. In C2, round it to the next even number, counting away from zero.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Stock adjustment",
+                "C1": "Corrected in pairs",
+                "A2": "Gloves",
+                "B2": -5
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": -6
+          },
+          "reference_solutions": [
+            "=EVEN(B2)"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": -6
+              },
+              "expect": {
+                "C2": -6.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "Negative numbers move away from zero. Which way is that for -5, and which function does it?",
+          "EVEN and ODD round away from zero. For -5, away from zero means more negative, so the next even number is -6, not -4.",
+          "Type =EVEN(B2) in C2 and press Enter. -5 moves away from zero to -6, which is three pairs."
+        ],
+        "explanation": "EVEN always moves away from zero, so -5 becomes -6.",
+        "common_mistakes": [
+          {
+            "pattern": "=ROUNDDOWN(B2/2,0)*2",
+            "message": "That rounded toward zero to -4. EVEN moves away from zero, to -6.",
+            "example_formula": "=ROUNDDOWN(B2/2,0)*2"
+          },
+          {
+            "pattern": "=B2-1",
+            "message": "Subtracting 1 breaks when the number is already even. EVEN only moves when needed.",
+            "example_formula": "=B2-1"
+          },
+          {
+            "pattern": "=ODD(B2)",
+            "message": "ODD keeps -5, which is not a whole number of pairs. Use EVEN.",
+            "example_formula": "=ODD(B2)"
+          }
+        ],
+        "engine_support": "needs_engine"
+      }
+    ]
+  },
+  {
+    "id": "T02-CP",
+    "kind": "checkpoint",
+    "number": null,
+    "track": "02-formulas-and-arithmetic",
+    "level": "beginner",
+    "title": "Track 02 Checkpoint: Formulas & arithmetic",
+    "about": "Three problems, one per level. Passing a level unlocks the next. Easy has hints on, Medium offers a hint only after a wrong attempt, and Hard has no hints.",
+    "steps": [
+      {
+        "id": "T02-E",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "easy",
+        "prompt": "A café owner needs the cost of 12 coffees at 2.5 each. The quantity is in B2 and the price is in C2. Work out the total in D2.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "Item",
+                "B1": "Qty",
+                "C1": "Price",
+                "D1": "Total",
+                "A2": "Coffee",
+                "B2": 12,
+                "C2": 2.5
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "D2"
+        ],
+        "validation": {
+          "mode": "value",
+          "start_cell": "D2",
+          "target_cells": [
+            "D2"
+          ],
+          "accepted_values": {
+            "D2": 30
+          },
+          "reference_solutions": [
+            "=B2*C2"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B2": 10
+              },
+              "expect": {
+                "D2": 25.0
+              }
+            }
+          ],
+          "fill_test": null
+        },
+        "hints": [
+          "A total is quantity times price. Which symbol multiplies?",
+          "Use * to multiply, and use cell addresses instead of typed numbers. Start the formula with =.",
+          "Type =B2*C2 in D2 and press Enter. 12 times 2.5 is 30."
+        ],
+        "explanation": "Multiplying quantity by price gives the total. Using cell addresses keeps it up to date.",
+        "common_mistakes": [
+          {
+            "pattern": "=B2+C2",
+            "message": "Adding a quantity to a price makes no sense. Multiply them.",
+            "example_formula": "=B2+C2"
+          },
+          {
+            "pattern": "=B2/C2",
+            "message": "Dividing gives 4.8. Multiply quantity by price.",
+            "example_formula": "=B2/C2"
+          },
+          {
+            "pattern": "=B2*C2*2",
+            "message": "That doubles the total. Multiply quantity by price once.",
+            "example_formula": "=B2*C2*2"
+          }
+        ],
+        "engine_support": "supported",
+        "hints_policy": "always"
+      },
+      {
+        "id": "T02-M",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "medium",
+        "prompt": "Net prices are in D2:D6. In E2, add 15% VAT to D2 using the rate stored in H1, so the formula still works after you fill it down to E6.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "D1": "Net price",
+                "E1": "With VAT",
+                "D2": 100,
+                "D3": 200,
+                "D4": 50,
+                "D5": 80,
+                "D6": 30,
+                "G1": "VAT",
+                "H1": 0.15
+              },
+              "formats": {
+                "H1": {
+                  "num_format": "percent"
+                }
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "E2"
+        ],
+        "validation": {
+          "mode": "multi_cell",
+          "start_cell": "E2",
+          "target_cells": [
+            "E2"
+          ],
+          "accepted_values": {
+            "E2": 115
+          },
+          "reference_solutions": [
+            "=D2*(1+$H$1)",
+            "=D2+D2*$H$1"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "H1": 0.2
+              },
+              "expect": {
+                "E2": 120.0
+              }
+            }
+          ],
+          "fill_test": {
+            "from": "E2",
+            "to": "E6",
+            "direction": "down",
+            "expect": {
+              "E3": 229.99999999999997,
+              "E4": 57.49999999999999,
+              "E5": 92.0,
+              "E6": 34.5
+            }
+          }
+        },
+        "hints": [
+          "The rate must stay in H1 when the formula is filled down. What fixes an address?",
+          "A dollar sign locks part of an address. $H$1 locks the column and the row, so every row reads H1. Press F4 with the cursor in H1.",
+          "Type =D2*(1+$H$1) in E2, press Enter, then fill down. Each row uses its own net price and the same rate in H1."
+        ],
+        "explanation": "$H$1 stays on the VAT cell when the formula is filled down, while D2 moves to D3 and so on.",
+        "common_mistakes": [
+          {
+            "pattern": "=D2*(1+H1)",
+            "message": "H1 slides down when filled. Lock it with $.",
+            "example_formula": "=D2*(1+H1)"
+          },
+          {
+            "pattern": "=D2*1.15",
+            "message": "That typed number will not follow the VAT cell. Refer to H1 and lock it.",
+            "example_formula": "=D2*1.15"
+          },
+          {
+            "pattern": "=D2*(1+$H1)",
+            "message": "The $ before H locks the column only. Lock the row too: $H$1.",
+            "example_formula": "=D2*(1+$H1)"
+          }
+        ],
+        "engine_support": "supported",
+        "hints_policy": "after_wrong_attempt"
+      },
+      {
+        "id": "T02-H",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "hard",
+        "prompt": "Dollar prices are in A2:A6 and the exchange rate is in B1. In C2, convert A2 to local currency, rounded to 2 decimals, so the formula can be filled down to C6.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Sheet1",
+              "cells": {
+                "A1": "USD price",
+                "B1": 0.8731,
+                "C1": "Local price",
+                "D1": "Rate in B1",
+                "A2": 12.37,
+                "A3": 8.99,
+                "A4": 25.5,
+                "A5": 40,
+                "A6": 19.99
+              }
+            }
+          ]
+        },
+        "target_cells": [
+          "C2"
+        ],
+        "validation": {
+          "mode": "multi_cell",
+          "start_cell": "C2",
+          "target_cells": [
+            "C2"
+          ],
+          "accepted_values": {
+            "C2": 10.8
+          },
+          "reference_solutions": [
+            "=ROUND(A2*$B$1,2)"
+          ],
+          "required_functions": [],
+          "required_text": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B1": 0.9
+              },
+              "expect": {
+                "C2": 11.13
+              }
+            }
+          ],
+          "fill_test": {
+            "from": "C2",
+            "to": "C6",
+            "direction": "down",
+            "expect": {
+              "C3": 7.85,
+              "C4": 22.26,
+              "C5": 34.92,
+              "C6": 17.45
+            }
+          }
+        },
+        "hints": [],
+        "explanation": "The rate in B1 is locked with $, and ROUND keeps two decimals. 12.37 times 0.8731 is 10.8002, which rounds to 10.8.",
+        "common_mistakes": [
+          {
+            "pattern": "=A2*$B$1",
+            "message": "The answer has too many decimals. Wrap the multiplication in ROUND with 2 digits.",
+            "example_formula": "=A2*$B$1"
+          },
+          {
+            "pattern": "=ROUND(A2*B1,2)",
+            "message": "B1 slides down when filled. Lock it with $B$1.",
+            "example_formula": "=ROUND(A2*B1,2)"
+          },
+          {
+            "pattern": "=ROUND(A2*$B$1,0)",
+            "message": "That rounds to a whole number. Use 2 digits for 2 decimals.",
+            "example_formula": "=ROUND(A2*$B$1,0)"
+          }
+        ],
+        "engine_support": "supported",
+        "hints_policy": "none"
+      }
+    ]
+  }
+]

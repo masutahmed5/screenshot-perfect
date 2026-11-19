@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Screenshot Perfect</string>
+    <string name="title_activity_main">Screenshot Perfect</string>
+    <string name="package_name">com.excelmaster.screenshotperfect</string>
+    <string name="custom_url_scheme">com.excelmaster.screenshotperfect</string>
+</resources>
