@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LESSON_INDEX } from "@/lib/lesson-index";
 import { missingEngineFunctions, validateLessonStep, type LessonCheckResult } from "@/lib/lesson-validation";
-import { formatValue, parseRef, type CellMap } from "@/lib/formula";
+import { formatValue, parseRef, Workbook, type CellMap } from "@/lib/formula";
 import type { LessonContent, LessonContentStep } from "@/lib/lesson-schema";
 import { recordComplete, recordLessonAttempt, recordLessonProgress, recordMistake, useProgress } from "@/lib/progress";
 import { Sheet } from "./Sheet";
@@ -154,20 +154,17 @@ function menuCommands(step: LessonContentStep, expectedType: string) {
   return [...new Set([expectedType, ...fallbackCommands, ...configured])];
 }
 
-function ShortcutControl({ accepted, onChange }: { accepted: string[][]; onChange: (value: string[]) => void }) {
+function ShortcutControl({ accepted, onChange, cells, onCellsChange, cols, rows, startCell, onInteraction }: { accepted: string[][]; onChange: (value: string[]) => void; cells: CellMap; onCellsChange: (cells: CellMap) => void; cols: number; rows: number; startCell: string; onInteraction: (active: string, range: string) => void }) {
   const platform = platformShortcutKey();
   const [captured, setCaptured] = useState<string[]>([]);
-  const [lastCapture, setLastCapture] = useState<string[]>([]);
+  const [resetKey, setResetKey] = useState(0);
   const candidates = accepted.map(expectedKeyEvents);
 
-  const capture = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const capture = (event: React.KeyboardEvent) => {
     const key = canonicalShortcutKey(event.key);
     if (["CTRL", "ALT", "SHIFT", "CMD"].includes(key)) return;
     const update = (sequence: string[]) => {
       setCaptured(sequence);
-      setLastCapture(sequence);
       onChange(sequence);
     };
     if (key === "BACKSPACE" && !event.ctrlKey && !event.metaKey && captured.at(-1)?.startsWith("TYPE:")) {
@@ -199,25 +196,13 @@ function ShortcutControl({ accepted, onChange }: { accepted: string[][]; onChang
   };
 
   return (
-    <div className="space-y-3 rounded-lg border bg-card p-5">
-      <p className="font-medium">Shortcut practice · {platform === "mac" ? "Mac" : "Windows"}</p>
-      <label className="block text-sm font-medium" htmlFor="shortcut-capture">Press the requested shortcut</label>
-      <input
-        id="shortcut-capture"
-        aria-label="Shortcut key capture"
-        className="w-full rounded-md border bg-background px-3 py-2"
-        autoComplete="off"
-        onKeyDown={capture}
-        placeholder="Focus here, then press the shortcut"
-        value={displaySequence(lastCapture)}
-        onChange={() => undefined}
-      />
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-sm text-muted-foreground" aria-live="polite">
-          {lastCapture.length ? `Captured: ${displaySequence(lastCapture)}` : "Browser or system shortcuts may be intercepted before they reach this practice field."}
-        </p>
-        <Button type="button" size="sm" variant="outline" onClick={() => { setCaptured([]); setLastCapture([]); onChange([]); }}>Reset</Button>
+    <div className="flex min-h-0 flex-col">
+      <div className="mb-2 flex items-center justify-between gap-3">
+        <p className="text-sm font-medium">Shortcut practice · {platform === "mac" ? "Mac" : "Windows"}</p>
+        <Button type="button" size="sm" variant="outline" onClick={() => { setCaptured([]); onChange([]); setResetKey((key) => key + 1); }}>Reset</Button>
       </div>
+      <div className="gw-practice-grid"><Sheet key={resetKey} cells={cells} onChange={onCellsChange} cols={cols} rows={rows} initialSelected={startCell} variant="practice" scale={0.88} shortcutPractice onShortcutKey={capture} onInteraction={onInteraction} /></div>
+      {captured.length > 0 && <p className="mt-2 break-words font-mono text-xs text-muted-foreground" aria-live="polite">{displaySequence(captured)}</p>}
     </div>
   );
 }
@@ -314,7 +299,8 @@ function preferredSheet(step: LessonContentStep) {
 }
 
 function dimensions(step: LessonContentStep, cells: CellMap) {
-  const positions = [...Object.keys(cells), ...step.target_cells].map(parseRef).filter((value) => value !== null);
+  const destinations = step.validation.mode === "shortcut" ? [step.validation.start_cell, step.validation.target, ...Object.values(step.validation.accepted_sequences).flat(2).filter((token) => /^Type:[A-Z]+\d+(?::[A-Z]+\d+)?$/i.test(token)).map((token) => token.slice(5))] : [];
+  const positions = [...Object.keys(cells), ...step.target_cells, ...destinations.flatMap((value) => value.split(":"))].map(parseRef).filter((value) => value !== null);
   return {
     cols: Math.max(8, ...positions.map((position) => position!.col + 1)),
     rows: Math.max(10, ...positions.map((position) => position!.row + 1)),
@@ -359,6 +345,7 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
     [initialStep.id]: savedSheetMaps(initialStep, savedRun?.sheets[initialStep.id]),
   }));
   const [selectedSheet, setSelectedSheet] = useState(() => preferredSheet(initialStep));
+  const sheetInteraction = useRef({ active: "A1", range: "A1" });
   const [interactionAnswers, setInteractionAnswers] = useState<Record<string, InteractionAnswers>>({});
   const [hintsUsed, setHintsUsed] = useState(savedStep?.hints_used ?? 0);
   const [attemptCount, setAttemptCount] = useState(savedStep?.attempts ?? 0);
@@ -422,7 +409,14 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
     } else if (step.type === "shortcut" && step.validation.mode === "shortcut") {
       const accepted = step.validation.accepted_sequences[platformShortcutKey()];
       const captured = Array.isArray(interaction.sequence) ? interaction.sequence as string[] : [];
-      const correct = shortcutMatches(captured, accepted);
+      const expected = step.validation.expected;
+      const destinationMatches = expected?.type === "active_cell" ? sheetInteraction.current.active === expected.cell
+        : expected?.type === "selection" ? sheetInteraction.current.range === expected.range
+        : expected?.type === "value" && expected.cells ? Object.entries(expected.cells).every(([address, value]) => {
+          if (typeof value === "string" && value.startsWith("$")) return (submittedCells[address] ?? "") !== "";
+          return new Workbook(submittedCells).get(address) === value;
+        }) : true;
+      const correct = shortcutMatches(captured, accepted) && destinationMatches;
       checked = correct
         ? { status: "correct", feedbackKey: "correct", message: step.explanation }
         : { status: "incorrect", feedbackKey: "shortcut-mismatch", message: `That shortcut was not recognized. Try the ${platformShortcutKey() === "mac" ? "Mac" : "Windows"} sequence and check again.` };
@@ -607,6 +601,9 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
         ) : step.type === "shortcut" && step.validation.mode === "shortcut" ? (
           <ShortcutControl
             key={step.id}
+            cells={cells} cols={size.cols} rows={size.rows} startCell={step.validation.start_cell}
+            onInteraction={(active, range) => { sheetInteraction.current = { active, range }; }}
+            onCellsChange={(nextCells) => { setCellsByStep((current) => ({ ...current, [step.id]: { ...(current[step.id] ?? stepSheets), [activeSheet.name]: nextCells } })); if (result?.status !== "correct") setResult(null); }}
             accepted={step.validation.accepted_sequences[platformShortcutKey()]}
             onChange={(sequence) => setInteractionAnswers((current) => ({
               ...current,
@@ -638,7 +635,7 @@ export function ContentLessonPlayer({ lesson, legacyLesson }: Props) {
             onChange={(key, value) => setInteractionAnswers((current) => ({ ...current, [step.id]: { ...(current[step.id] ?? {}), [key]: value } }))}
           />
         ) : null}
-        {!sheetStep && <div className="gw-practice-grid mt-2"><Sheet key={`preview:${step.id}`} cells={cells} onChange={() => undefined} cols={size.cols} rows={size.rows} initialSelected={step.validation.mode === "shortcut" ? step.validation.start_cell : "A1"} editableCells={[]} variant="practice" scale={0.88} /></div>}
+        {!sheetStep && step.type !== "shortcut" && <div className="gw-practice-grid mt-2"><Sheet key={`preview:${step.id}`} cells={cells} onChange={() => undefined} cols={size.cols} rows={size.rows} initialSelected={step.validation.mode === "shortcut" ? step.validation.start_cell : "A1"} editableCells={[]} variant="practice" scale={0.88} /></div>}
         <div className="mt-3 flex items-center justify-between gap-3">
           <p className="text-xs text-muted-foreground">{sheetStep ? "Press Enter to check your formula." : "Check your answer when you are ready."}</p>
           <Button onClick={() => check()} disabled={sheetStep && !supported}>{result?.status === "correct" ? stepIndex === lesson.steps.length - 1 ? "Finish lesson" : "Next step" : "Check"}</Button>

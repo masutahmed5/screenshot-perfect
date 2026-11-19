@@ -1,5 +1,8 @@
 # Tasks
 
+- [x] Add practice-only grid navigation, range selection, keystroke display, and synchronized live formula references.
+- [x] Connect structured shortcut lessons to the live worksheet; verified live selection, typing 500, undo/redo, formula result 41, mobile row selection, and 70 tests.
+
 - [x] Fix shortcut capture for multi-character Type tokens, shifted symbols, and Mac Fn navigation; verified live L009/L012/L006 shortcut grading and all 62 tests without changing spreadsheet controls.
 
 - [x] Remove old lesson content and empty tracks, retain the updated Track 01, and verify automatic track cards, lesson links, and practice navigation; all 47 tests pass.

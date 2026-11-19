@@ -41,6 +41,12 @@ export const shortcutValidationSchema = z.object({
   mode: z.literal("shortcut"),
   start_cell: z.string(),
   target: z.string(),
+  expected: z.object({
+    type: z.string(),
+    cell: z.string().optional(),
+    range: z.string().optional(),
+    cells: z.record(z.string(), z.unknown()).optional(),
+  }).optional(),
   accepted_sequences: z.object({
     windows: z.array(z.array(z.string()).min(1)).min(1),
     mac: z.array(z.array(z.string()).min(1)).min(1),
