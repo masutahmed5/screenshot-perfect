@@ -1,5 +1,10 @@
 # Tasks
 
+## Practice appearance update
+- [x] Use pure-white light-mode practice surfaces and neutral spreadsheet headers, replacing blue practice accents with green without changing landing styles.
+- [x] Add direct landing-page access and narrow the default Learn pane to 28%, retaining resizing and mobile views.
+- [x] Verify lesson interaction, Home navigation, sizing persistence, desktop/mobile appearance, and existing tests — 42 tests pass; live formula Correct, Home restored landing, 28% reset and resize persistence verified, no runtime errors or mobile overflow.
+
 ## Lesson-player redesign (phase-by-phase)
 - [x] Phase 0: audit current screens, data, interaction boundaries, tests and requested contrast.
 - [x] Phase 1: scoped light/dark foundations and reusable accessible controls — 36 tests passed, live typing/formula/theme checks passed; paused for review.

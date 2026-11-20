@@ -1,9 +1,9 @@
 import type { LessonContentStep } from "./lesson-schema";
 
 export function clampPaneRatio(ratio: number, width: number) {
-  const min = width >= 820 ? 340 / width * 100 : 30;
+  const min = width >= 820 ? 260 / width * 100 : 26;
   const max = width >= 820 ? (width - 480) / width * 100 : 70;
-  return Math.max(min, Math.min(max, Number.isFinite(ratio) ? ratio : 40));
+  return Math.max(min, Math.min(max, Number.isFinite(ratio) ? ratio : 28));
 }
 
 export function allowsDoubleEscape(step: LessonContentStep, platform: "windows" | "mac") {

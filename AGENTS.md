@@ -20,4 +20,5 @@
 - Structured shortcut lessons capture normalized chords from the practice worksheet; practice-only navigation and selection live in the sheet adapter, preserving standard/landing sheets and existing formula graders.
 - Preserve shortcut validation metadata so navigation lessons verify actual worksheet destinations and ranges as well as the accepted chord sequence.
 - Keep lesson-player foundations under `.gw-lesson-player` and reusable presentation primitives in `components/lesson-player`; scoped tokens and explicit keycap platforms prevent changes to landing styles or shortcut grading.
+- Version persisted pane sizing when its default changes so old saved widths do not hide the updated layout; subsequent user resizing remains persistent.
 - Derive presentation checklists from exact accepted-event prefixes and read-only examples from supplied lesson data; never let inferred presentation state replace lesson graders or progress IDs.

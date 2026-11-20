@@ -4,9 +4,13 @@ import { formulaLesson } from "@/test/fixtures/formula-lessons";
 import type { LessonContentStep } from "./lesson-schema";
 
 describe("workspace presentation safeguards",()=>{
-  it("enforces 340px Learn and 480px Practice minimums",()=>{
-    expect(clampPaneRatio(0,1000)).toBe(34);
+  it("enforces 260px Learn and 480px Practice minimums",()=>{
+    expect(clampPaneRatio(0,1000)).toBe(26);
     expect(clampPaneRatio(100,1000)).toBe(52);
+  });
+  it("defaults to the narrower 28 percent lesson panel",()=>{
+    expect(clampPaneRatio(Number.NaN,1000)).toBe(28);
+    expect(clampPaneRatio(28,1400)).toBe(28);
   });
   it("does not release on double Escape when the lesson expects Escape",()=>{
     const first=formulaLesson.steps[0]; if(!first) throw new Error("Missing fixture");
