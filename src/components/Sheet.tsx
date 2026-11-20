@@ -371,9 +371,9 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
                   key={c}
                   onMouseDown={(e) => { if (variant !== "practice") return; e.preventDefault(); select({ c, r: selRow }, false, "cols"); gridRef.current?.focus(); }}
                   className={cn(
-                    "sticky top-0 border-b border-r border-grid-line bg-cell-header px-1 py-1 text-center text-[calc(var(--font-size-header,11px)*var(--sheet-scale,1))] font-medium text-muted-foreground select-none transition-colors",
+                    "sticky top-0 z-10 border-b border-r border-grid-line bg-cell-header px-1 py-1 text-center text-[calc(var(--font-size-header,11px)*var(--sheet-scale,1))] font-medium text-muted-foreground select-none transition-colors",
                     compact ? "min-w-0" : "min-w-[calc(6rem*var(--sheet-scale,1))]",
-                    c === selCol && "bg-primary/15 text-primary font-semibold border-b-2 border-b-primary"
+                    c === selCol && "bg-[color-mix(in_oklab,var(--primary)_15%,var(--cell-header))] text-primary font-semibold border-b-2 border-b-primary"
                   )}
                 >
                   {indexToCol(c)}
@@ -384,7 +384,7 @@ export function Sheet({ cells, onChange, cols, rows, initialSelected = "A1", hig
           <tbody>
             {Array.from({ length: rows }, (_, r) => (
               <tr key={r}>
-                <th onMouseDown={(e) => { if (variant !== "practice") return; e.preventDefault(); select({ c: selCol, r }, false, "rows"); gridRef.current?.focus(); }} className={cn("sticky left-0 border-b border-r border-grid-line bg-cell-header px-2 text-[11px] font-medium text-muted-foreground", r === selRow && "bg-primary/15 text-primary font-semibold border-r-2 border-r-primary")}>{r + 1}</th>
+                <th onMouseDown={(e) => { if (variant !== "practice") return; e.preventDefault(); select({ c: selCol, r }, false, "rows"); gridRef.current?.focus(); }} className={cn("sticky left-0 z-10 border-b border-r border-grid-line bg-cell-header px-2 text-[11px] font-medium text-muted-foreground", r === selRow && "bg-[color-mix(in_oklab,var(--primary)_15%,var(--cell-header))] text-primary font-semibold border-r-2 border-r-primary")}>{r + 1}</th>
                 {Array.from({ length: cols }, (_, c) => {
                   const a = addr(c, r);
                   const v = wb.get(a);

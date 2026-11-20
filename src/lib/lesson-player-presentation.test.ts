@@ -8,8 +8,8 @@ describe("workspace presentation safeguards",()=>{
     expect(clampPaneRatio(0,1000)).toBe(26);
     expect(clampPaneRatio(100,1000)).toBe(52);
   });
-  it("defaults to the narrower 28 percent lesson panel",()=>{
-    expect(clampPaneRatio(Number.NaN,1000)).toBe(28);
+  it("defaults to the narrower 32 percent lesson panel",()=>{
+    expect(clampPaneRatio(Number.NaN,1000)).toBe(32);
     expect(clampPaneRatio(28,1400)).toBe(28);
   });
   it("does not release on double Escape when the lesson expects Escape",()=>{

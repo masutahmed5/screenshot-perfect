@@ -461,15 +461,15 @@
 .lp-breadcrumb button { padding: 0 4px; max-width: 160px; overflow: hidden; text-overflow: ellipsis; text-transform: capitalize; color: var(--lp-text-2); }
 .lp-breadcrumb strong { font-weight: 600; white-space: normal; font-size: 14px; line-height: 18px; }
 .lp-lesson-nav { display: flex; }
-.lp-step-segments { display: flex; width: 112px; gap: 4px; }
-.lp-step-segments span { flex: 1; height: 4px; border-radius: 6px; background: var(--lp-border-strong); }
+.lp-step-segments { display: flex; width: 180px; gap: 6px; margin-left: auto; margin-right: 8px; }
+.lp-step-segments span { flex: 1; height: 8px; border-radius: 6px; background: var(--lp-border-strong); }
 .lp-step-segments [data-state="current"] { background: var(--lp-accent); }
 .lp-step-segments [data-state="done"] { background: var(--lp-success); }
 .lp-streak { display: flex; gap: 4px; align-items: center; font-variant-numeric: tabular-nums; }
 .lp-streak svg { color: var(--lp-warning); }
 .lp-xp { white-space: nowrap; font-variant-numeric: tabular-nums; }
-.lp-workspace { display: grid; grid-template-columns: minmax(260px,var(--lp-learn-ratio,28%)) 8px minmax(480px,1fr); gap: 0; padding: 16px; flex: 1; min-height: 0; }
-.lp-learn-pane { min-height: 0; overflow: auto; scrollbar-gutter: stable; padding: 16px 24px 32px 8px; border-left: 1px solid var(--lp-border); }
+.lp-workspace { display: grid; grid-template-columns: minmax(260px,var(--lp-learn-ratio,32%)) 8px minmax(480px,1fr); gap: 0; padding: 16px; flex: 1; min-height: 0; }
+.lp-learn-pane { min-height: 0; overflow: auto; scrollbar-gutter: stable; padding: 16px 24px 32px 12px; border-left: 2px solid var(--lp-border-strong); }
 .lp-divider { cursor: col-resize; position: relative; touch-action: none; }
 .lp-divider::before { content: ""; position: absolute; width: 1px; top: 0; bottom: 0; left: 3px; background: var(--lp-border); }
 .lp-divider:hover::before { background: var(--lp-accent); }
@@ -502,7 +502,7 @@
 .lp-watch-out li + li { margin-top: 8px; }
 .lp-practice-header { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 16px; flex-shrink: 0; }
 .lp-practice-header h2 { font-size: 20px; line-height: 28px; font-weight: 600; }
-.lp-step-title-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.lp-step-title-row { display: flex; align-items: center; gap: 40px; flex-wrap: wrap; }
 .lp-practice-scroll { display: flex; flex-direction: column; min-height: 0; flex: 1; overflow: auto; padding: 0 16px; scrollbar-gutter: stable; }
 .lp-task { padding: 8px 0 12px; }
 .lp-task > p { color: var(--lp-text-2); margin-bottom: 8px; }
