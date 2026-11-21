@@ -89,7 +89,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -169,7 +168,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -264,7 +262,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -350,7 +347,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -436,7 +432,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -570,7 +565,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -654,7 +648,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -753,7 +746,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -843,7 +835,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -933,7 +924,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -1074,7 +1064,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -1083,21 +1072,22 @@
           "accepted_values": {
             "F3": "Eligible"
           },
-          "accepted_patterns": {
-            "B3": 7
-          },
-          "required_functions": {
-            "B3": 7
-          },
+          "accepted_patterns": [
+            "IF",
+            "AND"
+          ],
+          "required_functions": [
+            "IF",
+            "AND"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "No",
+              "change": {
+                "B3": 7
+              },
               "expect": {
-                "F3": [
-                  "IF",
-                  "AND"
-                ]
+                "F3": "No"
               }
             }
           ]
@@ -1159,7 +1149,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -1168,21 +1157,22 @@
           "accepted_values": {
             "F3": "Urgent"
           },
-          "accepted_patterns": {
-            "B3": 10
-          },
-          "required_functions": {
-            "B3": 10
-          },
+          "accepted_patterns": [
+            "IF",
+            "OR"
+          ],
+          "required_functions": [
+            "IF",
+            "OR"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Standard",
+              "change": {
+                "B3": 10
+              },
               "expect": {
-                "F3": [
-                  "IF",
-                  "OR"
-                ]
+                "F3": "Standard"
               }
             }
           ]
@@ -1250,7 +1240,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -1259,21 +1248,22 @@
           "accepted_values": {
             "F3": "Review"
           },
-          "accepted_patterns": {
-            "B3": 250
-          },
-          "required_functions": {
-            "B3": 250
-          },
+          "accepted_patterns": [
+            "IF",
+            "XOR"
+          ],
+          "required_functions": [
+            "IF",
+            "XOR"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "No",
+              "change": {
+                "B3": 250
+              },
               "expect": {
-                "F3": [
-                  "IF",
-                  "XOR"
-                ]
+                "F3": "No"
               }
             }
           ]
@@ -1341,7 +1331,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -1350,21 +1339,22 @@
           "accepted_values": {
             "F3": "Hold"
           },
-          "accepted_patterns": {
-            "A3": "Received"
-          },
-          "required_functions": {
-            "A3": "Received"
-          },
+          "accepted_patterns": [
+            "IF",
+            "AND"
+          ],
+          "required_functions": [
+            "IF",
+            "AND"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Release",
+              "change": {
+                "A3": "Received"
+              },
               "expect": {
-                "F3": [
-                  "IF",
-                  "AND"
-                ]
+                "F3": "Release"
               }
             }
           ]
@@ -1432,7 +1422,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -1441,21 +1430,22 @@
           "accepted_values": {
             "F3": "Standard"
           },
-          "accepted_patterns": {
-            "B3": "Basic"
-          },
-          "required_functions": {
-            "B3": "Basic"
-          },
+          "accepted_patterns": [
+            "IF",
+            "XOR"
+          ],
+          "required_functions": [
+            "IF",
+            "XOR"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Review",
+              "change": {
+                "B3": "Basic"
+              },
               "expect": {
-                "F3": [
-                  "IF",
-                  "XOR"
-                ]
+                "F3": "Review"
               }
             }
           ]
@@ -1571,7 +1561,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -1580,21 +1569,22 @@
           "accepted_values": {
             "F3": "Missing"
           },
-          "accepted_patterns": {
-            "B3": 45220
-          },
-          "required_functions": {
-            "B3": 45220
-          },
+          "accepted_patterns": [
+            "IF",
+            "ISBLANK"
+          ],
+          "required_functions": [
+            "IF",
+            "ISBLANK"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Entered",
+              "change": {
+                "B3": 45220
+              },
               "expect": {
-                "F3": [
-                  "IF",
-                  "ISBLANK"
-                ]
+                "F3": "Entered"
               }
             }
           ]
@@ -1656,7 +1646,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -1665,21 +1654,22 @@
           "accepted_values": {
             "F3": "Numeric"
           },
-          "accepted_patterns": {
-            "B3": "125.50"
-          },
-          "required_functions": {
-            "B3": "125.50"
-          },
+          "accepted_patterns": [
+            "IF",
+            "ISNUMBER"
+          ],
+          "required_functions": [
+            "IF",
+            "ISNUMBER"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Check entry",
+              "change": {
+                "B3": "125.50"
+              },
               "expect": {
-                "F3": [
-                  "IF",
-                  "ISNUMBER"
-                ]
+                "F3": "Check entry"
               }
             }
           ]
@@ -1747,7 +1737,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -1756,21 +1745,22 @@
           "accepted_values": {
             "F3": "Text"
           },
-          "accepted_patterns": {
-            "B3": 303
-          },
-          "required_functions": {
-            "B3": 303
-          },
+          "accepted_patterns": [
+            "IF",
+            "ISTEXT"
+          ],
+          "required_functions": [
+            "IF",
+            "ISTEXT"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Review",
+              "change": {
+                "B3": 303
+              },
               "expect": {
-                "F3": [
-                  "IF",
-                  "ISTEXT"
-                ]
+                "F3": "Review"
               }
             }
           ]
@@ -1838,7 +1828,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -1847,21 +1836,22 @@
           "accepted_values": {
             "F3": "Valid"
           },
-          "accepted_patterns": {
-            "B3": "TRUE"
-          },
-          "required_functions": {
-            "B3": "TRUE"
-          },
+          "accepted_patterns": [
+            "IF",
+            "ISLOGICAL"
+          ],
+          "required_functions": [
+            "IF",
+            "ISLOGICAL"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Review",
+              "change": {
+                "B3": "TRUE"
+              },
               "expect": {
-                "F3": [
-                  "IF",
-                  "ISLOGICAL"
-                ]
+                "F3": "Review"
               }
             }
           ]
@@ -1929,7 +1919,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -1938,21 +1927,22 @@
           "accepted_values": {
             "F3": "Check import"
           },
-          "accepted_patterns": {
-            "B3": 18
-          },
-          "required_functions": {
-            "B3": 18
-          },
+          "accepted_patterns": [
+            "IF",
+            "ISNUMBER"
+          ],
+          "required_functions": [
+            "IF",
+            "ISNUMBER"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Use quantity",
+              "change": {
+                "B3": 18
+              },
               "expect": {
-                "F3": [
-                  "IF",
-                  "ISNUMBER"
-                ]
+                "F3": "Use quantity"
               }
             }
           ]
@@ -2068,7 +2058,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -2077,20 +2066,20 @@
           "accepted_values": {
             "F3": "B"
           },
-          "accepted_patterns": {
-            "B3": 92
-          },
-          "required_functions": {
-            "B3": 92
-          },
+          "accepted_patterns": [
+            "IFS"
+          ],
+          "required_functions": [
+            "IFS"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "A",
+              "change": {
+                "B3": 92
+              },
               "expect": {
-                "F3": [
-                  "IFS"
-                ]
+                "F3": "A"
               }
             }
           ]
@@ -2152,7 +2141,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -2161,20 +2149,20 @@
           "accepted_values": {
             "F3": "Critical"
           },
-          "accepted_patterns": {
-            "B3": 9
-          },
-          "required_functions": {
-            "B3": 9
-          },
+          "accepted_patterns": [
+            "IFS"
+          ],
+          "required_functions": [
+            "IFS"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Low",
+              "change": {
+                "B3": 9
+              },
               "expect": {
-                "F3": [
-                  "IFS"
-                ]
+                "F3": "Low"
               }
             }
           ]
@@ -2242,7 +2230,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -2251,20 +2238,20 @@
           "accepted_values": {
             "F3": "Medium"
           },
-          "accepted_patterns": {
-            "B3": 12
-          },
-          "required_functions": {
-            "B3": 12
-          },
+          "accepted_patterns": [
+            "IFS"
+          ],
+          "required_functions": [
+            "IFS"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Normal",
+              "change": {
+                "B3": 12
+              },
               "expect": {
-                "F3": [
-                  "IFS"
-                ]
+                "F3": "Normal"
               }
             }
           ]
@@ -2332,7 +2319,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -2341,20 +2327,20 @@
           "accepted_values": {
             "F3": "Good"
           },
-          "accepted_patterns": {
-            "B3": 96
-          },
-          "required_functions": {
-            "B3": 96
-          },
+          "accepted_patterns": [
+            "IFS"
+          ],
+          "required_functions": [
+            "IFS"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Excellent",
+              "change": {
+                "B3": 96
+              },
               "expect": {
-                "F3": [
-                  "IFS"
-                ]
+                "F3": "Excellent"
               }
             }
           ]
@@ -2422,7 +2408,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -2431,20 +2416,20 @@
           "accepted_values": {
             "F3": 0.05
           },
-          "accepted_patterns": {
-            "B3": 800
-          },
-          "required_functions": {
-            "B3": 800
-          },
+          "accepted_patterns": [
+            "IFS"
+          ],
+          "required_functions": [
+            "IFS"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": 0.05,
+              "change": {
+                "B3": 800
+              },
               "expect": {
-                "F3": [
-                  "IFS"
-                ]
+                "F3": 0.05
               }
             }
           ]
@@ -2554,7 +2539,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -2563,20 +2547,20 @@
           "accepted_values": {
             "F3": "North"
           },
-          "accepted_patterns": {
-            "A3": "S"
-          },
-          "required_functions": {
-            "A3": "S"
-          },
+          "accepted_patterns": [
+            "SWITCH"
+          ],
+          "required_functions": [
+            "SWITCH"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "South",
+              "change": {
+                "A3": "S"
+              },
               "expect": {
-                "F3": [
-                  "SWITCH"
-                ]
+                "F3": "South"
               }
             }
           ]
@@ -2632,7 +2616,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -2641,20 +2624,20 @@
           "accepted_values": {
             "F3": "Afternoon"
           },
-          "accepted_patterns": {
-            "A3": "N"
-          },
-          "required_functions": {
-            "A3": "N"
-          },
+          "accepted_patterns": [
+            "SWITCH"
+          ],
+          "required_functions": [
+            "SWITCH"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Night",
+              "change": {
+                "A3": "N"
+              },
               "expect": {
-                "F3": [
-                  "SWITCH"
-                ]
+                "F3": "Night"
               }
             }
           ]
@@ -2713,7 +2696,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -2722,20 +2704,20 @@
           "accepted_values": {
             "F3": "High"
           },
-          "accepted_patterns": {
-            "A3": 2
-          },
-          "required_functions": {
-            "A3": 2
-          },
+          "accepted_patterns": [
+            "SWITCH"
+          ],
+          "required_functions": [
+            "SWITCH"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Medium",
+              "change": {
+                "A3": 2
+              },
               "expect": {
-                "F3": [
-                  "SWITCH"
-                ]
+                "F3": "Medium"
               }
             }
           ]
@@ -2794,7 +2776,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -2803,20 +2784,20 @@
           "accepted_values": {
             "F3": "Wait"
           },
-          "accepted_patterns": {
-            "A3": "Done"
-          },
-          "required_functions": {
-            "A3": "Done"
-          },
+          "accepted_patterns": [
+            "SWITCH"
+          ],
+          "required_functions": [
+            "SWITCH"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Close",
+              "change": {
+                "A3": "Done"
+              },
               "expect": {
-                "F3": [
-                  "SWITCH"
-                ]
+                "F3": "Close"
               }
             }
           ]
@@ -2875,7 +2856,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -2884,20 +2864,20 @@
           "accepted_values": {
             "F3": "Check"
           },
-          "accepted_patterns": {
-            "A3": 1
-          },
-          "required_functions": {
-            "A3": 1
-          },
+          "accepted_patterns": [
+            "SWITCH"
+          ],
+          "required_functions": [
+            "SWITCH"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Paid",
+              "change": {
+                "A3": 1
+              },
               "expect": {
-                "F3": [
-                  "SWITCH"
-                ]
+                "F3": "Paid"
               }
             }
           ]
@@ -3015,7 +2995,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -3024,21 +3003,22 @@
           "accepted_values": {
             "F3": "Bonus"
           },
-          "accepted_patterns": {
-            "B3": 450
-          },
-          "required_functions": {
-            "B3": 450
-          },
+          "accepted_patterns": [
+            "IF",
+            "AND"
+          ],
+          "required_functions": [
+            "IF",
+            "AND"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "None",
+              "change": {
+                "B3": 450
+              },
               "expect": {
-                "F3": [
-                  "IF",
-                  "AND"
-                ]
+                "F3": "None"
               }
             }
           ]
@@ -3100,7 +3080,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -3109,21 +3088,22 @@
           "accepted_values": {
             "F3": "Urgent"
           },
-          "accepted_patterns": {
-            "A3": "Normal"
-          },
-          "required_functions": {
-            "A3": "Normal"
-          },
+          "accepted_patterns": [
+            "IF",
+            "OR"
+          ],
+          "required_functions": [
+            "IF",
+            "OR"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Standard",
+              "change": {
+                "A3": "Normal"
+              },
               "expect": {
-                "F3": [
-                  "IF",
-                  "OR"
-                ]
+                "F3": "Standard"
               }
             }
           ]
@@ -3191,7 +3171,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -3200,20 +3179,20 @@
           "accepted_values": {
             "F3": "Retry"
           },
-          "accepted_patterns": {
-            "B3": 35
-          },
-          "required_functions": {
-            "B3": 35
-          },
+          "accepted_patterns": [
+            "IF"
+          ],
+          "required_functions": [
+            "IF"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Review",
+              "change": {
+                "B3": 35
+              },
               "expect": {
-                "F3": [
-                  "IF"
-                ]
+                "F3": "Review"
               }
             }
           ]
@@ -3281,7 +3260,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -3290,20 +3268,20 @@
           "accepted_values": {
             "F3": "Urgent"
           },
-          "accepted_patterns": {
-            "B3": 7
-          },
-          "required_functions": {
-            "B3": 7
-          },
+          "accepted_patterns": [
+            "IF"
+          ],
+          "required_functions": [
+            "IF"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "Reorder",
+              "change": {
+                "B3": 7
+              },
               "expect": {
-                "F3": [
-                  "IF"
-                ]
+                "F3": "Reorder"
               }
             }
           ]
@@ -3371,7 +3349,6 @@
             }
           ]
         },
-        "start_cell": "F3",
         "target_cells": [
           "F3"
         ],
@@ -3380,21 +3357,22 @@
           "accepted_values": {
             "F3": "Bonus"
           },
-          "accepted_patterns": {
-            "B3": 499
-          },
-          "required_functions": {
-            "B3": 499
-          },
+          "accepted_patterns": [
+            "IF",
+            "AND"
+          ],
+          "required_functions": [
+            "IF",
+            "AND"
+          ],
           "forbid_hardcoded": true,
           "recalc_variants": [
             {
-              "change": "None",
+              "change": {
+                "B3": 499
+              },
               "expect": {
-                "F3": [
-                  "IF",
-                  "AND"
-                ]
+                "F3": "None"
               }
             }
           ]
