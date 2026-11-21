@@ -24,7 +24,7 @@ export type LessonCheckResult = {
 
 const near = (actual: Scalar, expected: unknown) => {
   if (typeof actual === "number" && typeof expected === "number") return Math.abs(actual - expected) < 1e-6;
-  return String(actual ?? "").trim() === String(expected ?? "").trim();
+  return String(actual ?? "").trim().toLowerCase() === String(expected ?? "").trim().toLowerCase();
 };
 
 const normalize = (formula: string) =>
