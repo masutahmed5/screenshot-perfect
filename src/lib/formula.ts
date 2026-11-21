@@ -578,10 +578,8 @@ export class Workbook {
       case "neg": { const v = toNum(scalar(this.evalNode(n.e, sheet, localNames))); return typeof v === "string" ? v : -v; }
       case "pct": { const v = toNum(scalar(this.evalNode(n.e, sheet, localNames))); return typeof v === "string" ? v : v / 100; }
       case "fn": {
-        const f = FNS[n.name];
-        if (!f) return ERR.NAME;
-        const [minArgs, maxArgs] = ARITY[n.name];
-        if (n.args.length < minArgs || n.args.length > maxArgs) return ERR.VALUE;
+        const arity = ARITY[n.name];
+        if (arity && (n.args.length < arity[0] || n.args.length > arity[1])) return ERR.VALUE;
         if (n.name === "ISREF") return n.args.length === 1 && ["ref", "range", "spill"].includes(n.args[0].k);
         if (n.name === "IF") { if (n.args.length < 2 || n.args.length > 3) return ERR.VALUE; const c = scalar(this.evalNode(n.args[0], sheet, localNames)); if (isError(c)) return c; return truthy(c) ? this.evalNode(n.args[1], sheet, localNames) : n.args[2] ? this.evalNode(n.args[2], sheet, localNames) : false; }
         if (n.name === "IFERROR" || n.name === "IFNA") {
@@ -613,6 +611,8 @@ export class Workbook {
           }
           return this.evalNode(n.args[n.args.length - 1], sheet, scope);
         }
+        const f = FNS[n.name];
+        if (!f) return ERR.NAME;
         if (["SUMIFS", "COUNTIFS", "AVERAGEIFS", "MAXIFS", "MINIFS"].includes(n.name) && (n.args.length < (n.name === "COUNTIFS" ? 2 : 3) || n.args.length % 2 !== (n.name === "COUNTIFS" ? 0 : 1))) return ERR.VALUE;
         const args = n.args.map((a) => this.evalNode(a, sheet, localNames));
         if (!["COUNT", "COUNTA", "COUNTBLANK", "COUNTIF", "COUNTIFS", "ISBLANK", "ISERR", "ISERROR", "ISNA", "ISNONTEXT", "ISNUMBER", "ISLOGICAL", "ISTEXT", "ISEVEN", "ISODD", "AGGREGATE"].includes(n.name)) {
