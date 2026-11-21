@@ -1,0 +1,3432 @@
+[
+  {
+    "id": "L036",
+    "number": 36,
+    "track": "04-decisions-with-if",
+    "level": "intermediate",
+    "title": "True & False",
+    "version_badge": null,
+    "legacy_number": 6,
+    "estimated_minutes": 6,
+    "objectives": [
+      "Compare values and return TRUE or FALSE",
+      "Use =, >, <, >=, <= and <>",
+      "Recognise how boundary values affect a comparison"
+    ],
+    "about": "A comparison checks whether two values meet a rule. Excel returns TRUE when the rule is met and FALSE when it is not. You can compare numbers, dates, text, or cell references. A manager might check whether stock is below its reorder point or whether a payment date has passed. Use comparison operators when you need a clear yes-or-no result, not a custom label. Start with an equals sign, select the first value, add the operator, then select the second value. The result updates whenever either value changes. The comparison is recalculated automatically when either value changes.",
+    "syntax": "=value1 operator value2\n= equal to · > greater than · < less than\n>= greater than or equal to · <= less than or equal to · <> not equal to",
+    "examples": [
+      {
+        "scenario": "A delivery manager checks a shipment target.",
+        "cells": {
+          "B3": 120,
+          "C3": 100
+        },
+        "formula": "=B3>=C3",
+        "result": "TRUE",
+        "why": "120 is greater than or equal to 100."
+      },
+      {
+        "scenario": "A teacher checks a score below the pass mark.",
+        "cells": {
+          "B3": 48,
+          "C3": 50
+        },
+        "formula": "=B3<C3",
+        "result": "TRUE",
+        "why": "48 is less than 50."
+      },
+      {
+        "scenario": "An accounts clerk checks whether two status labels differ.",
+        "cells": {
+          "B3": "Paid",
+          "C3": "Unpaid"
+        },
+        "formula": "=B3<>C3",
+        "result": "TRUE",
+        "why": "The two text values are not equal."
+      }
+    ],
+    "watch_out": [
+      "Use >= when the boundary itself should pass; > excludes it.",
+      "Text comparisons depend on the actual text values.",
+      "A comparison returns TRUE or FALSE, not a custom status label."
+    ],
+    "recap": "Comparison operators test a rule and return TRUE or FALSE. Lesson 37 uses that result inside IF to display a useful label.",
+    "steps": [
+      {
+        "id": "L036-S1",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A delivery manager checks whether a shipment met its target. In F3, test whether delivered units are at least the target. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Route",
+                "B2": "Delivered",
+                "C2": "Target",
+                "A3": "North",
+                "B3": 120,
+                "C3": 100,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 130,
+                "C4": 110,
+                "A5": "West",
+                "B5": 140,
+                "C5": 120,
+                "A6": "Central",
+                "B6": 150,
+                "C6": 130,
+                "A7": "North",
+                "B7": 160,
+                "C7": 140
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": true
+          },
+          "accepted_patterns": [],
+          "required_functions": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B3": 90
+              },
+              "expect": {
+                "F3": false
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=B3>=C3"
+        ],
+        "hints": [
+          "Does the delivered amount meet or exceed the target?",
+          "A comparison returns TRUE or FALSE without IF.",
+          "Use =B3>=C3. The >= operator includes the target itself."
+        ],
+        "explanation": "120 is at least 100, so the result is TRUE.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L036-S2",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A teacher checks whether a score is strictly above 49. In F3, test the score. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Learner",
+                "B2": "Score",
+                "A3": "Mina",
+                "B3": 72,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 82,
+                "A5": "West",
+                "B5": 92,
+                "A6": "Central",
+                "B6": 102,
+                "A7": "North",
+                "B7": 112
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": true
+          },
+          "accepted_patterns": [],
+          "required_functions": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B3": 49
+              },
+              "expect": {
+                "F3": false
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=B3>49"
+        ],
+        "hints": [
+          "What score boundary separates the two outcomes?",
+          "Use > when the value must be strictly greater.",
+          "Use =B3>49. The score is compared directly with 49."
+        ],
+        "explanation": "72 is greater than 49.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L036-S3",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A warehouse checks whether stock is below its reorder point. In F3, compare stock with the reorder point. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Item",
+                "B2": "Stock",
+                "C2": "Reorder point",
+                "A3": "Paper",
+                "B3": 18,
+                "C3": 20,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 28,
+                "C4": 30,
+                "A5": "West",
+                "B5": 38,
+                "C5": 40,
+                "A6": "Central",
+                "B6": 48,
+                "C6": 50,
+                "A7": "North",
+                "B7": 58,
+                "C7": 60,
+                "A8": "East",
+                "B8": 68,
+                "C8": 70,
+                "A9": "Pending",
+                "B9": 78,
+                "C9": 80,
+                "A10": "Closed",
+                "B10": 88,
+                "C10": 90
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": true
+          },
+          "accepted_patterns": [],
+          "required_functions": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B3": 25
+              },
+              "expect": {
+                "F3": false
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=B3<C3"
+        ],
+        "hints": [
+          "Should stock be strictly lower than the reorder point?",
+          "The less-than operator is TRUE only when the left value is smaller.",
+          "Use =B3<C3. Since 18 is below 20, Excel returns TRUE."
+        ],
+        "explanation": "Stock is two units below the reorder point.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L036-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A payroll clerk checks whether overtime hours equal zero. In F3, compare the value with zero. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Staff member",
+                "B2": "Overtime hours",
+                "A3": "Samir",
+                "B3": 0,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 10,
+                "A5": "West",
+                "B5": 20,
+                "A6": "Central",
+                "B6": 30,
+                "A7": "North",
+                "B7": 40,
+                "A8": "East",
+                "B8": 50,
+                "A9": "Pending",
+                "B9": 60,
+                "A10": "Closed",
+                "B10": 70
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": true
+          },
+          "accepted_patterns": [],
+          "required_functions": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B3": 2
+              },
+              "expect": {
+                "F3": false
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=B3=0"
+        ],
+        "hints": [
+          "Which operator checks whether two values are equal?",
+          "A single = inside a formula compares values.",
+          "Use =B3=0. The cell contains zero, so the comparison is TRUE."
+        ],
+        "explanation": "The comparison is TRUE because overtime is exactly zero.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L036-S5",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "A sales report flags orders strictly above 500. In F3, test the order value; 500 itself must not qualify. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Order",
+                "B2": "Value",
+                "A3": "O-104",
+                "B3": 500,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 510,
+                "A5": "West",
+                "B5": 520,
+                "A6": "Central",
+                "B6": 530,
+                "A7": "North",
+                "B7": 540,
+                "A8": "East",
+                "B8": 550,
+                "A9": "Pending",
+                "B9": 560,
+                "A10": "Closed",
+                "B10": 570
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": false
+          },
+          "accepted_patterns": [],
+          "required_functions": [],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B3": 510
+              },
+              "expect": {
+                "F3": true
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=B3>500"
+        ],
+        "hints": [
+          "Does the rule include 500 or only values above it?",
+          "The > operator excludes the boundary; >= includes it.",
+          "Use =B3>500. Exactly 500 is not greater than 500."
+        ],
+        "explanation": "The boundary value returns FALSE.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "supported"
+      }
+    ]
+  },
+  {
+    "id": "L037",
+    "number": 37,
+    "track": "04-decisions-with-if",
+    "level": "intermediate",
+    "title": "IF Function",
+    "version_badge": null,
+    "legacy_number": 7,
+    "estimated_minutes": 6,
+    "objectives": [
+      "Test one condition with IF",
+      "Return one result when TRUE and another when FALSE",
+      "Use text and numeric results in IF"
+    ],
+    "about": "IF lets a formula make a decision. It checks one condition and returns one result when the condition is TRUE, then another when it is FALSE. Use it to label orders, flag overdue invoices, assign pass or fail results, or show whether stock needs attention. The condition is usually a comparison such as B2>100 or A2=\"East\". After the condition, enter the value for TRUE, then the value for FALSE. Text results need quotation marks, while numbers do not. Choose the comparison carefully: > excludes the boundary, while >= includes it. IF returns only one of its two results for each row.",
+    "syntax": "=IF(logical_test, value_if_true, value_if_false)\nlogical_test: the condition Excel checks\nvalue_if_true: result when TRUE\nvalue_if_false: result when FALSE",
+    "examples": [
+      {
+        "scenario": "A retailer labels a sale above 100.",
+        "cells": {
+          "B3": 145
+        },
+        "formula": "=IF(B3>100,\"Large\",\"Standard\")",
+        "result": "Large",
+        "why": "The condition is TRUE."
+      },
+      {
+        "scenario": "A school records a pass at 50 or more.",
+        "cells": {
+          "B3": 47
+        },
+        "formula": "=IF(B3>=50,\"Pass\",\"Retry\")",
+        "result": "Retry",
+        "why": "47 does not meet the threshold."
+      },
+      {
+        "scenario": "A service team checks whether a ticket is closed.",
+        "cells": {
+          "B3": "Open"
+        },
+        "formula": "=IF(B3=\"Closed\",\"Done\",\"Follow up\")",
+        "result": "Follow up",
+        "why": "The text does not match Closed."
+      }
+    ],
+    "watch_out": [
+      "Put text results inside double quotation marks.",
+      "The TRUE result comes before the FALSE result.",
+      "Check whether the rule uses > or >=; the boundary can change the outcome."
+    ],
+    "recap": "IF tests one condition and returns one of two results. Lesson 38 adds multiple conditions with AND, OR and XOR.",
+    "steps": [
+      {
+        "id": "L037-S1",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A shop marks orders as Large when value exceeds 100. In F3, return Large or Standard. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Order",
+                "B2": "Value",
+                "A3": "O-101",
+                "B3": 145,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 155,
+                "A5": "West",
+                "B5": 165,
+                "A6": "Central",
+                "B6": 175,
+                "A7": "North",
+                "B7": 185
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Large"
+          },
+          "accepted_patterns": [
+            "IF"
+          ],
+          "required_functions": [
+            "IF"
+          ],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B3": 90
+              },
+              "expect": {
+                "F3": "Standard"
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(B3>100,\"Large\",\"Standard\")"
+        ],
+        "hints": [
+          "What label should appear when the value passes the threshold?",
+          "IF takes a test, a TRUE result, and a FALSE result.",
+          "Use =IF(B3>100,\"Large\",\"Standard\"). Excel tests B3>100, then returns the matching label."
+        ],
+        "explanation": "145 is above 100, so IF returns Large.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L037-S2",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A training team marks attendance Complete at 8 hours or more. In F3, show Complete or Incomplete. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Trainee",
+                "B2": "Hours",
+                "A3": "Liya",
+                "B3": 8,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 18,
+                "A5": "West",
+                "B5": 28,
+                "A6": "Central",
+                "B6": 38,
+                "A7": "North",
+                "B7": 48
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Complete"
+          },
+          "accepted_patterns": [
+            "IF"
+          ],
+          "required_functions": [
+            "IF"
+          ],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B3": 6
+              },
+              "expect": {
+                "F3": "Incomplete"
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(B3>=8,\"Complete\",\"Incomplete\")"
+        ],
+        "hints": [
+          "Does the rule include exactly eight hours?",
+          "Use >= because eight hours is enough.",
+          "Use =IF(B3>=8,\"Complete\",\"Incomplete\"). The first result is used when the test is TRUE."
+        ],
+        "explanation": "The value is exactly 8, so the inclusive condition returns Complete.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L037-S3",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A finance assistant flags an invoice overdue when its due date is earlier than the review date. In F3, return Overdue or Current. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Invoice",
+                "B2": "Due date",
+                "C2": "Review date",
+                "A3": "INV-204",
+                "B3": 45200,
+                "C3": 45210,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 45210,
+                "C4": 45220,
+                "A5": "West",
+                "B5": 45220,
+                "C5": 45230,
+                "A6": "Central",
+                "B6": 45230,
+                "C6": 45240,
+                "A7": "North",
+                "B7": 45240,
+                "C7": 45250,
+                "A8": "East",
+                "B8": 45250,
+                "C8": 45260,
+                "A9": "Pending",
+                "B9": 45260,
+                "C9": 45270,
+                "A10": "Closed",
+                "B10": 45270,
+                "C10": 45280
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Overdue"
+          },
+          "accepted_patterns": [
+            "IF"
+          ],
+          "required_functions": [
+            "IF"
+          ],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B3": 45215
+              },
+              "expect": {
+                "F3": "Current"
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(B3<C3,\"Overdue\",\"Current\")"
+        ],
+        "hints": [
+          "Which date should be compared with the review date?",
+          "Excel stores dates as numbers, so a less-than comparison can compare dates.",
+          "Use =IF(B3<C3,\"Overdue\",\"Current\"). A due date before review is Overdue."
+        ],
+        "explanation": "The due date is earlier than the review date.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L037-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A warehouse labels stock Reorder at 15 units or fewer. In F3, return Reorder or Enough. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Item",
+                "B2": "Units",
+                "A3": "Cable",
+                "B3": 12,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 22,
+                "A5": "West",
+                "B5": 32,
+                "A6": "Central",
+                "B6": 42,
+                "A7": "North",
+                "B7": 52,
+                "A8": "East",
+                "B8": 62,
+                "A9": "Pending",
+                "B9": 72,
+                "A10": "Closed",
+                "B10": 82
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Reorder"
+          },
+          "accepted_patterns": [
+            "IF"
+          ],
+          "required_functions": [
+            "IF"
+          ],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B3": 18
+              },
+              "expect": {
+                "F3": "Enough"
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(B3<=15,\"Reorder\",\"Enough\")"
+        ],
+        "hints": [
+          "Should a value of 15 trigger the reorder label?",
+          "The rule says at or below 15, so include 15.",
+          "Use =IF(B3<=15,\"Reorder\",\"Enough\"). The condition is TRUE for 12."
+        ],
+        "explanation": "12 is below the reorder point, so the result is Reorder.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "supported"
+      },
+      {
+        "id": "L037-S5",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "A bonus policy pays only when sales are above 500. In F3, return Eligible or Not eligible; exactly 500 does not qualify. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Salesperson",
+                "B2": "Sales",
+                "A3": "Nuru",
+                "B3": 500,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 510,
+                "A5": "West",
+                "B5": 520,
+                "A6": "Central",
+                "B6": 530,
+                "A7": "North",
+                "B7": 540,
+                "A8": "East",
+                "B8": 550,
+                "A9": "Pending",
+                "B9": 560,
+                "A10": "Closed",
+                "B10": 570
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Not eligible"
+          },
+          "accepted_patterns": [
+            "IF"
+          ],
+          "required_functions": [
+            "IF"
+          ],
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": {
+                "B3": 520
+              },
+              "expect": {
+                "F3": "Eligible"
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(B3>500,\"Eligible\",\"Not eligible\")"
+        ],
+        "hints": [
+          "Does the policy say above 500 or 500 and above?",
+          "A strict threshold uses >, not >=.",
+          "Use =IF(B3>500,\"Eligible\",\"Not eligible\"). Exactly 500 makes the test FALSE."
+        ],
+        "explanation": "The boundary value does not qualify because it is not greater than 500.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "supported"
+      }
+    ]
+  },
+  {
+    "id": "L038",
+    "number": 38,
+    "track": "04-decisions-with-if",
+    "level": "intermediate",
+    "title": "AND, OR, XOR Functions",
+    "version_badge": null,
+    "legacy_number": 23,
+    "estimated_minutes": 6,
+    "objectives": [
+      "Require all conditions with AND",
+      "Accept any matching condition with OR",
+      "Test whether exactly one of two conditions is true with XOR"
+    ],
+    "about": "AND, OR and XOR combine logical tests into one TRUE or FALSE result. AND requires every test to pass. OR needs at least one test to pass. XOR is different: it returns TRUE when an odd number of tests are TRUE, so with two tests, exactly one must pass. Use these functions when a decision depends on several details, such as region and sales, payment and stock, or priority and waiting time. Put each test inside the function, separated by commas. You can use the result directly or place it inside IF to return a label. Write the rule in plain English first; that makes the choice between AND and OR clearer.",
+    "syntax": "=AND(logical1, [logical2], …)\n=OR(logical1, [logical2], …)\n=XOR(logical1, [logical2], …)",
+    "examples": [
+      {
+        "scenario": "A bonus requires East region and sales of at least 500.",
+        "cells": {
+          "A3": "East",
+          "B3": 620
+        },
+        "formula": "=AND(A3=\"East\",B3>=500)",
+        "result": "TRUE",
+        "why": "Both conditions are met."
+      },
+      {
+        "scenario": "A case is urgent when High priority or older than 24 hours.",
+        "cells": {
+          "A3": "Normal",
+          "B3": 30
+        },
+        "formula": "=OR(A3=\"High\",B3>24)",
+        "result": "TRUE",
+        "why": "The waiting-time condition is enough."
+      },
+      {
+        "scenario": "A promotion applies when exactly one condition is met.",
+        "cells": {
+          "A3": "New",
+          "B3": 150
+        },
+        "formula": "=XOR(A3=\"New\",B3>200)",
+        "result": "TRUE",
+        "why": "Only the customer-type condition is TRUE."
+      }
+    ],
+    "watch_out": [
+      "AND means all conditions; OR means at least one.",
+      "XOR is not the same as OR when multiple conditions are TRUE.",
+      "Text inside a test needs quotation marks."
+    ],
+    "recap": "AND, OR and XOR combine tests. Lesson 39 uses IS functions to identify the kind of value a cell contains.",
+    "steps": [
+      {
+        "id": "L038-S1",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A meal allowance requires East region and at least 8 shifts. In F3, return Eligible or No. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Region",
+                "B2": "Shifts",
+                "A3": "East",
+                "B3": 9,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 19,
+                "A5": "West",
+                "B5": 29,
+                "A6": "Central",
+                "B6": 39,
+                "A7": "North",
+                "B7": 49
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Eligible"
+          },
+          "accepted_patterns": {
+            "B3": 7
+          },
+          "required_functions": {
+            "B3": 7
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "No",
+              "expect": {
+                "F3": [
+                  "IF",
+                  "AND"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(AND(A3=\"East\",B3>=8),\"Eligible\",\"No\")"
+        ],
+        "hints": [
+          "Must both rules pass?",
+          "AND returns TRUE only when every condition is TRUE.",
+          "Use =IF(AND(A3=\"East\",B3>=8),\"Eligible\",\"No\"). Both tests pass."
+        ],
+        "explanation": "The worker is in East and has 9 shifts.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L038-S2",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A help desk marks a case Urgent when priority is High or waiting time exceeds 24 hours. In F3, classify it. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Priority",
+                "B2": "Hours waiting",
+                "A3": "Normal",
+                "B3": 30,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 40,
+                "A5": "West",
+                "B5": 50,
+                "A6": "Central",
+                "B6": 60,
+                "A7": "North",
+                "B7": 70
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Urgent"
+          },
+          "accepted_patterns": {
+            "B3": 10
+          },
+          "required_functions": {
+            "B3": 10
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Standard",
+              "expect": {
+                "F3": [
+                  "IF",
+                  "OR"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(OR(A3=\"High\",B3>24),\"Urgent\",\"Standard\")"
+        ],
+        "hints": [
+          "Is either condition enough?",
+          "OR returns TRUE when at least one condition is TRUE.",
+          "Use =IF(OR(A3=\"High\",B3>24),\"Urgent\",\"Standard\"). The wait exceeds 24."
+        ],
+        "explanation": "Only one condition needs to pass.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L038-S3",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A promotion applies when exactly one condition is met: customer is New or order exceeds 200. In F3, return Review or No. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Customer type",
+                "B2": "Order value",
+                "A3": "New",
+                "B3": 150,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 160,
+                "A5": "West",
+                "B5": 170,
+                "A6": "Central",
+                "B6": 180,
+                "A7": "North",
+                "B7": 190,
+                "A8": "East",
+                "B8": 200,
+                "A9": "Pending",
+                "B9": 210,
+                "A10": "Closed",
+                "B10": 220
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Review"
+          },
+          "accepted_patterns": {
+            "B3": 250
+          },
+          "required_functions": {
+            "B3": 250
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "No",
+              "expect": {
+                "F3": [
+                  "IF",
+                  "XOR"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(XOR(A3=\"New\",B3>200),\"Review\",\"No\")"
+        ],
+        "hints": [
+          "Does exactly one of the two conditions need to be TRUE?",
+          "With two tests, XOR is TRUE when one passes and the other fails.",
+          "Use =IF(XOR(A3=\"New\",B3>200),\"Review\",\"No\"). Only the first test passes."
+        ],
+        "explanation": "Exactly one condition is TRUE.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L038-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A shipment is released only when payment is Received and stock is at least 10. In F3, return Release or Hold. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Payment",
+                "B2": "Stock",
+                "A3": "Pending",
+                "B3": 15,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 25,
+                "A5": "West",
+                "B5": 35,
+                "A6": "Central",
+                "B6": 45,
+                "A7": "North",
+                "B7": 55,
+                "A8": "East",
+                "B8": 65,
+                "A9": "Pending",
+                "B9": 75,
+                "A10": "Closed",
+                "B10": 85
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Hold"
+          },
+          "accepted_patterns": {
+            "A3": "Received"
+          },
+          "required_functions": {
+            "A3": "Received"
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Release",
+              "expect": {
+                "F3": [
+                  "IF",
+                  "AND"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(AND(A3=\"Received\",B3>=10),\"Release\",\"Hold\")"
+        ],
+        "hints": [
+          "Which condition fails even though stock is sufficient?",
+          "AND needs every test to pass.",
+          "Use =IF(AND(A3=\"Received\",B3>=10),\"Release\",\"Hold\"). Payment is Pending."
+        ],
+        "explanation": "The stock test passes, but payment does not.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L038-S5",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "A service credit is reviewed when exactly one applies: delay over 2 days or Premium plan. In F3, return Review or Standard. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Delay days",
+                "B2": "Plan",
+                "A3": 3,
+                "B3": "Premium",
+                "F2": "Result",
+                "A4": 13,
+                "B4": "South",
+                "A5": 23,
+                "B5": "West",
+                "A6": 33,
+                "B6": "Central",
+                "A7": 43,
+                "B7": "North",
+                "A8": 53,
+                "B8": "East",
+                "A9": 63,
+                "B9": "Pending",
+                "A10": 73,
+                "B10": "Closed"
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Standard"
+          },
+          "accepted_patterns": {
+            "B3": "Basic"
+          },
+          "required_functions": {
+            "B3": "Basic"
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Review",
+              "expect": {
+                "F3": [
+                  "IF",
+                  "XOR"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(XOR(A3>2,B3=\"Premium\"),\"Review\",\"Standard\")"
+        ],
+        "hints": [
+          "What happens when both conditions are TRUE in XOR?",
+          "XOR returns FALSE when both of these two conditions are TRUE.",
+          "Use =IF(XOR(A3>2,B3=\"Premium\"),\"Review\",\"Standard\"). Both tests pass."
+        ],
+        "explanation": "Both conditions are TRUE, so XOR returns FALSE.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      }
+    ]
+  },
+  {
+    "id": "L039",
+    "number": 39,
+    "track": "04-decisions-with-if",
+    "level": "intermediate",
+    "title": "IS Functions",
+    "version_badge": null,
+    "legacy_number": 24,
+    "estimated_minutes": 6,
+    "objectives": [
+      "Test whether a cell is blank, numeric, text or logical",
+      "Use ISBLANK, ISNUMBER, ISTEXT and ISLOGICAL inside IF",
+      "Distinguish a real number from digits stored as text"
+    ],
+    "about": "IS functions check what kind of value a cell contains. They return TRUE or FALSE, which makes them useful inside IF when imported or incomplete data needs review. ISBLANK checks for an empty cell. ISNUMBER checks for a numeric value, while ISTEXT checks for text. ISLOGICAL checks for Excel TRUE and FALSE values. A date is stored as a number, so ISNUMBER returns TRUE for a valid Excel date. Digits stored as text are still text; ISNUMBER does not convert them. Use the test that matches the issue you need to catch, then let IF display a clear status. These checks identify data types, not whether an entry is sensible.",
+    "syntax": "=ISBLANK(value) · =ISNUMBER(value) · =ISTEXT(value) · =ISLOGICAL(value)",
+    "examples": [
+      {
+        "scenario": "A coordinator checks whether a delivery date is empty.",
+        "cells": {
+          "B3": ""
+        },
+        "formula": "=ISBLANK(B3)",
+        "result": "TRUE",
+        "why": "The cell is genuinely blank."
+      },
+      {
+        "scenario": "An accounts clerk checks an invoice amount.",
+        "cells": {
+          "B3": 125.5
+        },
+        "formula": "=ISNUMBER(B3)",
+        "result": "TRUE",
+        "why": "The cell contains a number."
+      },
+      {
+        "scenario": "A staff import contains digits stored as text.",
+        "cells": {
+          "B3": "125"
+        },
+        "formula": "=ISTEXT(B3)",
+        "result": "TRUE",
+        "why": "The entry is text even though it looks numeric."
+      }
+    ],
+    "watch_out": [
+      "A formula returning an empty string is not a truly empty cell for ISBLANK.",
+      "ISNUMBER does not convert text-formatted numbers.",
+      "Excel stores dates as numbers, so ISNUMBER can return TRUE for dates."
+    ],
+    "recap": "IS functions identify the type of value in a cell. Lesson 40 uses several conditions to assign one of many results.",
+    "steps": [
+      {
+        "id": "L039-S1",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A data clerk checks whether a delivery date was entered. In F3, return Missing or Entered. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Order",
+                "B2": "Delivery date",
+                "A3": "O-301",
+                "B3": "",
+                "F2": "Result",
+                "A4": "South",
+                "B4": "",
+                "A5": "West",
+                "B5": "",
+                "A6": "Central",
+                "B6": "",
+                "A7": "North",
+                "B7": ""
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Missing"
+          },
+          "accepted_patterns": {
+            "B3": 45220
+          },
+          "required_functions": {
+            "B3": 45220
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Entered",
+              "expect": {
+                "F3": [
+                  "IF",
+                  "ISBLANK"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(ISBLANK(B3),\"Missing\",\"Entered\")"
+        ],
+        "hints": [
+          "How can you test whether the cell is empty?",
+          "ISBLANK returns TRUE for an empty cell.",
+          "Use =IF(ISBLANK(B3),\"Missing\",\"Entered\"). The blank test is TRUE."
+        ],
+        "explanation": "B3 is empty.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L039-S2",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "An accounts assistant checks whether an amount is stored as a number. In F3, return Numeric or Check entry. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Invoice",
+                "B2": "Amount",
+                "A3": "INV-302",
+                "B3": 125.5,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 135.5,
+                "A5": "West",
+                "B5": 145.5,
+                "A6": "Central",
+                "B6": 155.5,
+                "A7": "North",
+                "B7": 165.5
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Numeric"
+          },
+          "accepted_patterns": {
+            "B3": "125.50"
+          },
+          "required_functions": {
+            "B3": "125.50"
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Check entry",
+              "expect": {
+                "F3": [
+                  "IF",
+                  "ISNUMBER"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(ISNUMBER(B3),\"Numeric\",\"Check entry\")"
+        ],
+        "hints": [
+          "Which IS function tests for a numeric value?",
+          "ISNUMBER returns TRUE for numbers, including Excel dates.",
+          "Use =IF(ISNUMBER(B3),\"Numeric\",\"Check entry\"). B3 contains a number."
+        ],
+        "explanation": "The amount is numeric.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L039-S3",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A customer list should contain names. In F3, return Text or Review depending on the value type. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Record",
+                "B2": "Customer",
+                "A3": "C-303",
+                "B3": "Alem",
+                "F2": "Result",
+                "A4": "South",
+                "B4": "South",
+                "A5": "West",
+                "B5": "West",
+                "A6": "Central",
+                "B6": "Central",
+                "A7": "North",
+                "B7": "North",
+                "A8": "East",
+                "B8": "East",
+                "A9": "Pending",
+                "B9": "Pending",
+                "A10": "Closed",
+                "B10": "Closed"
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Text"
+          },
+          "accepted_patterns": {
+            "B3": 303
+          },
+          "required_functions": {
+            "B3": 303
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Review",
+              "expect": {
+                "F3": [
+                  "IF",
+                  "ISTEXT"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(ISTEXT(B3),\"Text\",\"Review\")"
+        ],
+        "hints": [
+          "Which function checks whether a value is text?",
+          "ISTEXT returns TRUE when the cell contains text.",
+          "Use =IF(ISTEXT(B3),\"Text\",\"Review\"). The customer name is text."
+        ],
+        "explanation": "Alem is stored as text.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L039-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A status column should contain TRUE or FALSE values. In F3, return Valid or Review. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Task",
+                "B2": "Approved?",
+                "A3": "Task 14",
+                "B3": true,
+                "F2": "Result",
+                "A4": "South",
+                "B4": false,
+                "A5": "West",
+                "B5": true,
+                "A6": "Central",
+                "B6": false,
+                "A7": "North",
+                "B7": true,
+                "A8": "East",
+                "B8": false,
+                "A9": "Pending",
+                "B9": true,
+                "A10": "Closed",
+                "B10": false
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Valid"
+          },
+          "accepted_patterns": {
+            "B3": "TRUE"
+          },
+          "required_functions": {
+            "B3": "TRUE"
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Review",
+              "expect": {
+                "F3": [
+                  "IF",
+                  "ISLOGICAL"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(ISLOGICAL(B3),\"Valid\",\"Review\")"
+        ],
+        "hints": [
+          "Which function identifies logical values?",
+          "ISLOGICAL tests Excel TRUE and FALSE values, not the text strings.",
+          "Use =IF(ISLOGICAL(B3),\"Valid\",\"Review\"). B3 contains logical TRUE."
+        ],
+        "explanation": "The cell contains a logical value.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L039-S5",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "An imported quantity may contain digits stored as text. In F3, flag the entry unless it is numeric. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Item",
+                "B2": "Imported quantity",
+                "A3": "Box labels",
+                "B3": "18",
+                "F2": "Result",
+                "A4": "South",
+                "B4": "South",
+                "A5": "West",
+                "B5": "West",
+                "A6": "Central",
+                "B6": "Central",
+                "A7": "North",
+                "B7": "North",
+                "A8": "East",
+                "B8": "East",
+                "A9": "Pending",
+                "B9": "Pending",
+                "A10": "Closed",
+                "B10": "Closed"
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Check import"
+          },
+          "accepted_patterns": {
+            "B3": 18
+          },
+          "required_functions": {
+            "B3": 18
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Use quantity",
+              "expect": {
+                "F3": [
+                  "IF",
+                  "ISNUMBER"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(ISNUMBER(B3),\"Use quantity\",\"Check import\")"
+        ],
+        "hints": [
+          "Does the cell contain a real number or digits stored as text?",
+          "ISNUMBER checks the stored type; it does not convert text digits.",
+          "Use =IF(ISNUMBER(B3),\"Use quantity\",\"Check import\"). B3 contains text."
+        ],
+        "explanation": "The entry looks numeric, but it is text.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      }
+    ]
+  },
+  {
+    "id": "L040",
+    "number": 40,
+    "track": "04-decisions-with-if",
+    "level": "intermediate",
+    "title": "IFS Function",
+    "version_badge": "2019",
+    "legacy_number": 25,
+    "estimated_minutes": 6,
+    "objectives": [
+      "Return a result for the first condition that is TRUE",
+      "Order conditions from most specific to broadest",
+      "Add a final TRUE condition as the fallback"
+    ],
+    "about": "IFS checks several conditions in order and returns the result linked to the first condition that is TRUE. It is useful for grading bands, stock labels, service priorities and commission rates. Each condition is followed by the value to return when that condition passes. Excel stops at the first match, so order matters. Put higher thresholds before lower ones when bands overlap. Add TRUE as the final condition to catch anything that did not match earlier tests. Without a catch-all, a value outside every listed band can return #N/A. IFS is available in Excel 2019 and later. In older versions, use nested IF functions.",
+    "syntax": "=IFS(test1,result1,[test2,result2],…)\nTRUE, final_result: catches unmatched values",
+    "examples": [
+      {
+        "scenario": "A school assigns letter grades from exam scores.",
+        "cells": {
+          "B3": 82
+        },
+        "formula": "=IFS(B3>=90,\"A\",B3>=75,\"B\",B3>=60,\"C\",TRUE,\"Fail\")",
+        "result": "B",
+        "why": "82 is below 90 but at least 75."
+      },
+      {
+        "scenario": "A warehouse labels stock by urgency.",
+        "cells": {
+          "B3": 3
+        },
+        "formula": "=IFS(B3<5,\"Critical\",B3<15,\"Low\",TRUE,\"Normal\")",
+        "result": "Critical",
+        "why": "The first condition is TRUE."
+      },
+      {
+        "scenario": "A service desk assigns priority from waiting time.",
+        "cells": {
+          "B3": 30
+        },
+        "formula": "=IFS(B3>48,\"High\",B3>24,\"Medium\",TRUE,\"Normal\")",
+        "result": "Medium",
+        "why": "Thirty hours passes the second condition."
+      }
+    ],
+    "watch_out": [
+      "Check conditions in the correct order; IFS returns the first match.",
+      "Include a final TRUE condition to avoid #N/A for unmatched values.",
+      "Needs Excel 2019 or later. In older versions, use nested IF functions."
+    ],
+    "recap": "IFS handles several outcomes in one formula. Lesson 41 uses SWITCH when one expression is matched against exact values.",
+    "steps": [
+      {
+        "id": "L040-S1",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A training manager assigns A at 90+, B at 75+, C at 60+, and Fail otherwise. In F3, classify the score. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Learner",
+                "B2": "Score",
+                "A3": "Rami",
+                "B3": 82,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 92,
+                "A5": "West",
+                "B5": 102,
+                "A6": "Central",
+                "B6": 112,
+                "A7": "North",
+                "B7": 122
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "B"
+          },
+          "accepted_patterns": {
+            "B3": 92
+          },
+          "required_functions": {
+            "B3": 92
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "A",
+              "expect": {
+                "F3": [
+                  "IFS"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IFS(B3>=90,\"A\",B3>=75,\"B\",B3>=60,\"C\",TRUE,\"Fail\")"
+        ],
+        "hints": [
+          "Which score band should be checked first?",
+          "IFS tests conditions in order and returns the first TRUE result.",
+          "Use =IFS(B3>=90,\"A\",B3>=75,\"B\",B3>=60,\"C\",TRUE,\"Fail\"). The 75+ test is first to pass."
+        ],
+        "explanation": "82 is below 90 but at least 75.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L040-S2",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A warehouse labels stock Critical below 5, Low below 15, and Normal otherwise. In F3, classify the stock. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Item",
+                "B2": "Units",
+                "A3": "Tape",
+                "B3": 3,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 13,
+                "A5": "West",
+                "B5": 23,
+                "A6": "Central",
+                "B6": 33,
+                "A7": "North",
+                "B7": 43
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Critical"
+          },
+          "accepted_patterns": {
+            "B3": 9
+          },
+          "required_functions": {
+            "B3": 9
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Low",
+              "expect": {
+                "F3": [
+                  "IFS"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IFS(B3<5,\"Critical\",B3<15,\"Low\",TRUE,\"Normal\")"
+        ],
+        "hints": [
+          "Which stock condition is most urgent?",
+          "Put the narrowest condition first so a broader test does not catch it.",
+          "Use =IFS(B3<5,\"Critical\",B3<15,\"Low\",TRUE,\"Normal\"). Three meets the first condition."
+        ],
+        "explanation": "The first condition is TRUE.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L040-S3",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A service desk assigns High above 48 hours, Medium above 24, and Normal otherwise. In F3, set the priority. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Ticket",
+                "B2": "Hours waiting",
+                "A3": "T-88",
+                "B3": 30,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 40,
+                "A5": "West",
+                "B5": 50,
+                "A6": "Central",
+                "B6": 60,
+                "A7": "North",
+                "B7": 70,
+                "A8": "East",
+                "B8": 80,
+                "A9": "Pending",
+                "B9": 90,
+                "A10": "Closed",
+                "B10": 100
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Medium"
+          },
+          "accepted_patterns": {
+            "B3": 12
+          },
+          "required_functions": {
+            "B3": 12
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Normal",
+              "expect": {
+                "F3": [
+                  "IFS"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IFS(B3>48,\"High\",B3>24,\"Medium\",TRUE,\"Normal\")"
+        ],
+        "hints": [
+          "Which threshold is met by a 30-hour wait?",
+          "Put the highest threshold first. IFS stops at the first TRUE test.",
+          "Use =IFS(B3>48,\"High\",B3>24,\"Medium\",TRUE,\"Normal\"). The second test passes."
+        ],
+        "explanation": "Thirty hours is over 24 but not over 48.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L040-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A supplier rating is Excellent at 95+, Good at 85+, and Review below 85. In F3, classify the rating. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Supplier",
+                "B2": "Rating",
+                "A3": "Kora Supplies",
+                "B3": 85,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 95,
+                "A5": "West",
+                "B5": 105,
+                "A6": "Central",
+                "B6": 115,
+                "A7": "North",
+                "B7": 125,
+                "A8": "East",
+                "B8": 135,
+                "A9": "Pending",
+                "B9": 145,
+                "A10": "Closed",
+                "B10": 155
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Good"
+          },
+          "accepted_patterns": {
+            "B3": 96
+          },
+          "required_functions": {
+            "B3": 96
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Excellent",
+              "expect": {
+                "F3": [
+                  "IFS"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IFS(B3>=95,\"Excellent\",B3>=85,\"Good\",TRUE,\"Review\")"
+        ],
+        "hints": [
+          "Does exactly 85 qualify for Good?",
+          "The >= operator includes the threshold itself.",
+          "Use =IFS(B3>=95,\"Excellent\",B3>=85,\"Good\",TRUE,\"Review\"). The second test includes 85."
+        ],
+        "explanation": "The score is exactly 85.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L040-S5",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "A commission is 8% at sales of 1000+, 5% at 600+, and 2% otherwise. In F3, return the rate. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Salesperson",
+                "B2": "Sales",
+                "A3": "Hana",
+                "B3": 600,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 610,
+                "A5": "West",
+                "B5": 620,
+                "A6": "Central",
+                "B6": 630,
+                "A7": "North",
+                "B7": 640,
+                "A8": "East",
+                "B8": 650,
+                "A9": "Pending",
+                "B9": 660,
+                "A10": "Closed",
+                "B10": 670
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": 0.05
+          },
+          "accepted_patterns": {
+            "B3": 800
+          },
+          "required_functions": {
+            "B3": 800
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": 0.05,
+              "expect": {
+                "F3": [
+                  "IFS"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IFS(B3>=1000,8%,B3>=600,5%,TRUE,2%)"
+        ],
+        "hints": [
+          "Which band includes sales of exactly 600?",
+          "Use >= for an inclusive threshold and TRUE as the fallback.",
+          "Use =IFS(B3>=1000,8%,B3>=600,5%,TRUE,2%). The second test includes 600."
+        ],
+        "explanation": "The 5% band includes the boundary value.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      }
+    ]
+  },
+  {
+    "id": "L041",
+    "number": 41,
+    "track": "04-decisions-with-if",
+    "level": "intermediate",
+    "title": "SWITCH Function",
+    "version_badge": "2019",
+    "legacy_number": 26,
+    "estimated_minutes": 6,
+    "objectives": [
+      "Match one expression against several exact values",
+      "Return a result for each matching value",
+      "Set a default result for unmatched values"
+    ],
+    "about": "SWITCH compares one expression with a list of exact values and returns the result paired with the first match. It is useful when a code or status has several possible labels, such as route directions, shift names, payment states or ticket priorities. Enter the expression first, then each value and its result as a pair. Add a final default result for values that do not match any pair. SWITCH is easier to read than a long chain of IF functions when one cell is compared with fixed options. It does not test ranges such as greater than 100; use IF or IFS for thresholds. SWITCH is available in Excel 2019 and later.",
+    "syntax": "=SWITCH(expression,value1,result1,[value2,result2],…,[default])",
+    "examples": [
+      {
+        "scenario": "A dispatch sheet expands route codes.",
+        "cells": {
+          "A3": "N"
+        },
+        "formula": "=SWITCH(A3,\"N\",\"North\",\"S\",\"South\",\"E\",\"East\",\"W\",\"West\",\"Unknown\")",
+        "result": "North",
+        "why": "N matches the first value-result pair."
+      },
+      {
+        "scenario": "A roster converts shift codes into names.",
+        "cells": {
+          "A3": "A"
+        },
+        "formula": "=SWITCH(A3,\"M\",\"Morning\",\"A\",\"Afternoon\",\"N\",\"Night\",\"Unassigned\")",
+        "result": "Afternoon",
+        "why": "A matches the second pair."
+      },
+      {
+        "scenario": "A payment report handles an unlisted code.",
+        "cells": {
+          "A3": 4
+        },
+        "formula": "=SWITCH(A3,0,\"Pending\",1,\"Paid\",2,\"Refunded\",\"Check\")",
+        "result": "Check",
+        "why": "No listed code matches, so the default is returned."
+      }
+    ],
+    "watch_out": [
+      "SWITCH checks exact matches, not ranges such as >=500.",
+      "Keep text match values in quotation marks; numeric values do not need them.",
+      "Needs Excel 2019 or later. In older versions, use nested IF functions."
+    ],
+    "recap": "SWITCH maps one exact value to one result. Lesson 42 combines IF with other functions for more involved decisions.",
+    "steps": [
+      {
+        "id": "L041-S1",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A dispatch sheet stores N, S, E or W. In F3, return the full direction or Unknown. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Route code",
+                "A3": "N",
+                "F2": "Result",
+                "A4": "South",
+                "A5": "West",
+                "A6": "Central",
+                "A7": "North"
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "North"
+          },
+          "accepted_patterns": {
+            "A3": "S"
+          },
+          "required_functions": {
+            "A3": "S"
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "South",
+              "expect": {
+                "F3": [
+                  "SWITCH"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=SWITCH(A3,\"N\",\"North\",\"S\",\"South\",\"E\",\"East\",\"W\",\"West\",\"Unknown\")"
+        ],
+        "hints": [
+          "Is one cell being checked against exact codes?",
+          "SWITCH compares one expression with value-result pairs.",
+          "Use =SWITCH(A3,\"N\",\"North\",\"S\",\"South\",\"E\",\"East\",\"W\",\"West\",\"Unknown\"). A3 matches N."
+        ],
+        "explanation": "N maps to North.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L041-S2",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A staff roster uses M, A and N. In F3, return Morning, Afternoon, Night or Unassigned. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Shift code",
+                "A3": "A",
+                "F2": "Result",
+                "A4": "South",
+                "A5": "West",
+                "A6": "Central",
+                "A7": "North"
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Afternoon"
+          },
+          "accepted_patterns": {
+            "A3": "N"
+          },
+          "required_functions": {
+            "A3": "N"
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Night",
+              "expect": {
+                "F3": [
+                  "SWITCH"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=SWITCH(A3,\"M\",\"Morning\",\"A\",\"Afternoon\",\"N\",\"Night\",\"Unassigned\")"
+        ],
+        "hints": [
+          "Which label is paired with A?",
+          "SWITCH takes an expression, value-result pairs, then an optional default.",
+          "Use =SWITCH(A3,\"M\",\"Morning\",\"A\",\"Afternoon\",\"N\",\"Night\",\"Unassigned\"). A maps to Afternoon."
+        ],
+        "explanation": "The code A maps to Afternoon.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L041-S3",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A support team maps priority codes 1, 2 and 3 to Low, Medium and High. In F3, return the priority. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Priority code",
+                "A3": 3,
+                "F2": "Result",
+                "A4": 13,
+                "A5": 23,
+                "A6": 33,
+                "A7": 43,
+                "A8": 53,
+                "A9": 63,
+                "A10": 73
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "High"
+          },
+          "accepted_patterns": {
+            "A3": 2
+          },
+          "required_functions": {
+            "A3": 2
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Medium",
+              "expect": {
+                "F3": [
+                  "SWITCH"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=SWITCH(A3,1,\"Low\",2,\"Medium\",3,\"High\",\"Review\")"
+        ],
+        "hints": [
+          "Does SWITCH compare the numeric code directly?",
+          "Keep numeric match values unquoted and text results in quotes.",
+          "Use =SWITCH(A3,1,\"Low\",2,\"Medium\",3,\"High\",\"Review\"). Code 3 matches the third pair."
+        ],
+        "explanation": "The third match returns High.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L041-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A project tracker maps Open, Hold and Done to actions. In F3, return the action. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Status",
+                "A3": "Hold",
+                "F2": "Result",
+                "A4": "South",
+                "A5": "West",
+                "A6": "Central",
+                "A7": "North",
+                "A8": "East",
+                "A9": "Pending",
+                "A10": "Closed"
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Wait"
+          },
+          "accepted_patterns": {
+            "A3": "Done"
+          },
+          "required_functions": {
+            "A3": "Done"
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Close",
+              "expect": {
+                "F3": [
+                  "SWITCH"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=SWITCH(A3,\"Open\",\"Work\",\"Hold\",\"Wait\",\"Done\",\"Close\",\"Check\")"
+        ],
+        "hints": [
+          "What action is paired with Hold?",
+          "SWITCH suits one cell that can contain several exact labels.",
+          "Use =SWITCH(A3,\"Open\",\"Work\",\"Hold\",\"Wait\",\"Done\",\"Close\",\"Check\"). Hold maps to Wait."
+        ],
+        "explanation": "The expression matches Hold.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L041-S5",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "A payment report uses codes 0, 1 and 2. Return Pending, Paid or Refunded; other codes return Check. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Payment code",
+                "A3": 4,
+                "F2": "Result",
+                "A4": 14,
+                "A5": 24,
+                "A6": 34,
+                "A7": 44,
+                "A8": 54,
+                "A9": 64,
+                "A10": 74
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Check"
+          },
+          "accepted_patterns": {
+            "A3": 1
+          },
+          "required_functions": {
+            "A3": 1
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Paid",
+              "expect": {
+                "F3": [
+                  "SWITCH"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=SWITCH(A3,0,\"Pending\",1,\"Paid\",2,\"Refunded\",\"Check\")"
+        ],
+        "hints": [
+          "What should happen when no listed code matches?",
+          "The final argument is the default result.",
+          "Use =SWITCH(A3,0,\"Pending\",1,\"Paid\",2,\"Refunded\",\"Check\"). Code 4 uses the default."
+        ],
+        "explanation": "The default result catches the unlisted code.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      }
+    ]
+  },
+  {
+    "id": "L042",
+    "number": 42,
+    "track": "04-decisions-with-if",
+    "level": "intermediate",
+    "title": "IF Combinations",
+    "version_badge": null,
+    "legacy_number": 76,
+    "estimated_minutes": 6,
+    "objectives": [
+      "Combine IF with AND or OR",
+      "Use nested IF when a decision has more than two outcomes",
+      "Order overlapping conditions from most specific to broadest"
+    ],
+    "about": "You can combine IF with other functions when a decision depends on several rules or has more than two possible outcomes. Use AND inside IF when every condition must pass, and OR when any one condition is enough. A nested IF places another IF inside the first formula result, letting you check a second rule when the first one fails. This is useful for grading bands, stock alerts and approval levels. Write each rule in plain English before building the formula. Put the most specific condition first when thresholds overlap. Check the order of the true and false results, and use parentheses to keep each decision together.",
+    "syntax": "=IF(AND(test1,test2),true_result,false_result)\n=IF(OR(test1,test2),true_result,false_result)\n=IF(test1,result1,IF(test2,result2,result3))",
+    "examples": [
+      {
+        "scenario": "A branch awards a bonus when sales reach 500 and region is East.",
+        "cells": {
+          "A3": "East",
+          "B3": 620
+        },
+        "formula": "=IF(AND(B3>=500,A3=\"East\"),\"Bonus\",\"None\")",
+        "result": "Bonus",
+        "why": "Both conditions are TRUE."
+      },
+      {
+        "scenario": "A help desk marks a ticket urgent for High priority or a long wait.",
+        "cells": {
+          "A3": "High",
+          "B3": 8
+        },
+        "formula": "=IF(OR(A3=\"High\",B3>24),\"Urgent\",\"Standard\")",
+        "result": "Urgent",
+        "why": "The priority test alone is enough."
+      },
+      {
+        "scenario": "A school assigns Pass, Review or Retry.",
+        "cells": {
+          "B3": 43
+        },
+        "formula": "=IF(B3>=50,\"Pass\",IF(B3<40,\"Review\",\"Retry\"))",
+        "result": "Retry",
+        "why": "The first and second tests both fail."
+      }
+    ],
+    "watch_out": [
+      "AND requires every condition; OR requires at least one.",
+      "In nested IF, a false result can contain another IF.",
+      "Put the most specific threshold first when conditions overlap."
+    ],
+    "recap": "Combined IF formulas handle multi-condition rules and several outcomes. The checkpoint brings together comparisons, AND and IFS.",
+    "steps": [
+      {
+        "id": "L042-S1",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A branch awards a bonus only when sales are at least 500 and region is East. In F3, return Bonus or None. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Region",
+                "B2": "Sales",
+                "A3": "East",
+                "B3": 620,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 630,
+                "A5": "West",
+                "B5": 640,
+                "A6": "Central",
+                "B6": 650,
+                "A7": "North",
+                "B7": 660
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Bonus"
+          },
+          "accepted_patterns": {
+            "B3": 450
+          },
+          "required_functions": {
+            "B3": 450
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "None",
+              "expect": {
+                "F3": [
+                  "IF",
+                  "AND"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(AND(B3>=500,A3=\"East\"),\"Bonus\",\"None\")"
+        ],
+        "hints": [
+          "Must both the sales and region rules pass?",
+          "Use AND inside IF when every condition must be TRUE.",
+          "Use =IF(AND(B3>=500,A3=\"East\"),\"Bonus\",\"None\"). Both conditions pass."
+        ],
+        "explanation": "Sales meet 500 and the region is East.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L042-S2",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "guided",
+        "prompt": "A service team marks a case Urgent when priority is High or waiting exceeds 24 hours. In F3, classify it. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Priority",
+                "B2": "Hours waiting",
+                "A3": "High",
+                "B3": 8,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 18,
+                "A5": "West",
+                "B5": 28,
+                "A6": "Central",
+                "B6": 38,
+                "A7": "North",
+                "B7": 48
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Urgent"
+          },
+          "accepted_patterns": {
+            "A3": "Normal"
+          },
+          "required_functions": {
+            "A3": "Normal"
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Standard",
+              "expect": {
+                "F3": [
+                  "IF",
+                  "OR"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(OR(A3=\"High\",B3>24),\"Urgent\",\"Standard\")"
+        ],
+        "hints": [
+          "Is either condition enough to trigger Urgent?",
+          "Use OR inside IF when one matching condition is enough.",
+          "Use =IF(OR(A3=\"High\",B3>24),\"Urgent\",\"Standard\"). High priority makes OR TRUE."
+        ],
+        "explanation": "The priority condition passes.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L042-S3",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A grading sheet returns Pass at 50+, Review below 40, and Retry otherwise. In F3, classify the score. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Learner",
+                "B2": "Score",
+                "A3": "Saba",
+                "B3": 43,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 53,
+                "A5": "West",
+                "B5": 63,
+                "A6": "Central",
+                "B6": 73,
+                "A7": "North",
+                "B7": 83,
+                "A8": "East",
+                "B8": 93,
+                "A9": "Pending",
+                "B9": 103,
+                "A10": "Closed",
+                "B10": 113
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Retry"
+          },
+          "accepted_patterns": {
+            "B3": 35
+          },
+          "required_functions": {
+            "B3": 35
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Review",
+              "expect": {
+                "F3": [
+                  "IF"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(B3>=50,\"Pass\",IF(B3<40,\"Review\",\"Retry\"))"
+        ],
+        "hints": [
+          "What second rule applies when the pass test fails?",
+          "A nested IF puts another decision inside the first IF false result.",
+          "Use =IF(B3>=50,\"Pass\",IF(B3<40,\"Review\",\"Retry\")). Both tests fail."
+        ],
+        "explanation": "43 is below 50 but not below 40.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L042-S4",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "independent",
+        "prompt": "A warehouse marks stock Urgent below 4, Reorder below 10, and OK otherwise. In F3, classify stock. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Item",
+                "B2": "Units",
+                "A3": "Labels",
+                "B3": 3,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 13,
+                "A5": "West",
+                "B5": 23,
+                "A6": "Central",
+                "B6": 33,
+                "A7": "North",
+                "B7": 43,
+                "A8": "East",
+                "B8": 53,
+                "A9": "Pending",
+                "B9": 63,
+                "A10": "Closed",
+                "B10": 73
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Urgent"
+          },
+          "accepted_patterns": {
+            "B3": 7
+          },
+          "required_functions": {
+            "B3": 7
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "Reorder",
+              "expect": {
+                "F3": [
+                  "IF"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(B3<4,\"Urgent\",IF(B3<10,\"Reorder\",\"OK\"))"
+        ],
+        "hints": [
+          "Which condition is more specific and should be tested first?",
+          "Put the urgent threshold first; otherwise the broader below-10 test catches it.",
+          "Use =IF(B3<4,\"Urgent\",IF(B3<10,\"Reorder\",\"OK\")). Three is below 4."
+        ],
+        "explanation": "The narrower urgent condition is checked first.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      },
+      {
+        "id": "L042-S5",
+        "type": "formula",
+        "surface": "sheet",
+        "difficulty": "apply",
+        "prompt": "An East region order earns a bonus at sales of 500 or more. In F3, return Bonus or None; exactly 500 qualifies. Use the first record in the list.",
+        "workbook": {
+          "sheets": [
+            {
+              "name": "Records",
+              "cells": {
+                "A1": "Decision records",
+                "A2": "Region",
+                "B2": "Sales",
+                "A3": "East",
+                "B3": 500,
+                "F2": "Result",
+                "A4": "South",
+                "B4": 510,
+                "A5": "West",
+                "B5": 520,
+                "A6": "Central",
+                "B6": 530,
+                "A7": "North",
+                "B7": 540,
+                "A8": "East",
+                "B8": 550,
+                "A9": "Pending",
+                "B9": 560,
+                "A10": "Closed",
+                "B10": 570
+              }
+            }
+          ]
+        },
+        "start_cell": "F3",
+        "target_cells": [
+          "F3"
+        ],
+        "validation": {
+          "mode": "value",
+          "accepted_values": {
+            "F3": "Bonus"
+          },
+          "accepted_patterns": {
+            "B3": 499
+          },
+          "required_functions": {
+            "B3": 499
+          },
+          "forbid_hardcoded": true,
+          "recalc_variants": [
+            {
+              "change": "None",
+              "expect": {
+                "F3": [
+                  "IF",
+                  "AND"
+                ]
+              }
+            }
+          ]
+        },
+        "reference_solutions": [
+          "=IF(AND(A3=\"East\",B3>=500),\"Bonus\",\"None\")"
+        ],
+        "hints": [
+          "Does the rule include the exact sales boundary?",
+          "Use >= for the inclusive threshold and AND because both tests must pass.",
+          "Use =IF(AND(A3=\"East\",B3>=500),\"Bonus\",\"None\"). Both tests pass."
+        ],
+        "explanation": "East matches and the inclusive sales threshold is met.",
+        "common_mistakes": [
+          {
+            "pattern": "wrong_test",
+            "message": "Check that the condition matches the rule and includes the correct boundary.",
+            "example_formula": "=1"
+          },
+          {
+            "pattern": "wrong_result",
+            "message": "Check which result belongs to a TRUE test and which belongs to FALSE.",
+            "example_formula": "=0"
+          },
+          {
+            "pattern": "hardcoded_result",
+            "message": "A typed answer will not update when the source value changes. Use a formula that reads the cells.",
+            "example_formula": "=1"
+          }
+        ],
+        "engine_support": "needs_engine"
+      }
+    ]
+  }
+]
